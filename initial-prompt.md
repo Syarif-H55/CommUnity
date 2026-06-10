@@ -79,6 +79,10 @@ Read and understand the following documents in order:
 * tasks/backlog.md
 * Current Active Sprint
 
+### project-context
+* claude.md
+* project-kickoff.md
+
 ---
 
 ## Step 2 - Produce Project Understanding
