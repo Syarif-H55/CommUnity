@@ -98,16 +98,18 @@ Frontend berjalan di `http://localhost:3000`
 Cek API dengan `curl`:
 
 ```bash
+# Health check
 curl http://localhost:8000/api/v1/health
-```
 
-Response:
+# Register
+curl -X POST http://localhost:8000/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"full_name":"Test User","username":"testuser","email":"test@example.com","password":"password123","password_confirmation":"password123"}'
 
-```json
-{
-    "success": true,
-    "message": "CommUnity API is running"
-}
+# Login
+curl -X POST http://localhost:8000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"testuser","password":"password123"}'
 ```
 
 ## API Base URL
@@ -118,9 +120,23 @@ Frontend membaca `NEXT_PUBLIC_API_URL` dari `.env.local`:
 NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
 ```
 
+## API Authentication Endpoints
+
+| Method | Endpoint | Auth | Deskripsi |
+|--------|----------|------|-----------|
+| POST | `/api/v1/auth/register` | No | Registrasi akun baru |
+| POST | `/api/v1/auth/login` | No | Login pengguna |
+| POST | `/api/v1/auth/logout` | Yes | Logout (Bearer token) |
+| POST | `/api/v1/auth/forgot-password` | No | Request token reset password |
+| POST | `/api/v1/auth/reset-password` | No | Reset password dengan token |
+
 ## Akun Default (setelah seeder)
 
-Belum tersedia — akan ditambahkan setelah migrasi dan seeder selesai.
+| Role | Username | Password |
+|------|----------|----------|
+| User | `testuser` | `password` |
+
+> Jalankan `php artisan db:seed` untuk membuat akun default.
 
 ## Command Penting
 
@@ -134,6 +150,8 @@ Belum tersedia — akan ditambahkan setelah migrasi dan seeder selesai.
 | `php artisan make:migration` | Buat migration baru |
 | `php artisan make:model` | Buat model baru |
 | `php artisan tinker` | Interactive shell |
+| `php artisan test` | Jalankan semua test |
+| `php artisan test --filter AuthTest` | Jalankan test auth |
 
 ### Frontend
 
