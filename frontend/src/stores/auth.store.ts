@@ -10,17 +10,36 @@ interface AuthState {
     setUser: (user: User) => void;
 }
 
+function getStoredAuth(): { token: string | null; user: User | null } {
+    if (typeof window === 'undefined') return { token: null, user: null };
+    try {
+        const token = localStorage.getItem('auth_token');
+        const userRaw = localStorage.getItem('auth_user');
+        const user = userRaw ? JSON.parse(userRaw) : null;
+        return { token, user };
+    } catch {
+        return { token: null, user: null };
+    }
+}
+
+const stored = getStoredAuth();
+
 export const useAuthStore = create<AuthState>((set) => ({
-    user: null,
-    token: null,
-    isAuthenticated: false,
+    user: stored.user,
+    token: stored.token,
+    isAuthenticated: !!stored.token,
     setAuth: (user, token) => {
         localStorage.setItem('auth_token', token);
+        localStorage.setItem('auth_user', JSON.stringify(user));
         set({ user, token, isAuthenticated: true });
     },
     logout: () => {
         localStorage.removeItem('auth_token');
+        localStorage.removeItem('auth_user');
         set({ user: null, token: null, isAuthenticated: false });
     },
-    setUser: (user) => set({ user }),
+    setUser: (user) => {
+        localStorage.setItem('auth_user', JSON.stringify(user));
+        set({ user });
+    },
 }));

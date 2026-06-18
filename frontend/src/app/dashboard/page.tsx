@@ -1,0 +1,102 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import AuthGuard from "@/components/auth/AuthGuard";
+import { useAuthStore } from "@/stores/auth.store";
+import { useLogout } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { Handshake, User, Mail, Shield, LogOut, Loader2 } from "lucide-react";
+
+function DashboardContent() {
+  const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+  const logout = useLogout();
+
+  async function handleLogout() {
+    logout.mutate(undefined, {
+      onSuccess: () => {
+        router.push("/login");
+      },
+    });
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
+      <header className="flex items-center justify-between border-b bg-white/80 px-6 py-4 backdrop-blur-sm dark:bg-background/80">
+        <div className="flex items-center gap-3">
+          <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-600">
+            <Handshake className="size-5 text-white" />
+          </div>
+          <span className="text-lg font-semibold tracking-tight">CommUnity</span>
+        </div>
+
+        <Button
+          variant="outline"
+          onClick={handleLogout}
+          disabled={logout.isPending}
+          className="gap-2"
+        >
+          {logout.isPending ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <LogOut className="size-4" />
+          )}
+          {logout.isPending ? "Keluar..." : "Keluar"}
+        </Button>
+      </header>
+
+      <main className="flex flex-1 items-center justify-center p-6">
+        <Card className="w-full max-w-lg border-emerald-100 shadow-lg shadow-emerald-900/5 dark:border-emerald-900/20">
+          <CardHeader className="pb-6 text-center">
+            <div className="mx-auto mb-3 flex size-16 items-center justify-center overflow-hidden rounded-full bg-emerald-100 dark:bg-emerald-900/30">
+              {user?.profile_photo_url ? (
+                <img
+                  src={user.profile_photo_url}
+                  alt={user.full_name}
+                  className="size-full object-cover"
+                />
+              ) : (
+                <User className="size-7 text-emerald-600 dark:text-emerald-400" />
+              )}
+            </div>
+            <CardTitle className="text-xl">{user?.full_name}</CardTitle>
+            <CardDescription>@{user?.username}</CardDescription>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-3 rounded-lg border bg-muted/50 px-4 py-3">
+              <Mail className="size-4 text-muted-foreground" />
+              <div className="flex-1">
+                <p className="text-xs text-muted-foreground">Email</p>
+                <p className="text-sm font-medium">{user?.email}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 rounded-lg border bg-muted/50 px-4 py-3">
+              <Shield className="size-4 text-muted-foreground" />
+              <div className="flex-1">
+                <p className="text-xs text-muted-foreground">Role</p>
+                <p className="text-sm font-medium capitalize">{user?.role}</p>
+              </div>
+            </div>
+          </CardContent>
+
+          <CardFooter className="justify-center">
+            <p className="text-xs text-muted-foreground">
+              Selamat datang di CommUnity — Platform Kegiatan Sosial Komunitas
+            </p>
+          </CardFooter>
+        </Card>
+      </main>
+    </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <AuthGuard>
+      <DashboardContent />
+    </AuthGuard>
+  );
+}
