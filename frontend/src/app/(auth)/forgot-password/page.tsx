@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { AxiosError } from "axios";
-import { authService } from "@/services/auth.service";
+import { useForgotPassword } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const forgotPassword = useForgotPassword();
 
   function validate(): boolean {
     if (!email.trim()) {
@@ -49,21 +49,20 @@ export default function ForgotPasswordPage() {
 
     if (!validate()) return;
 
-    setIsLoading(true);
-    try {
-      await authService.forgotPassword(email);
-      setIsSuccess(true);
-    } catch (err) {
-      const axiosError = err as AxiosError<ApiResponse>;
-      const data = axiosError.response?.data;
-      if (data?.errors?.email) {
-        setError(data.errors.email[0]);
-      } else {
-        setError(data?.message || "Gagal mengirim email reset password");
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    forgotPassword.mutate(email, {
+      onSuccess: () => {
+        setIsSuccess(true);
+      },
+      onError: (err) => {
+        const axiosError = err as AxiosError<ApiResponse>;
+        const data = axiosError.response?.data;
+        if (data?.errors?.email) {
+          setError(data.errors.email[0]);
+        } else {
+          setError(data?.message || "Gagal mengirim email reset password");
+        }
+      },
+    });
   }
 
   if (isSuccess) {
@@ -166,9 +165,9 @@ export default function ForgotPasswordPage() {
           <Button
             type="submit"
             className="w-full h-10 bg-emerald-600 hover:bg-emerald-700 text-base shadow-sm"
-            disabled={isLoading}
+            disabled={forgotPassword.isPending}
           >
-            {isLoading ? (
+            {forgotPassword.isPending ? (
               "Mengirim..."
             ) : (
               <span className="flex items-center gap-2">

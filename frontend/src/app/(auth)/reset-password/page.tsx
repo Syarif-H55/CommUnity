@@ -3,7 +3,8 @@
 import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { authService } from "@/services/auth.service";
+import type { AxiosError } from "axios";
+import { useResetPassword } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,7 +24,6 @@ import {
   ArrowLeft,
   CheckCircle2,
 } from "lucide-react";
-import type { AxiosError } from "axios";
 import type { ApiResponse } from "@/types";
 
 interface FormErrors {
@@ -35,6 +35,7 @@ interface FormErrors {
 
 function ResetPasswordForm() {
   const searchParams = useSearchParams();
+  const resetPassword = useResetPassword();
   const [form, setForm] = useState({
     email: searchParams.get("email") || "",
     token: searchParams.get("token") || "",
@@ -44,7 +45,6 @@ function ResetPasswordForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [serverError, setServerError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   function validate(): boolean {
     const newErrors: FormErrors = {};
@@ -81,30 +81,32 @@ function ResetPasswordForm() {
 
     if (!validate()) return;
 
-    setIsLoading(true);
-    try {
-      await authService.resetPassword({
+    resetPassword.mutate(
+      {
         email: form.email,
         token: form.token,
         password: form.password,
         password_confirmation: form.password_confirmation,
-      });
-      setIsSuccess(true);
-    } catch (err) {
-      const axiosError = err as AxiosError<ApiResponse>;
-      const data = axiosError.response?.data;
-      if (data?.errors) {
-        const mapped: FormErrors = {};
-        for (const [key, messages] of Object.entries(data.errors)) {
-          mapped[key as keyof FormErrors] = messages[0];
-        }
-        setErrors(mapped);
-      } else {
-        setServerError(data?.message || "Gagal mereset password");
+      },
+      {
+        onSuccess: () => {
+          setIsSuccess(true);
+        },
+        onError: (err) => {
+          const axiosError = err as AxiosError<ApiResponse>;
+          const data = axiosError.response?.data;
+          if (data?.errors) {
+            const mapped: FormErrors = {};
+            for (const [key, messages] of Object.entries(data.errors)) {
+              mapped[key as keyof FormErrors] = messages[0];
+            }
+            setErrors(mapped);
+          } else {
+            setServerError(data?.message || "Gagal mereset password");
+          }
+        },
       }
-    } finally {
-      setIsLoading(false);
-    }
+    );
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -269,9 +271,9 @@ function ResetPasswordForm() {
           <Button
             type="submit"
             className="w-full h-10 bg-emerald-600 hover:bg-emerald-700 text-base shadow-sm"
-            disabled={isLoading}
+            disabled={resetPassword.isPending}
           >
-            {isLoading ? "Memproses..." : "Reset Password"}
+            {resetPassword.isPending ? "Memproses..." : "Reset Password"}
           </Button>
           <Link
             href="/login"

@@ -44,6 +44,23 @@ export function useLogout() {
     });
 }
 
+export function useForgotPassword() {
+    return useMutation({
+        mutationFn: (email: string) => authService.forgotPassword(email),
+    });
+}
+
+export function useResetPassword() {
+    return useMutation({
+        mutationFn: (data: {
+            email: string;
+            token: string;
+            password: string;
+            password_confirmation: string;
+        }) => authService.resetPassword(data),
+    });
+}
+
 export function useProfile() {
     const token = useAuthStore((state) => state.token);
 
