@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { authService, LoginRequest, RegisterRequest } from '@/services/auth.service';
 import { useAuthStore } from '@/stores/auth.store';
 import { useRouter } from 'next/navigation';
+import type { User } from '@/types';
 
 export function useLogin() {
     const setAuth = useAuthStore((state) => state.setAuth);
@@ -71,5 +72,33 @@ export function useProfile() {
             return response.data.data!;
         },
         enabled: !!token,
+    });
+}
+
+export function useUpdateProfile() {
+    const setUser = useAuthStore((state) => state.setUser);
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (data: Partial<User>) => authService.updateProfile(data),
+        onSuccess: (response) => {
+            const user = response.data.data!;
+            setUser(user);
+            queryClient.invalidateQueries({ queryKey: ['profile'] });
+        },
+    });
+}
+
+export function useUploadProfilePhoto() {
+    const setUser = useAuthStore((state) => state.setUser);
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (formData: FormData) => authService.uploadPhoto(formData),
+        onSuccess: (response) => {
+            const user = response.data.data!;
+            setUser(user);
+            queryClient.invalidateQueries({ queryKey: ['profile'] });
+        },
     });
 }

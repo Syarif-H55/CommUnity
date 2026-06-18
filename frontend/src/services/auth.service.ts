@@ -42,7 +42,7 @@ export const authService = {
         api.patch<ApiResponse<User>>('/profile', data),
 
     uploadPhoto: (formData: FormData) =>
-        api.post<ApiResponse<{ profile_photo_url: string }>>('/profile/photo', formData, {
+        api.post<ApiResponse<User>>('/profile/photo', formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
         }),
 };

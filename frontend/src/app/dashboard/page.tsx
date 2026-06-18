@@ -6,7 +6,8 @@ import { useAuthStore } from "@/stores/auth.store";
 import { useLogout } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Handshake, User, Mail, Shield, LogOut, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { Handshake, User, Mail, Shield, LogOut, Settings, Loader2 } from "lucide-react";
 
 function DashboardContent() {
   const router = useRouter();
@@ -31,19 +32,29 @@ function DashboardContent() {
           <span className="text-lg font-semibold tracking-tight">CommUnity</span>
         </div>
 
-        <Button
-          variant="outline"
-          onClick={handleLogout}
-          disabled={logout.isPending}
-          className="gap-2"
-        >
-          {logout.isPending ? (
-            <Loader2 className="size-4 animate-spin" />
-          ) : (
-            <LogOut className="size-4" />
-          )}
-          {logout.isPending ? "Keluar..." : "Keluar"}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/profile"
+            className="inline-flex shrink-0 items-center justify-center rounded-lg border border-border bg-background px-2.5 h-8 gap-1.5 text-sm font-medium whitespace-nowrap text-foreground hover:bg-muted hover:text-foreground transition-all"
+          >
+            <Settings className="size-4" />
+            <span className="hidden sm:inline">Profil</span>
+          </Link>
+
+          <Button
+            variant="outline"
+            onClick={handleLogout}
+            disabled={logout.isPending}
+            className="gap-2"
+          >
+            {logout.isPending ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <LogOut className="size-4" />
+            )}
+            {logout.isPending ? "Keluar..." : "Keluar"}
+          </Button>
+        </div>
       </header>
 
       <main className="flex flex-1 items-center justify-center p-6">
