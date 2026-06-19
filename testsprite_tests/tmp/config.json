@@ -1,0 +1,19 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000/login",
+  "loginUser": "testuser",
+  "loginPassword": "password",
+  "executionArgs": {
+    "projectName": "CommUnity",
+    "projectPath": "c:\\Users\\LENOVO\\Documents\\MyProject\\CommUnity",
+    "testIds": [],
+    "additionalInstruction": "Test Sprint 01 authentication and profile workflows only. App is CommUnity - Indonesian UI labels. Login uses username field (not email). Registration fields: full_name, username, email, password, password_confirmation. Protected routes: /dashboard, /profile. Auth pages: /login, /register, /forgot-password, /reset-password. Backend API at http://localhost:8000/api/v1. Test credentials: username=testuser password=password if needed - register new users if login fails.",
+    "serverMode": "development",
+    "envs": {
+      "API_KEY": "sk-user-nobBpclbNLCQP7HjjJ7O5Dtik2TJvGTONHETSl__IQSB6PN7DvntJcXY3IB_FiuUFwogDBwUxPa-fh0Xd-f9hogV2tAJ2TafaE4FfOCo1YqthbRloNqEZxcesPbh5gTnURs"
+    }
+  },
+  "serverPort": 50472
+}

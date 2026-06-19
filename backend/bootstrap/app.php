@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -29,5 +30,18 @@ return Application::configure(basePath: dirname(__DIR__))
                 'message' => $e->getMessage(),
                 'errors' => $e->errors(),
             ], $e->status);
+        });
+
+        $exceptions->render(function (AuthenticationException $e) {
+            $message = $e->getMessage();
+
+            if (request()->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthenticated. Token tidak valid atau tidak disertakan.',
+                ], 401);
+            }
+
+            return redirect()->guest(route('login'));
         });
     })->create();
