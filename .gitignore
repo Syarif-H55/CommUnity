@@ -22,4 +22,4 @@ frontend/out/
 .DS_Store
 Thumbs.db
 
-testsprite_tests\tmp\config.json
+testsprite_tests/
