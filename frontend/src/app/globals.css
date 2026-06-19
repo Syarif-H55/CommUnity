@@ -128,3 +128,123 @@
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  .animate-fade-slide-up {
+    animation: fade-slide-up 0.6s ease-out both;
+  }
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out both;
+  }
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-float-delayed {
+    animation: float 6s ease-in-out 2s infinite;
+  }
+  .animate-float-slow {
+    animation: float 8s ease-in-out infinite;
+  }
+  .animate-pulse-soft {
+    animation: pulse-soft 3s ease-in-out infinite;
+  }
+  .animate-shimmer {
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+  .animate-draw-check {
+    stroke-dasharray: 50;
+    stroke-dashoffset: 50;
+    animation: draw-check 0.6s ease-out 0.3s forwards;
+  }
+  .animate-spin-slow {
+    animation: spin 1.5s linear infinite;
+  }
+  .animate-scale-in {
+    animation: scale-in 0.4s ease-out both;
+  }
+  .animate-slide-up-sm {
+    animation: slide-up-sm 0.5s ease-out both;
+  }
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+  .animation-delay-700 {
+    animation-delay: 700ms;
+  }
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes draw-check {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-up-sm {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

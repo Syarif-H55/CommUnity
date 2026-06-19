@@ -22,6 +22,8 @@ import {
   AlertCircle,
   CheckCircle2,
   KeyRound,
+  Loader2,
+  ExternalLink,
 } from "lucide-react";
 import type { ApiResponse } from "@/types";
 
@@ -67,47 +69,51 @@ export default function ForgotPasswordPage() {
 
   if (isSuccess) {
     return (
-      <Card className="w-full border-emerald-100 shadow-lg shadow-emerald-900/5 dark:border-emerald-900/20">
+      <Card className="animate-scale-in w-full border-emerald-100/80 bg-white/80 shadow-xl shadow-emerald-900/5 backdrop-blur-xl dark:border-emerald-900/20 dark:bg-card/80">
         <CardHeader className="pb-6 text-center">
-          <div className="mx-auto mb-3 flex size-14 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30">
-            <CheckCircle2 className="size-7 text-emerald-600 dark:text-emerald-400" />
+          <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-100 to-emerald-200 shadow-sm ring-1 ring-emerald-200/50 dark:from-emerald-900/40 dark:to-emerald-800/40 dark:ring-emerald-700/30">
+            <CheckCircle2 className="size-8 text-emerald-600 dark:text-emerald-400" />
           </div>
-          <CardTitle className="text-xl">Cek Email Anda</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-2xl font-bold tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
+            Cek Email Anda
+          </CardTitle>
+          <CardDescription className="mt-1.5 text-sm">
             Jika email terdaftar, kami telah mengirimkan token reset password.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/30 dark:bg-emerald-950/30 dark:text-emerald-400">
-            <p className="flex items-start gap-2">
-              <KeyRound className="mt-0.5 size-4 shrink-0" />
-              <span>
+          <div className="animate-slide-up-sm animation-delay-200 rounded-xl border border-emerald-200/80 bg-gradient-to-r from-emerald-50 to-emerald-50/50 px-5 py-4 text-sm text-emerald-700 shadow-sm dark:border-emerald-900/30 dark:from-emerald-950/30 dark:to-emerald-950/10 dark:text-emerald-400">
+            <p className="flex items-start gap-3">
+              <KeyRound className="mt-0.5 size-5 shrink-0" />
+              <span className="leading-relaxed">
                 Gunakan token yang diterima untuk mereset password Anda melalui
                 halaman reset password.
               </span>
             </p>
           </div>
-          <div className="flex items-center justify-center gap-2 rounded-lg border border-dashed border-muted-foreground/25 px-4 py-3">
-            <Link
-              href={`/reset-password${email ? `?email=${encodeURIComponent(email)}` : ""}`}
-              className="text-sm font-medium text-emerald-600 hover:text-emerald-700 hover:underline dark:text-emerald-400"
-            >
-              Buka halaman reset password
-            </Link>
-            <ArrowLeft className="size-3 rotate-180 text-muted-foreground" />
-          </div>
+          <Link
+            href={`/reset-password${email ? `?email=${encodeURIComponent(email)}` : ""}`}
+            className="animate-slide-up-sm animation-delay-300 group flex items-center justify-center gap-2.5 rounded-xl border border-dashed border-muted-foreground/25 px-5 py-4 text-sm font-medium text-emerald-600 transition-all duration-200 hover:border-emerald-300 hover:bg-emerald-50/50 hover:text-emerald-700 dark:text-emerald-400 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/20 dark:hover:text-emerald-300"
+          >
+            <ExternalLink className="size-4" />
+            Buka halaman reset password
+            <ArrowLeft className="size-3 rotate-180 text-muted-foreground transition-transform duration-200 group-hover:translate-x-0.5" />
+          </Link>
         </CardContent>
         <CardFooter className="flex-col gap-3">
           <Button
             variant="outline"
-            className="w-full"
+            className="h-11 w-full rounded-xl border-muted-foreground/20 text-sm font-medium transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-700 hover:shadow-sm dark:hover:bg-emerald-950/20 dark:hover:text-emerald-400"
             onClick={() => setIsSuccess(false)}
           >
-            Kirim ulang
+            <span className="flex items-center gap-2">
+              <Send className="size-4" />
+              Kirim ulang
+            </span>
           </Button>
           <Link
             href="/login"
-            className="flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-emerald-600 hover:underline"
+            className="flex items-center justify-center gap-2 text-sm text-muted-foreground transition-colors duration-200 hover:text-emerald-600 hover:underline"
           >
             <ArrowLeft className="size-3" />
             Kembali ke Login
@@ -118,32 +124,40 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <Card className="w-full border-emerald-100 shadow-lg shadow-emerald-900/5 dark:border-emerald-900/20">
+    <Card className="animate-scale-in w-full border-emerald-100/80 bg-white/80 shadow-xl shadow-emerald-900/5 backdrop-blur-xl dark:border-emerald-900/20 dark:bg-card/80">
       <CardHeader className="pb-6 text-center">
-        <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-emerald-100 dark:bg-emerald-900/30">
-          <KeyRound className="size-6 text-emerald-600 dark:text-emerald-400" />
+        <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-200 shadow-sm ring-1 ring-emerald-200/50 dark:from-emerald-900/40 dark:to-emerald-800/40 dark:ring-emerald-700/30">
+          <KeyRound className="size-7 text-emerald-600 dark:text-emerald-400" />
         </div>
-        <CardTitle className="text-xl">Lupa Password</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-2xl font-bold tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
+          Lupa Password
+        </CardTitle>
+        <CardDescription className="mt-1.5 text-sm">
           Masukkan email terdaftar dan kami akan mengirimkan token reset
         </CardDescription>
       </CardHeader>
 
       <form onSubmit={handleSubmit} noValidate>
         <CardContent className="space-y-4">
-          {error && (
-            <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/30 dark:bg-red-950/30 dark:text-red-400">
-              <AlertCircle className="mt-0.5 size-4 shrink-0" />
-              <span>{error}</span>
-            </div>
-          )}
+          {/* Error */}
+          <div className="animate-slide-up-sm">
+            {error && (
+              <div className="flex items-start gap-3 rounded-xl border border-red-200/80 bg-gradient-to-r from-red-50 to-red-50/50 px-4 py-3.5 text-sm text-red-700 shadow-sm dark:border-red-900/30 dark:from-red-950/30 dark:to-red-950/10 dark:text-red-400">
+                <AlertCircle className="mt-0.5 size-4 shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
+          </div>
 
-          <div className="space-y-2">
+          {/* Email Field */}
+          <div className="animate-slide-up-sm animation-delay-100 space-y-2">
             <Label htmlFor="email" className="text-sm font-medium">
               Email
             </Label>
-            <div className="relative">
-              <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <div className="group relative">
+              <span className="pointer-events-none absolute left-3.5 top-1/2 z-10 -translate-y-1/2 text-muted-foreground transition-colors duration-200 group-focus-within:text-emerald-600 dark:group-focus-within:text-emerald-400">
+                <Mail className="size-[18px]" />
+              </span>
               <Input
                 id="email"
                 name="email"
@@ -155,7 +169,7 @@ export default function ForgotPasswordPage() {
                   setError("");
                 }}
                 aria-invalid={!!error}
-                className="h-10 pl-10"
+                className="h-11 rounded-xl border-muted-foreground/20 pl-11 text-sm transition-all duration-200 placeholder:text-muted-foreground/50 focus-visible:border-emerald-400 focus-visible:ring-4 focus-visible:ring-emerald-100 dark:focus-visible:ring-emerald-900/30"
               />
             </div>
           </div>
@@ -164,11 +178,14 @@ export default function ForgotPasswordPage() {
         <CardFooter className="flex-col gap-4 pt-2">
           <Button
             type="submit"
-            className="w-full h-10 bg-emerald-600 hover:bg-emerald-700 text-base shadow-sm"
+            className="h-11 w-full rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 text-base font-semibold shadow-lg shadow-emerald-200/50 transition-all duration-300 hover:from-emerald-700 hover:to-emerald-600 hover:shadow-emerald-300/50 hover:shadow-xl active:scale-[0.98] disabled:from-emerald-400 disabled:to-emerald-400 dark:shadow-emerald-900/30 dark:hover:shadow-emerald-800/30"
             disabled={forgotPassword.isPending}
           >
             {forgotPassword.isPending ? (
-              "Mengirim..."
+              <span className="flex items-center gap-2">
+                <Loader2 className="size-4 animate-spin" />
+                Mengirim...
+              </span>
             ) : (
               <span className="flex items-center gap-2">
                 <Send className="size-4" />
@@ -178,7 +195,7 @@ export default function ForgotPasswordPage() {
           </Button>
           <Link
             href="/login"
-            className="flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-emerald-600 hover:underline"
+            className="flex items-center justify-center gap-2 text-sm text-muted-foreground transition-colors duration-200 hover:text-emerald-600 hover:underline"
           >
             <ArrowLeft className="size-3" />
             Kembali ke Login
