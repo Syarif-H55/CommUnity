@@ -16,10 +16,12 @@ frontend/out/
 # IDE
 .idea/
 .vscode/
+.cursor/
 *.swp
 *.swo
 *~
 .DS_Store
 Thumbs.db
 
+# TestSprite
 testsprite_tests/
