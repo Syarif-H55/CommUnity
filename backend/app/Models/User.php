@@ -21,6 +21,7 @@ class User extends Authenticatable
         'email',
         'password',
         'profile_photo_path',
+        'is_admin',
     ];
 
     protected $hidden = [
@@ -33,6 +34,14 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
+    }
+
+    public function organizations()
+    {
+        return $this->belongsToMany(Organization::class, 'organization_memberships')
+            ->withPivot('role', 'joined_at')
+            ->withTimestamps();
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\Admin\OrganizationVerificationController;
+use App\Http\Controllers\Api\V1\OrganizationController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,5 +30,14 @@ Route::prefix('v1')->group(function () {
         Route::get('/profile', [ProfileController::class, 'show']);
         Route::patch('/profile', [ProfileController::class, 'update']);
         Route::post('/profile/photo', [ProfileController::class, 'uploadPhoto']);
+
+        // Organization endpoints
+        Route::apiResource('organizations', OrganizationController::class);
+        Route::post('/organizations/{organization}/upload-document', [OrganizationController::class, 'uploadDocument']);
+
+        // Admin endpoints
+        Route::prefix('admin')->group(function () {
+            Route::patch('/organizations/{organization}/verify', [OrganizationVerificationController::class, 'verify']);
+        });
     });
 });

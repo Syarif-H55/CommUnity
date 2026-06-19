@@ -49,7 +49,7 @@ Organisasi kampus dan komunitas sosial yang menyelenggarakan kegiatan sosial.
 
 ### Volunteers
 
-Masyarakat yang ingin menemukan dan mengikuti kegiatan sosial.
+Masyarakat atau Mahasiswa yang ingin menemukan dan mengikuti kegiatan sosial.
 
 ---
 
