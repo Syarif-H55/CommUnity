@@ -6,6 +6,7 @@ use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class OrganizationService
 {
@@ -22,6 +23,7 @@ class OrganizationService
         ]);
 
         $organization->members()->attach($user->id, [
+            'id' => (string) Str::uuid(),
             'role' => 'Penyelenggara',
             'joined_at' => now(),
         ]);

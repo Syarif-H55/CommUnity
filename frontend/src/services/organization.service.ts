@@ -1,5 +1,5 @@
 import api from './api';
-import { ApiResponse, Organization, OrganizationMember, OrganizationRegistrationRequest, DashboardStats } from '@/types';
+import { ApiResponse, Organization, OrganizationMember, OrganizationRegistrationRequest, OrganizationRole, DashboardStats } from '@/types';
 
 export const organizationService = {
     list: () =>
@@ -41,6 +41,15 @@ export const organizationService = {
 
     getMembers: (id: string) =>
         api.get<ApiResponse<OrganizationMember[]>>(`/organizations/${id}/members`),
+
+    addMember: (id: string, data: { user_id: string; role: OrganizationRole }) =>
+        api.post<ApiResponse<OrganizationMember>>(`/organizations/${id}/members`, data),
+
+    updateMemberRole: (orgId: string, userId: string, role: OrganizationRole) =>
+        api.patch<ApiResponse<OrganizationMember>>(`/organizations/${orgId}/members/${userId}`, { role }),
+
+    removeMember: (orgId: string, userId: string) =>
+        api.delete<ApiResponse<null>>(`/organizations/${orgId}/members/${userId}`),
 
     getDashboardStats: () =>
         api.get<ApiResponse<DashboardStats>>('/organizations/stats'),

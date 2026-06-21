@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { organizationService } from '@/services/organization.service';
-import { OrganizationRegistrationRequest } from '@/types';
+import { OrganizationRegistrationRequest, OrganizationRole } from '@/types';
 
 export function useOrganizations() {
     return useQuery({
@@ -70,6 +70,44 @@ export function useOrganizationMembers(id: string) {
             return response.data.data ?? [];
         },
         enabled: !!id,
+    });
+}
+
+export function useAddMember(orgId: string) {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (data: { user_id: string; role: OrganizationRole }) =>
+            organizationService.addMember(orgId, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['organizations', orgId, 'members'] });
+            queryClient.invalidateQueries({ queryKey: ['organizations', orgId] });
+        },
+    });
+}
+
+export function useUpdateMemberRole(orgId: string) {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ userId, role }: { userId: string; role: OrganizationRole }) =>
+            organizationService.updateMemberRole(orgId, userId, role),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['organizations', orgId, 'members'] });
+        },
+    });
+}
+
+export function useRemoveMember(orgId: string) {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (userId: string) =>
+            organizationService.removeMember(orgId, userId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['organizations', orgId, 'members'] });
+            queryClient.invalidateQueries({ queryKey: ['organizations', orgId] });
+        },
     });
 }
 

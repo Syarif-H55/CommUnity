@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationVerificationController;
 use App\Http\Controllers\Api\V1\OrganizationController;
+use App\Http\Controllers\Api\V1\OrganizationMemberController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,12 @@ Route::prefix('v1')->group(function () {
         // Organization endpoints
         Route::apiResource('organizations', OrganizationController::class);
         Route::post('/organizations/{organization}/upload-document', [OrganizationController::class, 'uploadDocument']);
+
+        // Organization member endpoints
+        Route::get('/organizations/{organization}/members', [OrganizationMemberController::class, 'index']);
+        Route::post('/organizations/{organization}/members', [OrganizationMemberController::class, 'store']);
+        Route::patch('/organizations/{organization}/members/{member}', [OrganizationMemberController::class, 'update']);
+        Route::delete('/organizations/{organization}/members/{member}', [OrganizationMemberController::class, 'destroy']);
 
         // Admin endpoints
         Route::prefix('admin')->group(function () {

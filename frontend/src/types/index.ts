@@ -25,7 +25,7 @@ export interface User {
 
 export type VerificationStatus = 'pending' | 'approved' | 'rejected';
 
-export type OrganizationRole = 'penyelenggara' | 'koordinator_event';
+export type OrganizationRole = 'Penyelenggara' | 'Koordinator Event';
 
 export interface Organization {
     id: string;

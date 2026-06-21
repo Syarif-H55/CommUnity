@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import AuthGuard from "@/components/auth/AuthGuard"
-import { useOrganization, useUploadDocument } from "@/hooks/useOrganization"
+import { useOrganization, useUploadDocument, useOrganizationMembers, useAddMember, useUpdateMemberRole, useRemoveMember } from "@/hooks/useOrganization"
 import { useAuthStore } from "@/stores/auth.store"
 import { useLogout } from "@/hooks/useAuth"
 import { Button } from "@/components/ui/button"
@@ -15,7 +15,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { DocumentUpload, VerificationTimeline } from "@/components/organization"
 import {
     Handshake, ArrowLeft, Building2, LogOut, Loader2, Calendar,
-    Users, Shield, Clock, CheckCircle, XCircle, Mail, MapPin, FileText
+    Users, Shield, Clock, CheckCircle, XCircle, Mail, MapPin, FileText,
+    UserPlus, UserMinus, ChevronDown
 } from "lucide-react"
 
 function OrganizationDetailContent() {
@@ -25,6 +26,10 @@ function OrganizationDetailContent() {
     const logout = useLogout()
     const { data: organization, isLoading, error } = useOrganization(id)
     const uploadDoc = useUploadDocument(id)
+    const { data: members, isLoading: membersLoading } = useOrganizationMembers(id)
+    const addMember = useAddMember(id)
+    const updateRole = useUpdateMemberRole(id)
+    const removeMember = useRemoveMember(id)
 
     if (isLoading) {
         return (
@@ -57,6 +62,35 @@ function OrganizationDetailContent() {
                 </Card>
             </div>
         )
+    }
+
+    const [showAddMember, setShowAddMember] = useState(false)
+    const [newUserId, setNewUserId] = useState("")
+    const [newUserRole, setNewUserRole] = useState<"Penyelenggara" | "Koordinator Event">("Koordinator Event")
+    const [searchUser, setSearchUser] = useState("")
+    const [editingRole, setEditingRole] = useState<string | null>(null)
+    const [editRoleValue, setEditRoleValue] = useState<"Penyelenggara" | "Koordinator Event">("Koordinator Event")
+
+    const handleAddMember = () => {
+        addMember.mutate({ user_id: newUserId, role: newUserRole }, {
+            onSuccess: () => {
+                setShowAddMember(false)
+                setNewUserId("")
+                setNewUserRole("Koordinator Event")
+                setSearchUser("")
+            },
+        })
+    }
+
+    const handleRemoveMember = (userId: string, name: string) => {
+        if (window.confirm(`Hapus ${name} dari organisasi ini?`)) {
+            removeMember.mutate(userId)
+        }
+    }
+
+    const handleUpdateRole = (userId: string, role: "Penyelenggara" | "Koordinator Event") => {
+        updateRole.mutate({ userId, role })
+        setEditingRole(null)
     }
 
     const statusColors: Record<string, "warning" | "success" | "destructive"> = {
@@ -162,6 +196,7 @@ function OrganizationDetailContent() {
                         <TabsTrigger value="overview">Ringkasan</TabsTrigger>
                         <TabsTrigger value="verification">Verifikasi</TabsTrigger>
                         <TabsTrigger value="documents">Dokumen</TabsTrigger>
+                        <TabsTrigger value="members">Anggota</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="overview">
@@ -356,6 +391,176 @@ function OrganizationDetailContent() {
                                 )}
                             </CardContent>
                         </Card>
+                    </TabsContent>
+
+                    <TabsContent value="members">
+                        <div className="space-y-6">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h3 className="text-lg font-semibold">Anggota Organisasi</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        {members?.length ?? 0} anggota terdaftar
+                                    </p>
+                                </div>
+                                <Button
+                                    variant="default"
+                                    onClick={() => setShowAddMember(true)}
+                                    className="gap-2"
+                                >
+                                    <UserPlus className="size-4" />
+                                    Tambah Anggota
+                                </Button>
+                            </div>
+
+                            {showAddMember && (
+                                <Card className="border-emerald-100/50 shadow-sm">
+                                    <CardContent className="pt-6">
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className="text-sm font-medium mb-1.5 block">ID Pengguna</label>
+                                                <input
+                                                    type="text"
+                                                    value={newUserId}
+                                                    onChange={(e) => setNewUserId(e.target.value)}
+                                                    placeholder="Masukkan UUID pengguna"
+                                                    className="flex h-10 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="text-sm font-medium mb-1.5 block">Role</label>
+                                                <select
+                                                    value={newUserRole}
+                                                    onChange={(e) => setNewUserRole(e.target.value as "Penyelenggara" | "Koordinator Event")}
+                                                    className="flex h-10 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                                                >
+                                                    <option value="Koordinator Event">Koordinator Event</option>
+                                                    <option value="Penyelenggara">Penyelenggara</option>
+                                                </select>
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <Button
+                                                    onClick={handleAddMember}
+                                                    disabled={!newUserId || addMember.isPending}
+                                                    className="gap-2"
+                                                >
+                                                    {addMember.isPending ? <Loader2 className="size-4 animate-spin" /> : <UserPlus className="size-4" />}
+                                                    {addMember.isPending ? "Menambahkan..." : "Tambah"}
+                                                </Button>
+                                                <Button
+                                                    variant="outline"
+                                                    onClick={() => {
+                                                        setShowAddMember(false)
+                                                        setNewUserId("")
+                                                        setNewUserRole("Koordinator Event")
+                                                    }}
+                                                >
+                                                    Batal
+                                                </Button>
+                                            </div>
+                                            {addMember.isError && (
+                                                <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/30 dark:bg-red-950/30 dark:text-red-400">
+                                                    {(addMember.error as any)?.response?.data?.message || "Gagal menambahkan anggota"}
+                                                </div>
+                                            )}
+                                            {addMember.isSuccess && (
+                                                <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/30 dark:bg-emerald-950/30 dark:text-emerald-400">
+                                                    Anggota berhasil ditambahkan
+                                                </div>
+                                            )}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            )}
+
+                            {membersLoading ? (
+                                <div className="flex items-center justify-center py-12">
+                                    <Loader2 className="size-6 animate-spin text-emerald-600" />
+                                </div>
+                            ) : members && members.length > 0 ? (
+                                <div className="space-y-3">
+                                    {members.map((member) => (
+                                        <Card key={member.id} className="border-emerald-100/50 shadow-sm">
+                                            <CardContent className="flex items-center justify-between py-4">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="flex size-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                                        {member.user.profile_photo_url ? (
+                                                            <img
+                                                                src={member.user.profile_photo_url}
+                                                                alt={member.user.full_name}
+                                                                className="size-full rounded-full object-cover"
+                                                            />
+                                                        ) : (
+                                                            <Users className="size-5" />
+                                                        )}
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm font-medium">{member.user.full_name}</p>
+                                                        <p className="text-xs text-muted-foreground">@{member.user.username}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-3">
+                                                    {editingRole === member.user_id ? (
+                                                        <div className="flex items-center gap-2">
+                                                            <select
+                                                                value={editRoleValue}
+                                                                onChange={(e) => setEditRoleValue(e.target.value as "Penyelenggara" | "Koordinator Event")}
+                                                                className="flex h-9 rounded-lg border border-border bg-background px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                                                            >
+                                                                <option value="Koordinator Event">Koordinator Event</option>
+                                                                <option value="Penyelenggara">Penyelenggara</option>
+                                                            </select>
+                                                            <Button size="sm" onClick={() => handleUpdateRole(member.user_id, editRoleValue)}>
+                                                                Simpan
+                                                            </Button>
+                                                            <Button size="sm" variant="outline" onClick={() => setEditingRole(null)}>
+                                                                Batal
+                                                            </Button>
+                                                        </div>
+                                                    ) : (
+                                                        <>
+                                                            <Badge variant={member.role === "Penyelenggara" ? "success" : "warning"}>
+                                                                {member.role}
+                                                            </Badge>
+                                                            <Button
+                                                                size="icon-xs"
+                                                                variant="ghost"
+                                                                onClick={() => {
+                                                                    setEditingRole(member.user_id)
+                                                                    setEditRoleValue(member.role as "Penyelenggara" | "Koordinator Event")
+                                                                }}
+                                                            >
+                                                                <ChevronDown className="size-4" />
+                                                            </Button>
+                                                        </>
+                                                    )}
+                                                    <Button
+                                                        size="icon-xs"
+                                                        variant="ghost"
+                                                        className="text-destructive hover:text-destructive"
+                                                        onClick={() => handleRemoveMember(member.user_id, member.user.full_name)}
+                                                        disabled={removeMember.isPending}
+                                                    >
+                                                        <UserMinus className="size-4" />
+                                                    </Button>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center gap-3 py-12 text-center">
+                                    <div className="flex size-14 items-center justify-center rounded-full bg-muted">
+                                        <Users className="size-6 text-muted-foreground" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-medium">Belum Ada Anggota</p>
+                                        <p className="text-xs text-muted-foreground mt-1">
+                                            Tambahkan anggota untuk mulai berkolaborasi
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </TabsContent>
                 </Tabs>
             </main>
