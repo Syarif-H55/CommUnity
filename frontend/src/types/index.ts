@@ -74,3 +74,46 @@ export interface DashboardStats {
     total_members: number;
     pending_verification: number;
 }
+
+export type EventStatus = 'draft' | 'published' | 'cancelled' | 'completed';
+
+export interface Event {
+    id: string;
+    organization_id: string;
+    organization_name?: string;
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    location: string;
+    category: string;
+    banner_url: string | null;
+    max_participants: number;
+    current_participants: number;
+    status: EventStatus;
+    published_at: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface CreateEventRequest {
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    location: string;
+    category: string;
+    banner?: File;
+    max_participants: number;
+}
+
+export interface UpdateEventRequest {
+    title?: string;
+    description?: string;
+    date?: string;
+    time?: string;
+    location?: string;
+    category?: string;
+    banner?: File;
+    max_participants?: number;
+}
