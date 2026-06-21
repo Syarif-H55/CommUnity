@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationVerificationController;
+use App\Http\Controllers\Api\V1\EventCategoryController;
+use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\OrganizationController;
 use App\Http\Controllers\Api\V1\OrganizationMemberController;
 use App\Http\Controllers\Api\V1\ProfileController;
@@ -41,6 +43,14 @@ Route::prefix('v1')->group(function () {
         Route::post('/organizations/{organization}/members', [OrganizationMemberController::class, 'store']);
         Route::patch('/organizations/{organization}/members/{member}', [OrganizationMemberController::class, 'update']);
         Route::delete('/organizations/{organization}/members/{member}', [OrganizationMemberController::class, 'destroy']);
+
+        // Event category endpoints
+        Route::get('/event-categories', [EventCategoryController::class, 'index']);
+
+        // Event endpoints
+        Route::get('/my-events', [EventController::class, 'myEvents']);
+        Route::patch('/events/{event}/publish', [EventController::class, 'publish']);
+        Route::apiResource('events', EventController::class);
 
         // Admin endpoints
         Route::prefix('admin')->group(function () {
