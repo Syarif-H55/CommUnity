@@ -122,12 +122,13 @@ function EditEventContent() {
                     mode="edit"
                     initialData={{
                         title: event.title,
-                        description: event.description,
-                        date: event.date,
-                        time: event.time,
-                        location: event.location,
-                        category: event.category,
-                        max_participants: event.max_participants,
+                        description: event.description ?? undefined,
+                        event_date: event.event_date,
+                        start_time: event.start_time,
+                        end_time: event.end_time,
+                        location_name: event.location_name ?? undefined,
+                        category_id: event.category_id,
+                        quota: event.quota,
                     }}
                     onSubmit={handleSubmit}
                     isSubmitting={updateEvent.isPending}

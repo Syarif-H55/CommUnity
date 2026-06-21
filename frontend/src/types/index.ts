@@ -81,39 +81,50 @@ export interface Event {
     id: string;
     organization_id: string;
     organization_name?: string;
+    coordinator_id: string;
+    coordinator_name?: string;
+    category_id: number;
+    category_name?: string;
     title: string;
     description: string;
-    date: string;
-    time: string;
-    location: string;
-    category: string;
+    province: string | null;
+    city: string | null;
+    location_name: string | null;
+    quota: number;
+    event_date: string;
+    start_time: string;
+    end_time: string;
     banner_url: string | null;
-    max_participants: number;
-    current_participants: number;
     status: EventStatus;
-    published_at: string | null;
+    current_participants: number;
     created_at: string;
     updated_at: string;
 }
 
 export interface CreateEventRequest {
+    category_id: number;
     title: string;
-    description: string;
-    date: string;
-    time: string;
-    location: string;
-    category: string;
+    description?: string;
+    province?: string;
+    city?: string;
+    location_name?: string;
+    quota: number;
+    event_date: string;
+    start_time: string;
+    end_time: string;
     banner?: File;
-    max_participants: number;
 }
 
 export interface UpdateEventRequest {
+    category_id?: number;
     title?: string;
     description?: string;
-    date?: string;
-    time?: string;
-    location?: string;
-    category?: string;
+    province?: string;
+    city?: string;
+    location_name?: string;
+    quota?: number;
+    event_date?: string;
+    start_time?: string;
+    end_time?: string;
     banner?: File;
-    max_participants?: number;
 }

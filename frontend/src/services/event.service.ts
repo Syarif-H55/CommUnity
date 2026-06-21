@@ -10,13 +10,16 @@ export const eventService = {
 
     create: (data: CreateEventRequest) => {
         const formData = new FormData();
+        formData.append('category_id', String(data.category_id));
         formData.append('title', data.title);
-        formData.append('description', data.description);
-        formData.append('date', data.date);
-        formData.append('time', data.time);
-        formData.append('location', data.location);
-        formData.append('category', data.category);
-        formData.append('max_participants', String(data.max_participants));
+        if (data.description) formData.append('description', data.description);
+        if (data.province) formData.append('province', data.province);
+        if (data.city) formData.append('city', data.city);
+        if (data.location_name) formData.append('location_name', data.location_name);
+        formData.append('quota', String(data.quota));
+        formData.append('event_date', data.event_date);
+        formData.append('start_time', data.start_time);
+        formData.append('end_time', data.end_time);
         if (data.banner) {
             formData.append('banner', data.banner);
         }
@@ -27,13 +30,16 @@ export const eventService = {
 
     update: (id: string, data: UpdateEventRequest) => {
         const formData = new FormData();
+        if (data.category_id !== undefined) formData.append('category_id', String(data.category_id));
         if (data.title) formData.append('title', data.title);
-        if (data.description) formData.append('description', data.description);
-        if (data.date) formData.append('date', data.date);
-        if (data.time) formData.append('time', data.time);
-        if (data.location) formData.append('location', data.location);
-        if (data.category) formData.append('category', data.category);
-        if (data.max_participants !== undefined) formData.append('max_participants', String(data.max_participants));
+        if (data.description !== undefined) formData.append('description', data.description);
+        if (data.province !== undefined) formData.append('province', data.province);
+        if (data.city !== undefined) formData.append('city', data.city);
+        if (data.location_name !== undefined) formData.append('location_name', data.location_name);
+        if (data.quota !== undefined) formData.append('quota', String(data.quota));
+        if (data.event_date) formData.append('event_date', data.event_date);
+        if (data.start_time) formData.append('start_time', data.start_time);
+        if (data.end_time) formData.append('end_time', data.end_time);
         if (data.banner) formData.append('banner', data.banner);
         formData.append('_method', 'PATCH');
         return api.post<ApiResponse<Event>>(`/events/${id}`, formData, {

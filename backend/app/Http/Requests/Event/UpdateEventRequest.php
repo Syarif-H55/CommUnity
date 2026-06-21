@@ -24,6 +24,7 @@ class UpdateEventRequest extends FormRequest
             'event_date' => ['sometimes', 'date', 'after_or_equal:today'],
             'start_time' => ['sometimes', 'date_format:H:i'],
             'end_time' => ['sometimes', 'date_format:H:i', 'after:start_time'],
+            'banner' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
         ];
     }
 

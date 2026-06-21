@@ -27,19 +27,17 @@ const statusLabels: Record<string, string> = {
 }
 
 const categoryIcons: Record<string, string> = {
-    sosial: "🤝",
-    pendidikan: "📚",
     lingkungan: "🌿",
+    pendidikan: "📚",
     kesehatan: "💊",
-    budaya: "🎭",
-    bencana: "🆘",
-    lainnya: "📌",
+    sosial: "🤝",
+    kemanusiaan: "🆘",
 }
 
 function EventCard({ event, className }: EventCardProps) {
-    const eventDate = new Date(event.date)
+    const eventDate = new Date(event.event_date)
     const isUpcoming = eventDate > new Date()
-    const isFull = event.current_participants >= event.max_participants
+    const isFull = event.current_participants >= event.quota
 
     return (
         <TiltCard className={cn("group", className)} tiltDegree={6}>
@@ -79,8 +77,8 @@ function EventCard({ event, className }: EventCardProps) {
 
                         <div className="absolute bottom-3 left-3 z-10">
                             <span className="inline-flex items-center gap-1.5 rounded-lg bg-black/40 backdrop-blur-sm px-2.5 py-1 text-xs font-medium text-white">
-                                {categoryIcons[event.category?.toLowerCase()] || "📌"}
-                                <span>{event.category}</span>
+                                {categoryIcons[(event.category_name || '').toLowerCase()] || "📌"}
+                                <span>{event.category_name}</span>
                             </span>
                         </div>
                     </div>
@@ -116,16 +114,16 @@ function EventCard({ event, className }: EventCardProps) {
                             </div>
                             <div className="flex items-center gap-1.5">
                                 <Clock className="size-3.5 shrink-0" />
-                                <span>{event.time}</span>
+                                <span>{event.start_time}</span>
                             </div>
                             <div className="flex items-center gap-1.5">
                                 <MapPin className="size-3.5 shrink-0" />
-                                <span className="truncate">{event.location}</span>
+                                <span className="truncate">{event.location_name}</span>
                             </div>
                             <div className="flex items-center gap-1.5">
                                 <Users className="size-3.5 shrink-0" />
                                 <span>
-                                    {event.current_participants}/{event.max_participants} peserta
+                                    {event.current_participants}/{event.quota} peserta
                                 </span>
                             </div>
                         </div>

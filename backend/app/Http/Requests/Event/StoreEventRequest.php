@@ -24,6 +24,7 @@ class StoreEventRequest extends FormRequest
             'event_date' => ['required', 'date', 'after_or_equal:today'],
             'start_time' => ['required', 'date_format:H:i'],
             'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+            'banner' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
         ];
     }
 
@@ -44,6 +45,9 @@ class StoreEventRequest extends FormRequest
             'end_time.required' => 'Waktu selesai wajib diisi.',
             'end_time.date_format' => 'Format waktu selesai tidak valid (HH:MM).',
             'end_time.after' => 'Waktu selesai harus setelah waktu mulai.',
+            'banner.image' => 'Banner harus berupa gambar.',
+            'banner.mimes' => 'Format banner harus JPG, PNG, atau WebP.',
+            'banner.max' => 'Ukuran banner maksimal 5MB.',
         ];
     }
 }

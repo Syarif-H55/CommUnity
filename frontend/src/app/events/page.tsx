@@ -92,18 +92,18 @@ function EventsContent() {
                 (e) =>
                     e.title.toLowerCase().includes(query) ||
                     e.description.toLowerCase().includes(query) ||
-                    e.location.toLowerCase().includes(query)
+                    (e.location_name && e.location_name.toLowerCase().includes(query))
             )
         }
 
         if (selectedCategory) {
-            result = result.filter((e) => e.category.toLowerCase() === selectedCategory.toLowerCase())
+            result = result.filter((e) => (e.category_name || '').toLowerCase() === selectedCategory.toLowerCase())
         }
 
         result.sort((a, b) => {
             switch (sortBy) {
                 case "date":
-                    return new Date(a.date).getTime() - new Date(b.date).getTime()
+                    return new Date(a.event_date).getTime() - new Date(b.event_date).getTime()
                 case "title":
                     return a.title.localeCompare(b.title)
                 case "participants":
@@ -117,7 +117,7 @@ function EventsContent() {
     }, [events, searchQuery, selectedCategory, sortBy])
 
     const upcomingEvents = useMemo(() =>
-        filteredEvents.filter((e) => new Date(e.date) >= new Date() && e.status === "published"),
+        filteredEvents.filter((e) => new Date(e.event_date) >= new Date() && e.status === "published"),
         [filteredEvents]
     )
 
@@ -380,7 +380,7 @@ function EventListView({ events }: { events: Event[] }) {
     return (
         <div className="space-y-3">
             {events.map((event) => {
-                const eventDate = new Date(event.date)
+                const eventDate = new Date(event.event_date)
                 return (
                     <Link key={event.id} href={`/events/${event.id}`}>
                         <div className="group flex items-center gap-4 rounded-xl border bg-card p-4 transition-all hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800/30">
@@ -397,7 +397,7 @@ function EventListView({ events }: { events: Event[] }) {
                                             {event.title}
                                         </h4>
                                         <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
-                                            {event.location} · {event.time}
+                                            {event.location_name} · {event.start_time}
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-2 shrink-0">

@@ -6,7 +6,9 @@ use App\Models\Event;
 use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 
 class EventService
@@ -80,6 +82,11 @@ class EventService
             throw new RuntimeException('Organisasi belum terverifikasi.');
         }
 
+        $bannerPath = null;
+        if (isset($data['banner']) && $data['banner'] instanceof UploadedFile) {
+            $bannerPath = $data['banner']->store('events/banners', 'public');
+        }
+
         $event = Event::create([
             'organization_id' => $organization->id,
             'coordinator_id' => $coordinator->id,
@@ -93,6 +100,7 @@ class EventService
             'event_date' => $data['event_date'],
             'start_time' => $data['start_time'],
             'end_time' => $data['end_time'],
+            'banner' => $bannerPath,
             'status' => 'draft',
         ]);
 
@@ -103,6 +111,13 @@ class EventService
     {
         if ($event->status === 'completed') {
             throw new RuntimeException('Event yang sudah selesai tidak dapat diubah.');
+        }
+
+        if (isset($data['banner']) && $data['banner'] instanceof UploadedFile) {
+            if ($event->banner) {
+                Storage::disk('public')->delete($event->banner);
+            }
+            $data['banner'] = $data['banner']->store('events/banners', 'public');
         }
 
         $event->update($data);

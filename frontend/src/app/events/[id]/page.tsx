@@ -84,7 +84,7 @@ function EventDetailContent() {
         )
     }
 
-    const eventDate = new Date(event.date)
+    const eventDate = new Date(event.event_date)
     const isUpcoming = eventDate >= new Date()
     const dateStr = eventDate.toLocaleDateString("id-ID", {
         weekday: "long",
@@ -93,8 +93,8 @@ function EventDetailContent() {
         day: "numeric"
     })
 
-    const participantsPercent = Math.round((event.current_participants / event.max_participants) * 100)
-    const isFull = event.current_participants >= event.max_participants
+    const participantsPercent = Math.round((event.current_participants / event.quota) * 100)
+    const isFull = event.current_participants >= event.quota
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
@@ -146,7 +146,7 @@ function EventDetailContent() {
                     <div className="relative z-10 p-8 md:p-10">
                         <div className="flex flex-wrap items-center gap-2 mb-4">
                             <Badge className="bg-white/15 text-white border-white/20 backdrop-blur-sm text-xs px-3 py-1">
-                                {event.category}
+                                {event.category_name}
                             </Badge>
                             <EventStatusBadge status={event.status} className="backdrop-blur-sm" />
                             {event.status === "published" && isUpcoming && (
@@ -171,11 +171,11 @@ function EventDetailContent() {
                             </span>
                             <span className="flex items-center gap-1.5">
                                 <Clock className="size-4" />
-                                {event.time}
+                                {event.start_time} - {event.end_time}
                             </span>
                             <span className="flex items-center gap-1.5">
                                 <MapPin className="size-4" />
-                                {event.location}
+                                {event.location_name}
                             </span>
                             {event.organization_name && (
                                 <span className="flex items-center gap-1.5">
@@ -317,7 +317,7 @@ function EventDetailContent() {
                                         </div>
                                         <div>
                                             <p className="text-xs text-muted-foreground">Waktu</p>
-                                            <p className="text-sm font-medium">{event.time}</p>
+                                            <p className="text-sm font-medium">{event.start_time} - {event.end_time}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
@@ -326,7 +326,7 @@ function EventDetailContent() {
                                         </div>
                                         <div>
                                             <p className="text-xs text-muted-foreground">Lokasi</p>
-                                            <p className="text-sm font-medium">{event.location}</p>
+                                            <p className="text-sm font-medium">{event.location_name}</p>
                                         </div>
                                     </div>
                                 </CardContent>
@@ -347,7 +347,7 @@ function EventDetailContent() {
                                         <div className="flex-1">
                                             <p className="text-xs text-muted-foreground">Peserta</p>
                                             <p className="text-sm font-medium">
-                                                {event.current_participants} / {event.max_participants}
+                                                {event.current_participants} / {event.quota}
                                             </p>
                                             <div className="mt-2 h-2 w-full rounded-full bg-muted overflow-hidden">
                                                 <div
@@ -369,21 +369,15 @@ function EventDetailContent() {
                                             <EventStatusBadge status={event.status} className="mt-0.5" />
                                         </div>
                                     </div>
-                                    {event.published_at && (
-                                        <div className="flex items-start gap-3">
-                                            <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
-                                                <Globe className="size-4" />
-                                            </div>
-                                            <div>
-                                                <p className="text-xs text-muted-foreground">Dipublikasikan</p>
-                                                <p className="text-sm font-medium">
-                                                    {new Date(event.published_at).toLocaleDateString("id-ID", {
-                                                        year: "numeric", month: "long", day: "numeric"
-                                                    })}
-                                                </p>
-                                            </div>
+                                    <div className="flex items-start gap-3">
+                                        <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                            <Globe className="size-4" />
                                         </div>
-                                    )}
+                                        <div>
+                                            <p className="text-xs text-muted-foreground">Kategori</p>
+                                            <p className="text-sm font-medium">{event.category_name}</p>
+                                        </div>
+                                    </div>
                                 </CardContent>
                             </Card>
                         </div>
@@ -463,11 +457,11 @@ function EventDetailContent() {
                             <CardContent className="space-y-4">
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm text-muted-foreground">Kategori</span>
-                                    <Badge variant="outline">{event.category}</Badge>
+                                    <Badge variant="outline">{event.category_name}</Badge>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm text-muted-foreground">Kapasitas</span>
-                                    <span className="text-sm font-medium">{event.max_participants} orang</span>
+                                    <span className="text-sm font-medium">{event.quota} orang</span>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm text-muted-foreground">Pendaftar</span>

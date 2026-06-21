@@ -31,6 +31,13 @@ function OrganizationDetailContent() {
     const updateRole = useUpdateMemberRole(id)
     const removeMember = useRemoveMember(id)
 
+    const [showAddMember, setShowAddMember] = useState(false)
+    const [newUserId, setNewUserId] = useState("")
+    const [newUserRole, setNewUserRole] = useState<"Penyelenggara" | "Koordinator Event">("Koordinator Event")
+    const [searchUser, setSearchUser] = useState("")
+    const [editingRole, setEditingRole] = useState<string | null>(null)
+    const [editRoleValue, setEditRoleValue] = useState<"Penyelenggara" | "Koordinator Event">("Koordinator Event")
+
     if (isLoading) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-emerald-50">
@@ -63,13 +70,6 @@ function OrganizationDetailContent() {
             </div>
         )
     }
-
-    const [showAddMember, setShowAddMember] = useState(false)
-    const [newUserId, setNewUserId] = useState("")
-    const [newUserRole, setNewUserRole] = useState<"Penyelenggara" | "Koordinator Event">("Koordinator Event")
-    const [searchUser, setSearchUser] = useState("")
-    const [editingRole, setEditingRole] = useState<string | null>(null)
-    const [editRoleValue, setEditRoleValue] = useState<"Penyelenggara" | "Koordinator Event">("Koordinator Event")
 
     const handleAddMember = () => {
         addMember.mutate({ user_id: newUserId, role: newUserRole }, {

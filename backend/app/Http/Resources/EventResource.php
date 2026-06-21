@@ -26,7 +26,9 @@ class EventResource extends JsonResource
             'event_date' => $this->event_date,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
+            'banner_url' => $this->banner ? asset('storage/' . $this->banner) : null,
             'status' => $this->status,
+            'current_participants' => 0,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
