@@ -15,17 +15,21 @@
 
 ## Sprint 02
 
-### TASK-013 — Event Discovery Module
+### TASK-013 — ✅ COMPLETED
 - **Owner:** Abdillah
 - **Support Owner:** Syarif
 - **Implementation Tasks:**
-  - Event listing page
-  - Event detail page
-  - Search functionality
-  - Category filter
-  - Location filter
-  - Date filter
-  - Pagination
+  - ✅ `/discover` — Public event listing page with hero search, category chips, city filter, date filter, pagination, grid
+  - ✅ `/discover/[id]` — Public event detail page with banner, description, time/location/participation cards, sidebar info
+  - ✅ Search with debounce 400ms, integrated with `GET /api/v1/events?search=...`
+  - ✅ Category filter — 5 chip buttons (Lingkungan, Pendidikan, Kesehatan, Sosial, Kemanusiaan) + Semua
+  - ✅ Location filter — text input with clear button, sends `city` param
+  - ✅ Date filter — date input with min=today, sends `date` param
+  - ✅ Smart pagination with ellipsis, prev/next, scroll-to-top
+- **Files Created:** `src/app/discover/page.tsx`, `src/app/discover/[id]/page.tsx`
+- **Files Modified:** `src/types/index.ts` (+EventFilters, +DiscoverResponse), `src/services/event.service.ts` (+params support), `src/hooks/useEvent.ts` (+useDiscoverEvents), `src/app/(auth)/layout.tsx`, `src/app/(auth)/login/page.tsx`, `src/app/(auth)/register/page.tsx`
+- **Build:** ✅ `next build` — compiled successfully, 16 routes, 0 errors
+- **Detail:** Lihat `product/implementation-history/sprint-02/task-013.md`
 
 ### TASK-015 — Volunteer Participation Frontend
 - **Owner:** Abdillah

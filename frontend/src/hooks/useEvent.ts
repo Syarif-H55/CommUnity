@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { eventService } from '@/services/event.service';
-import { CreateEventRequest, UpdateEventRequest } from '@/types';
+import { CreateEventRequest, UpdateEventRequest, EventFilters } from '@/types';
 
 export function useEvents() {
     return useQuery({
@@ -11,6 +11,17 @@ export function useEvents() {
             const response = await eventService.list();
             return response.data.data ?? [];
         },
+    });
+}
+
+export function useDiscoverEvents(filters: EventFilters = {}) {
+    return useQuery({
+        queryKey: ['discover', 'events', filters],
+        queryFn: async () => {
+            const response = await eventService.list(filters);
+            return response.data;
+        },
+        placeholderData: (prev) => prev,
     });
 }
 

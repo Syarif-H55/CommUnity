@@ -75,6 +75,25 @@ export interface DashboardStats {
     pending_verification: number;
 }
 
+export interface EventFilters {
+    search?: string;
+    category_id?: number;
+    city?: string;
+    province?: string;
+    date?: string;
+    sort?: string;
+    per_page?: number;
+    page?: number;
+}
+
+export interface DiscoverResponse {
+    data: Event[];
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+}
+
 export type EventStatus = 'draft' | 'published' | 'cancelled' | 'completed';
 
 export interface Event {

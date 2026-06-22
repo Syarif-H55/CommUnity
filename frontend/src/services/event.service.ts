@@ -1,9 +1,9 @@
 import api from './api';
-import { ApiResponse, Event, CreateEventRequest, UpdateEventRequest } from '@/types';
+import { ApiResponse, Event, CreateEventRequest, UpdateEventRequest, EventFilters, DiscoverResponse } from '@/types';
 
 export const eventService = {
-    list: () =>
-        api.get<ApiResponse<Event[]>>('/events'),
+    list: (params?: EventFilters) =>
+        api.get<DiscoverResponse>('/events', { params }),
 
     getById: (id: string) =>
         api.get<ApiResponse<Event>>(`/events/${id}`),

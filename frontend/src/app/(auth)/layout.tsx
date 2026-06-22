@@ -1,4 +1,5 @@
-import { Handshake, Heart, Users, Sparkles } from "lucide-react";
+import Link from "next/link"
+import { Handshake, Heart, Users, Sparkles, Search } from "lucide-react";
 
 export default function AuthLayout({
   children,
@@ -42,6 +43,13 @@ export default function AuthLayout({
               CommUnity
             </span>
           </div>
+          <Link
+            href="/discover"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-medium text-white/90 backdrop-blur-sm ring-1 ring-white/10 transition-all hover:bg-white/15 hover:text-white"
+          >
+            <Search className="size-4" />
+            Jelajahi Kegiatan Sosial
+          </Link>
         </div>
 
         {/* Hero section with animated stats */}

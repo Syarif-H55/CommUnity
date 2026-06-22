@@ -16,7 +16,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { User, Lock, LogIn, AlertCircle, Eye, EyeOff, Loader2 } from "lucide-react";
+import { User, Lock, LogIn, AlertCircle, Eye, EyeOff, Loader2, Search } from "lucide-react";
 import type { ApiResponse } from "@/types";
 
 interface FormErrors {
@@ -215,6 +215,21 @@ export default function LoginPage() {
               Daftar
             </Link>
           </p>
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-border/50" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground/60">atau</span>
+            </div>
+          </div>
+          <Link
+            href="/discover"
+            className="flex items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium text-foreground transition-all hover:bg-muted hover:border-emerald-200"
+          >
+            <Search className="size-4 text-emerald-600" />
+            Jelajahi Kegiatan Sosial
+          </Link>
         </CardFooter>
       </form>
     </Card>
