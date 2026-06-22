@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\OrganizationController;
 use App\Http\Controllers\Api\V1\OrganizationMemberController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\VolunteerRegistrationController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -51,6 +52,10 @@ Route::prefix('v1')->group(function () {
         Route::get('/my-events', [EventController::class, 'myEvents']);
         Route::patch('/events/{event}/publish', [EventController::class, 'publish']);
         Route::apiResource('events', EventController::class);
+
+        // Volunteer registration endpoints
+        Route::get('/my-registrations', [VolunteerRegistrationController::class, 'myRegistrations']);
+        Route::post('/events/{event}/register', [VolunteerRegistrationController::class, 'register']);
 
         // Admin endpoints
         Route::prefix('admin')->group(function () {

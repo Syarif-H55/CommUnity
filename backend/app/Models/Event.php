@@ -52,4 +52,16 @@ class Event extends Model
     {
         return $this->belongsTo(EventCategory::class, 'category_id');
     }
+
+    public function registrations()
+    {
+        return $this->hasMany(VolunteerRegistration::class);
+    }
+
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'volunteer_registrations', 'event_id', 'volunteer_id')
+            ->withPivot('registered_at')
+            ->withTimestamps();
+    }
 }

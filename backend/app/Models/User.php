@@ -44,4 +44,16 @@ class User extends Authenticatable
             ->withPivot('role', 'joined_at')
             ->withTimestamps();
     }
+
+    public function registrations()
+    {
+        return $this->hasMany(VolunteerRegistration::class, 'volunteer_id');
+    }
+
+    public function registeredEvents()
+    {
+        return $this->belongsToMany(Event::class, 'volunteer_registrations', 'volunteer_id', 'event_id')
+            ->withPivot('registered_at')
+            ->withTimestamps();
+    }
 }
