@@ -1,8 +1,10 @@
 "use client"
 
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useEvent } from "@/hooks/useEvent"
+import { useRegisterEvent, useMyRegistrations } from "@/hooks/useVolunteer"
 import { useAuthStore } from "@/stores/auth.store"
 import { EventStatusBadge } from "@/components/event"
 import { Button } from "@/components/ui/button"
@@ -12,7 +14,7 @@ import { Separator } from "@/components/ui/separator"
 import {
     Handshake, ArrowLeft, Loader2, Calendar, MapPin, Clock,
     Users, Building2, XCircle, LogIn, UserPlus, CheckCircle2,
-    Share2, ExternalLink, ImageOff, Sparkles
+    Share2, ExternalLink, ImageOff, Sparkles, PartyPopper, AlertCircle
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -22,6 +24,30 @@ export default function DiscoverEventDetailPage() {
     const id = params.id as string
     const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
     const { data: event, isLoading, error } = useEvent(id)
+    const registerEvent = useRegisterEvent()
+    const { data: registrationsData } = useMyRegistrations({ per_page: 100 })
+    const [registeredEventIds, setRegisteredEventIds] = useState<Set<string>>(new Set())
+    const [showSuccess, setShowSuccess] = useState(false)
+
+    useEffect(() => {
+        if (registrationsData?.data) {
+            setRegisteredEventIds(new Set(registrationsData.data.map((r) => r.event_id)))
+        }
+    }, [registrationsData])
+
+    const isRegistered = id ? registeredEventIds.has(id) : false
+    const isFull = event ? event.current_participants >= event.quota : false
+
+    const handleRegister = useCallback(() => {
+        if (!id) return
+        registerEvent.mutate(id, {
+            onSuccess: () => {
+                setRegisteredEventIds((prev) => new Set(prev).add(id))
+                setShowSuccess(true)
+                setTimeout(() => setShowSuccess(false), 5000)
+            },
+        })
+    }, [id, registerEvent])
 
     if (isLoading) {
         return (
@@ -67,7 +93,6 @@ export default function DiscoverEventDetailPage() {
     })
 
     const participantsPercent = Math.round((event.current_participants / event.quota) * 100)
-    const isFull = event.current_participants >= event.quota
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
@@ -293,13 +318,97 @@ export default function DiscoverEventDetailPage() {
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 {isAuthenticated ? (
-                                    <Button
-                                        disabled
-                                        className="w-full gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 shadow-lg shadow-emerald-900/20 transition-all active:scale-95 opacity-60 cursor-not-allowed"
-                                    >
-                                        <Users className="size-4" />
-                                        Fitur Pendaftaran (Segera Hadir)
-                                    </Button>
+                                    <>
+                                        {isRegistered ? (
+                                            <div className="flex flex-col items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50/50 px-4 py-5 text-center dark:border-emerald-900/30 dark:bg-emerald-950/20">
+                                                <div className="flex size-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                                    <CheckCircle2 className="size-6" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+                                                        Sudah Mendaftar
+                                                    </p>
+                                                    <p className="text-xs text-emerald-600/70 dark:text-emerald-400/70 mt-0.5">
+                                                        Anda telah terdaftar pada kegiatan ini
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ) : isFull ? (
+                                            <div className="flex flex-col items-center gap-3 rounded-xl border border-red-200 bg-red-50/50 px-4 py-5 text-center dark:border-red-900/30 dark:bg-red-950/20">
+                                                <div className="flex size-12 items-center justify-center rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">
+                                                    <XCircle className="size-6" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-semibold text-red-700 dark:text-red-400">
+                                                        Kuota Penuh
+                                                    </p>
+                                                    <p className="text-xs text-red-600/70 dark:text-red-400/70 mt-0.5">
+                                                        Maaf, kuota peserta untuk kegiatan ini sudah terpenuhi
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ) : event?.status !== "published" ? (
+                                            <div className="flex flex-col items-center gap-3 rounded-xl border border-amber-200 bg-amber-50/50 px-4 py-5 text-center dark:border-amber-900/30 dark:bg-amber-950/20">
+                                                <AlertCircle className="size-6 text-amber-600" />
+                                                <div>
+                                                    <p className="text-sm font-semibold text-amber-700 dark:text-amber-400">
+                                                        Belum Tersedia
+                                                    </p>
+                                                    <p className="text-xs text-amber-600/70 dark:text-amber-400/70 mt-0.5">
+                                                        Kegiatan ini belum dapat diikuti
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="space-y-3">
+                                                <Button
+                                                    onClick={handleRegister}
+                                                    disabled={registerEvent.isPending}
+                                                    className="w-full gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 shadow-lg shadow-emerald-900/20 transition-all active:scale-95"
+                                                >
+                                                    {registerEvent.isPending ? (
+                                                        <Loader2 className="size-4 animate-spin" />
+                                                    ) : (
+                                                        <UserPlus className="size-4" />
+                                                    )}
+                                                    {registerEvent.isPending ? "Mendaftarkan..." : "Ikuti Kegiatan Ini"}
+                                                </Button>
+                                                <p className="text-xs text-center text-muted-foreground">
+                                                    {event?.quota - (event?.current_participants || 0)} dari {event?.quota} kursi tersedia
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        {showSuccess && (
+                                            <div className="flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 dark:border-emerald-900/30 dark:bg-emerald-950/30">
+                                                <PartyPopper className="mt-0.5 size-5 shrink-0 text-emerald-600" />
+                                                <div>
+                                                    <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+                                                        Pendaftaran Berhasil!
+                                                    </p>
+                                                    <p className="text-xs text-emerald-600/70 dark:text-emerald-400/70 mt-0.5">
+                                                        Anda telah terdaftar sebagai relawan pada kegiatan ini.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {registerEvent.isError && (
+                                            <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 dark:border-red-900/30 dark:bg-red-950/30">
+                                                <AlertCircle className="mt-0.5 size-5 shrink-0 text-red-600" />
+                                                <div>
+                                                    <p className="text-sm font-semibold text-red-700 dark:text-red-400">
+                                                        Gagal Mendaftar
+                                                    </p>
+                                                    <p className="text-xs text-red-600/70 dark:text-red-400/70 mt-0.5">
+                                                        {registerEvent.error instanceof Error
+                                                            ? (registerEvent.error as any)?.response?.data?.message || registerEvent.error.message
+                                                            : "Terjadi kesalahan. Silakan coba lagi."}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </>
                                 ) : (
                                     <div className="space-y-3">
                                         <Link href="/login">

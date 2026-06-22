@@ -147,3 +147,26 @@ export interface UpdateEventRequest {
     end_time?: string;
     banner?: File;
 }
+
+export interface VolunteerRegistration {
+    id: string;
+    event_id: string;
+    volunteer_id: string;
+    event: Event;
+    registered_at: string;
+    created_at: string;
+}
+
+export interface RegistrationFilters {
+    status?: string;
+    per_page?: number;
+    page?: number;
+}
+
+export interface RegistrationPaginatedResponse {
+    data: VolunteerRegistration[];
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+}
