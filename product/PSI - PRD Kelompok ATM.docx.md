@@ -73,6 +73,7 @@ Each metric needs a baseline (current state), a target, and a way to measure it.
 | Pendaftaran relawan untuk kegiatan  | Integrasi dengan platform media sosial  |
 | Absensi menggunakan QR Code | Sistem poin penghargaan dan gamifikasi  |
 | Pelaporan kegiatan  | Integrasi pembayaran  |
+| AI-assisted Event Report Generation  |  |
 | Dashboard impact analytics  |  |
 | Sertifikat digital otomatis  |  |
 
@@ -109,30 +110,32 @@ Each metric needs a baseline (current state), a target, and a way to measure it.
 | **FR-009** | Penyelenggara  | menunjuk koordinator event  | ketika event telah dibuat  | High | M  |
 | **FR-010** | Penyelenggara  | menutup pendaftaran relawan  | ketika kuota penuh atau waktu habis  | Critical | M  |
 | **FR-011** | Penyelenggara  | melihat dashboard impact analytics  | ketika memilih menu analytics  | Medium | S |
-| **FR-012** | Penyelenggara  | menghasilkan sertifikat digital  | ketika event selesai dan laporan disetujui  | Medium | S |
+| **FR-012** | Penyelenggara  | menghasilkan draft deskripsi kegiatan menggunakan AI berdasarkan informasi dasar event  | ketika penyelenggara memilih **Generate AI Description** saat membuat atau mengubah event  | Low  | C |
+| **FR-013** | Penyelenggara  | menghasilkan sertifikat digital  | ketika event selesai dan laporan disetujui  | Medium | S |
 
 ### **5.3  FR Table : Koordinator Event**
 
 | FR ID | Actor | The system shall… | Condition / Trigger | Priority | MoSCoW |
 | ----- | :---: | :---: | :---: | :---: | :---: |
-| **FR-013** | Koordinator Event  | melihat daftar relawan terdaftar  | ketika membuka halaman event  | High  | M |
-| **FR-014** | Koordinator Event   | memvalidasi kehadiran relawan melalui QR  | ketika relawan check-in  | Critical | M |
-| **FR-015** | Koordinator Event   | mencatat pelaksanaan kegiatan  | ketika event berlangsung  | Critical | M |
-| **FR-016** | Koordinator Event   | mengunggah dokumentasi kegiatan  | ketika laporan dibuat  | Medium | S |
-| **FR-017** | Koordinator Event   | mengirim laporan kegiatan  | ketika event selesai  | High | M |
-| **FR-018** | Koordinator Event   | mengubah status event menjadi selesai  | ketika laporan telah lengkap  | High | M |
+| **FR-014** | Koordinator Event  | melihat daftar relawan terdaftar  | ketika membuka halaman event  | High  | M |
+| **FR-015** | Koordinator Event   | memvalidasi kehadiran relawan melalui QR  | ketika relawan check-in  | Critical | M |
+| **FR-016** | Koordinator Event   | mencatat pelaksanaan kegiatan  | ketika event berlangsung  | Critical | M |
+| **FR-017** | Koordinator Event   | mengunggah dokumentasi kegiatan  | ketika laporan dibuat  | Medium | S |
+| **FR-019** | Koordinator Event  | menghasilkan draft laporan kegiatan menggunakan AI berdasarkan data event, data kehadiran relawan, dan input pengguna  | ketika koordinator memilih **Generate AI Report** sebelum mengirim laporan  | High  | S |
+| **FR-020** | Koordinator Event   | mengirim laporan kegiatan  | ketika event selesai  | High | M |
+| **FR-021** | Koordinator Event   | mengubah status event menjadi selesai  | ketika laporan telah lengkap  | High | M |
 
 ### **5.4  FR Table : Relawan** 
 
 | FR ID | Actor | The system shall… | Condition / Trigger | Priority | MoSCoW |
 | ----- | :---: | :---: | :---: | :---: | :---: |
-| **FR-019** | Relawan  | membuat akun  | ketika registrasi berhasil  | Critical | M |
-| **FR-020** | Relawan  | melihat daftar kegiatan  | ketika membuka halaman event  | Critical | M |
-| **FR-021** | Relawan  | mendaftar ke kegiatan  | ketika kuota masih tersedia  | Critical | M |
-| **FR-022** | Relawan  | melihat status pendaftaran  | setelah melakukan registrasi event  | Medium | S |
-| **FR-023** | Relawan  | melakukan check-in menggunakan QR  | ketika hadir di lokasi  | High | M |
-| **FR-024** | Relawan  | melihat riwayat kontribusi  | ketika membuka profil  | Medium | S |
-| **FR-025** | Relawan  | mengunduh sertifikat digital  | ketika sertifikat tersedia  | Medium | S |
+| **FR-022** | Relawan  | membuat akun  | ketika registrasi berhasil  | Critical | M |
+| **FR-023** | Relawan  | melihat daftar kegiatan  | ketika membuka halaman event  | Critical | M |
+| **FR-024** | Relawan  | mendaftar ke kegiatan  | ketika kuota masih tersedia  | Critical | M |
+| **FR-025** | Relawan  | melihat status pendaftaran  | setelah melakukan registrasi event  | Medium | S |
+| **FR-026** | Relawan  | melakukan check-in menggunakan QR  | ketika hadir di lokasi  | High | M |
+| **FR-027** | Relawan  | melihat riwayat kontribusi  | ketika membuka profil  | Medium | S |
+| **FR-028** | Relawan  | mengunduh sertifikat digital  | ketika sertifikat tersedia  | Medium | S |
 
 ### 
 
@@ -211,7 +214,7 @@ Each metric needs a baseline (current state), a target, and a way to measure it.
 | Actor | Koordinator Event dan Penyelenggara  |
 | :---- | :---- |
 | **Goal** | Koordinator Event dapat mengirim laporan pelaksanaan kegiatan dan Penyelenggara dapat menyelesaikan event berdasarkan laporan yang telah diverifikasi  |
-| **FRs covered** | FR-015, FR-016, FR-017, FR-018  |
+| **FRs covered** | FR-015, FR-016, FR-017, FR-018, FR-019, FR-020  |
 
 **Ideal Path**
 
@@ -220,10 +223,12 @@ Each metric needs a baseline (current state), a target, and a way to measure it.
 | **1** | Setelah kegiatan selesai dilaksanakan, Koordinator Event membuka fitur pelaporan kegiatan pada event terkait dan sistem menampilkan form laporan event.  |
 | **2** | Koordinator Event mengisi informasi pelaksanaan kegiatan seperti jumlah peserta hadir, ringkasan kegiatan, kendala pelaksanaan, dan hasil kegiatan, lalu sistem menyimpan data laporan sementara.  |
 | **3** | Koordinator Event mengunggah dokumentasi kegiatan berupa foto atau file pendukung dan sistem menghubungkan dokumentasi dengan laporan event terkait.   |
-| **4** | Koordinator Event mengirim laporan kegiatan dan sistem mengubah status laporan menjadi submitted untuk ditinjau oleh Penyelenggara  |
-| **5** | Penyelenggara meninjau isi laporan kegiatan beserta dokumentasi yang telah dikirimkan oleh Koordinator Event.   |
-| **6** | Jika laporan dinyatakan lengkap dan valid, sistem mengubah status event menjadi completed dan menyimpan data kegiatan ke dalam riwayat organisasi.  |
-| **7** | Sistem memperbarui data impact analytics berdasarkan hasil kegiatan yang telah diselesaikan.  |
+| **4** | Koordinator Event dapat memilih fitur Generate AI Report dan sistem menghasilkan draft narasi laporan berdasarkan data event, data kehadiran relawan, serta input yang telah diisi.  |
+| **5** | Koordinator Event meninjau dan dapat mengubah hasil draft laporan AI sebelum melanjutkan proses pengiriman laporan.  |
+| **6** | Koordinator Event mengirim laporan kegiatan dan sistem mengubah status laporan menjadi submitted untuk ditinjau oleh Penyelenggara  |
+| **7** | Penyelenggara meninjau isi laporan kegiatan beserta dokumentasi yang telah dikirimkan oleh Koordinator Event.   |
+| **8** | Jika laporan dinyatakan lengkap dan valid, sistem mengubah status event menjadi completed dan menyimpan data kegiatan ke dalam riwayat organisasi.  |
+| **9** | Sistem memperbarui data impact analytics berdasarkan hasil kegiatan yang telah diselesaikan.  |
 
 **Decision Points**
 
@@ -232,6 +237,7 @@ Each metric needs a baseline (current state), a target, and a way to measure it.
 | Apakah seluruh data laporan kegiatan telah lengkap?  | Sistem mengizinkan laporan dikirim  | Sistem menolak check-in dan menampilkan pesan bahwa relawan belum terdaftar  |
 | Apakah dokumentasi kegiatan berhasil diunggah?  | Sistem menyimpan dokumentasi ke laporan event  | Sistem menampilkan pesan gagal upload dan meminta pengguna mencoba kembali  |
 | Apakah Penyelenggara menyetujui laporan kegiatan?  | Sistem mengubah status event menjadi completed  | Sistem mengembalikan laporan ke Koordinator Event untuk revisi  |
+| Apakah AI berhasil menghasilkan draft laporan?  | Sistem menampilkan draft laporan untuk ditinjau dan diedit oleh Koordinator Event.  | Sistem menampilkan pesan gagal menghasilkan draft AI dan pengguna tetap dapat mengisi laporan secara manual.  |
 
 **Edge Cases**
 
@@ -241,6 +247,7 @@ Each metric needs a baseline (current state), a target, and a way to measure it.
 | File dokumentasi melebihi batas ukuran upload  | Sistem menolak file dan menampilkan batas maksimum ukuran file yang diperbolehkan  |
 | Koordinator Event keluar dari sistem saat mengisi laporan  | Sistem menyimpan draft laporan secara otomatis agar data tidak hilang  |
 | Penyelenggara menemukan data laporan tidak sesuai  | Sistem memberikan status revisi pada laporan dan mengirim notifikasi kepada Koordinator Event untuk memperbaiki laporan  |
+| Layanan AI tidak tersedia atau gagal merespons  | Sistem menampilkan pesan bahwa fitur AI sementara tidak tersedia dan pengguna tetap dapat membuat laporan secara manual.  |
 
 ## **6.4  Workflow: Pembuatan Sertifikat Digital & Tracking Kontribusi**
 
@@ -343,6 +350,20 @@ Each metric needs a baseline (current state), a target, and a way to measure it.
 | :---: | :---- |
 | Rationale  | Target pengguna utama adalah organisasi kampus dan komunitas lokal di Indonesia, sehingga konsistensi bahasa diperlukan untuk mengurangi kebingungan pengguna.  |
 | Validation Method  | Review UI copywriting pada seluruh halaman utama Tidak terdapat campuran istilah berbeda untuk fungsi yang sama Seluruh menu dan notifikasi menggunakan Bahasa Indonesia |
+
+## **7.5  Kendala Bantuan AI** 
+
+| Constraint  | Fitur AI pada CommUnity hanya berfungsi sebagai asisten untuk menghasilkan draft deskripsi event dan draft laporan kegiatan. Seluruh hasil yang dihasilkan AI harus dapat ditinjau dan diubah oleh pengguna sebelum disimpan ke dalam sistem.  |
+| :---: | :---- |
+| Rationale  | CommUnity merupakan Management Information System yang mendukung proses administrasi kegiatan sosial. AI digunakan untuk membantu pengguna menyusun konten secara lebih efisien, bukan untuk mengambil keputusan atau menghasilkan data secara otomatis tanpa verifikasi pengguna.  |
+| Validation Method  | Pengujian fitur Generate AI Description dan Generate AI Report. Hasil AI dapat diedit sebelum disimpan. Pengguna dapat melanjutkan proses secara manual tanpa menggunakan AI. Tidak ada data yang tersimpan otomatis tanpa tindakan pengguna.  |
+
+## **7.6  Kendala Ketersediaan Layanan AI** 
+
+| Constraint  | Sistem harus tetap dapat digunakan untuk pembuatan event dan pelaporan kegiatan meskipun layanan AI gagal merespons atau tidak tersedia.  |
+| :---: | :---- |
+| Rationale  | Fitur AI merupakan fitur pendukung dan bukan fungsi inti CommUnity. Kegagalan layanan AI tidak boleh menghambat penyelenggaraan event maupun proses pelaporan kegiatan.  |
+| Validation Method  | Simulasi kegagalan layanan AI pada environment pengujian. Pengguna tetap dapat mengisi deskripsi event dan laporan kegiatan secara manual. Sistem menampilkan pesan kesalahan yang informatif tanpa menyebabkan kegagalan workflow utama.  |
 
 ## 
 
@@ -485,9 +506,9 @@ Menyimpan data sertifikat digital relawan.
 
 | Components | Requirements |
 | ----- | ----- |
-| Requirement  | Seluruh halaman utama CommUnity harus memiliki waktu loading maksimal 3 detik pada koneksi 4G standar untuk 95% request pengguna. Proses QR attendance validation harus dapat diselesaikan maksimal dalam 10 detik per request, dan dashboard event harus mampu menampilkan data hingga 500 relawan tanpa kegagalan rendering.  |
-| Threshold / Metric  | Page load time ≤ 3 detik pada p95, QR validation ≤ 10 detik, dashboard rendering sukses untuk \<= 500 relawan  |
-| Testing Method  | Load testing dan browser performance testing menggunakan staging environment pada simulasi koneksi 4G serta concurrent attendance simulation  |
+| Requirement  | Seluruh halaman utama CommUnity harus memiliki waktu loading maksimal 3 detik pada koneksi 4G standar untuk 95% request pengguna. Proses QR attendance validation harus dapat diselesaikan maksimal dalam 10 detik per request, dan dashboard event harus mampu menampilkan data hingga 500 relawan tanpa kegagalan rendering. Fitur AI-assisted Event Report Generation harus mampu menghasilkan draft laporan dalam waktu maksimal 15 detik pada kondisi jaringan normal.  |
+| Threshold / Metric  | Page load time ≤ 3 detik pada p95, QR validation ≤ 10 detik, dashboard rendering sukses untuk \<= 500 relawan, AI report generation ≤ 15 detik pada kondisi normal  |
+| Testing Method  | Load testing dan browser performance testing menggunakan staging environment pada simulasi koneksi 4G serta concurrent attendance simulation, AI response time testing menggunakan beberapa skenario laporan kegiatan dengan variasi panjang input.  |
 
 ## 
 
@@ -495,9 +516,9 @@ Menyimpan data sertifikat digital relawan.
 
 | Components | Requirements |
 | ----- | ----- |
-| Requirement  | Seluruh data autentikasi dan aktivitas pengguna harus dikirim menggunakan koneksi terenkripsi HTTPS dan password pengguna harus disimpan dalam bentuk hashing algorithm. Sistem harus menerapkan role-based access control pada seluruh fitur utama, menghasilkan nomor sertifikat unik untuk setiap sertifikat digital, dan mengakhiri session pengguna secara otomatis setelah 30 menit tidak aktif.  |
+| Requirement  | Seluruh data autentikasi dan aktivitas pengguna harus dikirim menggunakan koneksi terenkripsi HTTPS dan password pengguna harus disimpan dalam bentuk hashing algorithm. Sistem harus menerapkan role-based access control pada seluruh fitur utama, menghasilkan nomor sertifikat unik untuk setiap sertifikat digital, dan mengakhiri session pengguna secara otomatis setelah 30 menit tidak aktif. Data yang dikirim ke layanan AI hanya mencakup informasi yang diperlukan untuk menghasilkan draft laporan kegiatan dan tidak boleh mencakup password, token autentikasi, atau informasi sensitif pengguna.   |
 | Threshold / Metric  | 100% endpoint menggunakan HTTPS, seluruh password tersimpan dalam bentuk hash, session timeout \= 30 menit  |
-| Testing Method  | Security testing pada API endpoint, database verificationterhadap  password storage, dan role access validation testing  |
+| Testing Method  | Security testing pada API endpoint, database verificationterhadap  password storage, dan role access validation testing, Verification bahwa payload AI tidak mengandung password, token autentikasi, maupun informasi sensitif lainnya.   |
 
 ## **9.3 Persyaratan Skalabilitas** 
 
@@ -511,15 +532,15 @@ Menyimpan data sertifikat digital relawan.
 
 | Components | Requirements |
 | ----- | ----- |
-| Requirement  | Sistem harus memiliki prosedur pencadangan data otomatis secara berkala untuk mencegah kehilangan data (*data loss*) akibat kegagalan perangkat keras, serta memiliki rencana pemulihan jika terjadi kegagalan sistem utama.   |
-| Threshold / Metric  | System uptime ≥ 99%, data loss \= 0 untuk attendance records, backup database dilakukan setiap 24 jam  |
-| Testing Method  | Monitoring uptime server, database persistence testing, backup recovery testing, dan simulasi auto-save draft laporan  |
+| Requirement  | Sistem harus memiliki prosedur pencadangan data otomatis secara berkala untuk mencegah kehilangan data (*data loss*) akibat kegagalan perangkat keras, serta memiliki rencana pemulihan jika terjadi kegagalan sistem utama, Kegagalan layanan AI tidak boleh menyebabkan kegagalan workflow utama pembuatan event maupun pelaporan kegiatan.    |
+| Threshold / Metric  | System uptime ≥ 99%, data loss \= 0 untuk attendance records, backup database dilakukan setiap 24 jam, 100% workflow pelaporan tetap dapat dilakukan secara manual ketika layanan AI tidak tersedia   |
+| Testing Method  | Monitoring uptime server, database persistence testing, backup recovery testing, dan simulasi auto-save draft laporan, Simulasi kegagalan layanan AI untuk memastikan pengguna tetap dapat mengisi laporan secara manual.   |
 
 # **10\.  Release & Roadmap Planning**
 
 ## **10.1 Version Roadmap** 
 
-### **10.1.2 v1.0 – MVP Release** 
+### **10.1.1 v1.0 – MVP Release** 
 
 **Target:** Mei – Juni 2026  
 **MoSCoW:** Must Have Features   
@@ -533,14 +554,14 @@ Menyimpan data sertifikat digital relawan.
 * Registrasi relawan  
 * QR attendance validation  
 * Event reporting  
+* AI-assisted event report generation   
 * Digital certificate generation  
-* Contribution tracking dashboard  
-* 
+* Contribution tracking dashboard
 
 
 **Dependency & Sequencing Rationale**
 
-Fitur pada v1.0 diprioritaskan karena seluruh fitur tersebut merupakan dependency utama untuk menjalankan lifecycle kegiatan sosial CommUnity secara lengkap. Event management menjadi fondasi utama sebelum volunteer registration dapat dilakukan, sementara attendance validation menjadi dependency bagi reporting dan certificate generation. Seluruh fitur pada versi ini dikategorikan sebagai Must Have karena sistem tidak dapat menjalankan fungsi inti community service management tanpa fitur-fitur tersebut.
+Fitur pada v1.0 diprioritaskan karena seluruh fitur tersebut merupakan dependency utama untuk menjalankan lifecycle kegiatan sosial CommUnity secara lengkap. Event management menjadi fondasi utama sebelum volunteer registration dapat dilakukan, sementara attendance validation menjadi dependency bagi reporting dan certificate generation. Seluruh fitur pada versi ini dikategorikan sebagai Must Have karena sistem tidak dapat menjalankan fungsi inti community service management tanpa fitur-fitur tersebut. AI-assisted event report generation ditempatkan pada v1.0 karena mendukung proses pelaporan kegiatan yang merupakan bagian inti workflow CommUnity. Fitur ini tidak menggantikan proses pelaporan manual, tetapi membantu Koordinator Event menyusun draft laporan secara lebih cepat berdasarkan data kegiatan yang telah tercatat dalam sistem. 
 
 ### **10.1.2 v1.5 – Enhancement Release** 
 
@@ -554,11 +575,12 @@ Fitur pada v1.0 diprioritaskan karena seluruh fitur tersebut merupakan dependenc
 * Attendance export ke PDF/Excel  
 * Multi-image documentation upload  
 * Event filtering & search  
-* Enhanced analytics dashboard
+* Enhanced analytics dashboard  
+* AI-assisted event description generation 
 
 **Dependency & Sequencing Rationale**
 
-Fitur v1.5 bergantung pada stabilitas workflow inti pada v1.0. Notification system membutuhkan event lifecycle yang sudah berjalan stabil, sedangkan analytics enhancement membutuhkan data event dan attendance yang telah terkumpul dari penggunaan sistem sebelumnya. Fitur-fitur ini meningkatkan usability dan operational efficiency, namun sistem masih dapat berjalan tanpa fitur tersebut sehingga dikategorikan sebagai Should Have.
+Fitur v1.5 bergantung pada stabilitas workflow inti pada v1.0. Notification system membutuhkan event lifecycle yang sudah berjalan stabil, sedangkan analytics enhancement membutuhkan data event dan attendance yang telah terkumpul dari penggunaan sistem sebelumnya. Fitur-fitur ini meningkatkan usability dan operational efficiency, namun sistem masih dapat berjalan tanpa fitur tersebut sehingga dikategorikan sebagai Should Have. AI-assisted event description generation ditempatkan pada v1.5 karena berfungsi sebagai peningkatan produktivitas bagi penyelenggara saat membuat event dan tidak mempengaruhi operasional inti sistem. Oleh karena itu fitur ini dikategorikan sebagai Should Have dan dapat dikembangkan setelah workflow utama stabil. 
 
 ### **10.1.3 v2.0 – Scale Release** 
 
@@ -585,9 +607,9 @@ Fitur pada v2.0 memerlukan validasi penggunaan sistem dalam skala lebih besar se
 | ----- | ----- | ----- | ----- | ----- |
 | PRD Final Approval | Week 2 | Project Manager | Final PRD CommUnity | Seluruh section PRD selesai, direview, dan disetujui seluruh anggota tim |
 | UI/UX & Database Design Complete | Week 4 | UI/UX Designer & Database Engineer | Figma design, ERD, database schema | Seluruh workflow memiliki desain UI dan entity relationship tervalidasi |
-| Backend API Complete | Week 6 | Backend Developer | Core API event, attendance, reporting | Seluruh Must Have FR endpoint berhasil diuji pada Postman |
-| Frontend Integration Complete | Week 8 | Frontend Developer | Responsive web interface | Seluruh workflow utama dapat dijalankan end-to-end |
-| System Testing & Bug Fixing | Week 9 | QA & Entire Team | Testing report dan bug fixing | Tidak ada critical bug pada workflow utama |
+| Backend API Complete | Week 6 | Backend Developer | Core API event, attendance, reporting, dan AI report integration  | Seluruh Must Have FR endpoint berhasil diuji pada Postman |
+| Frontend Integration Complete | Week 8 | Frontend Developer | Responsive web interface dan AI report workflow integration  | Seluruh workflow utama dapat dijalankan end-to-end |
+| System Testing & Bug Fixing | Week 9 | QA & Entire Team | Testing report, AI response validation, dan bug fixing | Tidak ada critical bug pada workflow utama dan AI report berhasil menghasilkan draft laporan pada seluruh skenario pengujian utama.  |
 | Expo Release Candidate | Week 10 | Entire Team | Deployment staging & demo preparation | Sistem siap digunakan untuk simulasi expo dan seluruh workflow berjalan stabil |
 
 ## **10.3 Definition of Done (DoD) & Go-Live Checklist**
@@ -603,6 +625,9 @@ Sebuah fitur CommUnity dinyatakan selesai apabila memenuhi seluruh kriteria beri
 | ☐.Seluruh halaman utama responsive pada lebar layar minimum 360px. |
 | ☐.Seluruh endpoint utama berhasil diuji menggunakan API testing. |
 | ☐.Attendance validation dan certificate generation berhasil dijalankan pada simulasi event. |
+| ☐ AI Event Report Assistant berhasil menghasilkan draft laporan berdasarkan data event dan input pengguna  |
+| ☐ Hasil draft laporan AI dapat ditinjau dan diedit oleh pengguna sebelum disimpan.  |
+| ☐ Workflow pelaporan kegiatan tetap dapat dijalankan secara manual ketika layanan AI tidak tersedia.  |
 | ☐.Seluruh data tersimpan secara konsisten di database. |
 | ☐.UI dan terminology telah konsisten menggunakan Bahasa Indonesia |
 | ☐ Seluruh role pengguna hanya dapat mengakses fitur sesuai hak akses masing-masing.  |
@@ -614,9 +639,8 @@ Sebelum CommUnity dipresentasikan pada expo dan deployment final dilakukan, selu
 
 | Infrastructure & Deployment  |
 | :---- |
-| ☐ Server deployment staging dan production telah dikonfigurasi. |
-| ☐ Seluruh endpoint utama telah menggunakan HTTPS. |
-| ☐ Environment variables production telah dikonfigurasi dengan benar. |
+| ☐ Environment demo expo telah dikonfigurasi dan dapat dijalankan secara stabil.  |
+| ☐ Environment variables aplikasi telah dikonfigurasi dengan benar.  |
 | ☐Database backup dan recovery berhasil diuji |
 | Functional Verification  |
 | ☐ Seluruh workflow utama berhasil diuji end-to-end. |
@@ -625,6 +649,12 @@ Sebelum CommUnity dipresentasikan pada expo dan deployment final dilakukan, selu
 | ☐ QR attendance validation berhasil diuji pada simulasi multi-user. |
 | ☐ Generate sertifikat digital berhasil dilakukan tanpa error. |
 | ☐ Contribution tracking menampilkan data yang sesuai. |
+| AI Feature Verification  |
+| ☐ AI Event Report Assistant berhasil menghasilkan draft laporan pada skenario event simulasi.  |
+| ☐ Draft laporan AI sesuai dengan data event dan tidak menghasilkan informasi kosong.  |
+| ☐ Pengguna dapat mengedit hasil AI sebelum menyimpan laporan. |
+| ☐ Workflow pelaporan manual tetap dapat dijalankan ketika layanan AI dinonaktifkan.  |
+| ☐ API Key layanan AI telah dikonfigurasi dengan benar pada environment deployment.  |
 | Security & Reliability  |
 | ☐ Session timeout berjalan sesuai ketentuan. |
 | ☐ Role-based access control berhasil diuji. |
@@ -659,4 +689,5 @@ Sebelum CommUnity dipresentasikan pada expo dan deployment final dilakukan, selu
 | v2.3 | 28 May 2026 | Abdillah, Syarif | Non-Functional Requirements |
 | v2.4 | 28 May 2026 | Syarif, Abdillah | Release & Roadmap Planning |
 | v2.5 | 28 May 2026 | All | Re-check all points |
+| v2.6 | 21 June 2026 | Syarif, Abdillah | Updated related for AI Implementation |
 
