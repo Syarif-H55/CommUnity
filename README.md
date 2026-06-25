@@ -166,8 +166,11 @@ NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
 
 | Sprint | Scope | Status |
 |--------|-------|--------|
-| Sprint 01 | Foundation & Authentication | Aktif |
-| Sprint 02 | Organization, Event & Volunteer | - |
-| Sprint 03 | Attendance, Report, Certificate & Analytics | - |
+| Sprint 01 | Foundation & Authentication | Selesai |
+| Sprint 02 | Organization, Event & Volunteer | Selesai |
+| Sprint 03 | Attendance, Report, Certificate & Analytics | Aktif |
+| Sprint 04 | Attendance, Report, Certificate & Analytics | - |
+| Sprint 05 | Attendance, Report, Certificate & Analytics | - |
+| Sprint 06 | Attendance, Report, Certificate & Analytics | - |
 
 Tim: **Kelompok ATM** — Syarif, Hiraldy, Abdillah, Irham
