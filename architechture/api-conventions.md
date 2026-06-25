@@ -57,6 +57,8 @@ Setiap endpoint harus merepresentasikan resource bisnis yang jelas dan mudah dip
 /api/v1/event-categories
 /api/v1/organizations
 /api/v1/certificates
+/api/v1/reports/{id}/generate-ai
+/api/v1/events/generate-description
 ```
 
 ### Avoid
@@ -87,6 +89,8 @@ POST   /api/v1/events
 GET    /api/v1/events/{id}
 PATCH  /api/v1/events/{id}
 DELETE /api/v1/events/{id}
+POST /api/v1/reports/{id}/generate-ai
+POST /api/v1/events/generate-description
 ```
 
 ---
@@ -205,6 +209,7 @@ Seluruh response berhasil harus menggunakan format berikut:
 | 409         | Conflict              |
 | 422         | Validation error      |
 | 500         | Internal server error |
+| 503         | External AI service unavailable |
 
 ---
 
@@ -285,6 +290,42 @@ Search digunakan pada:
 * Events
 * Organizations
 * Volunteers
+
+---
+
+## AI Endpoint Convention
+### Purpose
+
+Endpoint AI digunakan untuk menghasilkan draft konten yang membantu pengguna dalam proses administrasi kegiatan sosial.
+
+AI tidak boleh melakukan perubahan data bisnis secara otomatis.
+
+### Supported AI Operations
+#### Generate Event Report Draft
+POST /api/v1/reports/{id}/generate-ai
+
+#### Purpose:
+
+Menghasilkan draft laporan kegiatan berdasarkan data event dan attendance.
+#### Generate Event Description Draft (Optional)
+POST /api/v1/events/generate-description
+
+##### Purpose:
+
+Menghasilkan draft deskripsi event berdasarkan informasi dasar yang diberikan pengguna.
+### AI Response Example
+{
+  "success": true,
+  "message": "AI draft generated successfully",
+  "data": {
+    "generated_content": "..."
+  }
+}
+### AI Failure Example
+{
+  "success": false,
+  "message": "AI service unavailable"
+}
 
 ---
 
@@ -438,6 +479,17 @@ organization_id
 created_at
 updated_at
 ```
+---
+
+# AI Response Convention
+{
+  "success": true,
+  "message": "AI draft generated successfully",
+  "data": {
+    "generated_content": "...",
+    "generated_at": "2026-07-15T08:30:00Z"
+  }
+}
 
 ---
 
@@ -465,6 +517,10 @@ API harus:
 * Menggunakan authorization berdasarkan role.
 * Tidak mengembalikan informasi sensitif.
 * Menggunakan rate limiting pada endpoint authentication.
+* Menggunakan rate limiting pada endpoint AI generation.
+* Membatasi panjang input yang dikirim ke layanan AI.
+* Memvalidasi seluruh data sebelum dikirim ke AI provider.
+* Tidak mengirim data sensitif pengguna ke layanan AI eksternal.
 
 ---
 
@@ -478,5 +534,8 @@ Seluruh endpoint wajib:
 * Mendukung pagination pada endpoint list.
 * Menggunakan soft delete pada resource yang ditentukan.
 * Menggunakan validasi request sebelum business logic dijalankan.
+* Endpoint AI tidak boleh mengubah data bisnis secara langsung.
+* Output AI harus selalu dikembalikan sebagai draft yang dapat diedit pengguna.
+* Workflow utama harus tetap berjalan meskipun layanan AI tidak tersedia.
 
 Endpoint yang tidak mengikuti aturan ini dianggap tidak memenuhi standar API CommUnity.

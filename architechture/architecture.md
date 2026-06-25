@@ -44,11 +44,17 @@ Architecture Style:
           |
           +------------------+
           |                  |
+          |                  |
           v                  v
 +----------------+   +----------------+
 |     MySQL      |   | Local Storage  |
-|   Application  |   | Files & PDFs   |
-|    Database    |   +----------------+
+|   Database     |   | Files & PDFs   |
++----------------+   +----------------+
+          |
+          v
++----------------+
+| AI Service API |
+| (LLM Provider) |
 +----------------+
 ```
 
@@ -100,6 +106,7 @@ Responsibilities:
 * Certificate Generation
 * Notification Management
 * Analytics Calculation
+* AI Report Generation Integration
 
 Backend menjadi satu-satunya sumber business logic sistem.
 
@@ -134,6 +141,25 @@ Stored Assets:
 * Generated Certificate PDFs
 
 Storage digunakan untuk file non-relasional dan tidak digunakan untuk menyimpan data bisnis utama.
+
+AI Integration Layer
+
+Technology:
+
+* OpenAI API / Gemini API / LLM Provider
+* Laravel HTTP Client
+
+Responsibilities:
+
+* Generate draft laporan kegiatan
+* Membantu penyusunan laporan berdasarkan data event
+* Menghasilkan teks yang dapat ditinjau dan diedit pengguna
+
+Constraints:
+
+* AI tidak boleh menyimpan data langsung ke database
+* AI tidak boleh mengubah status event secara otomatis
+* Seluruh output AI harus melalui review pengguna
 
 ---
 
@@ -311,6 +337,10 @@ Event Completed
         ↓
 Coordinator Creates Report
         ↓
+Generate AI Draft (Optional)
+        ↓
+Review & Edit Draft
+        ↓
 Submit Report
         ↓
 Organizer Approval
@@ -337,6 +367,26 @@ Certificate Available
 ```
 
 Sertifikat hanya dapat dihasilkan setelah laporan kegiatan disetujui.
+
+
+### AI Report Generation Flow
+```text
+Coordinator Requests AI Draft
+              ↓
+Backend Collects Event Data
+              ↓
+Backend Collects Attendance Data
+              ↓
+Prompt Construction
+              ↓
+AI Service Request
+              ↓
+Draft Report Generated
+              ↓
+Coordinator Reviews Draft
+              ↓
+Save / Edit / Submit
+```text
 
 ---
 
@@ -443,6 +493,28 @@ Error Format:
 
 ---
 
+### AI Endpoints
+
+Example:
+
+POST /api/v1/reports/{id}/generate-ai
+
+Purpose:
+
+Generate AI-assisted event report draft.
+
+Response:
+
+{
+  "success": true,
+  "message": "AI report generated",
+  "data": {
+    "draft_report": "..."
+  }
+}
+
+---
+
 # Security Architecture
 
 Security controls:
@@ -454,6 +526,8 @@ Security controls:
 * Input Validation
 * CSRF Protection
 * File Upload Validation
+* AI Request Data Filtering
+* Sensitive Data Exclusion for AI Requests
 
 ---
 
@@ -474,9 +548,11 @@ The system must not:
 * Introduce external cloud storage.
 * Introduce realtime websocket architecture.
 * Introduce event-driven architecture.
+* AI services must remain optional and non-blocking.
+* Core workflows must remain functional when AI services are unavailable.
 
 ---
 
 # Architectural Goal
 
-CommUnity prioritizes simplicity, maintainability, and rapid delivery of business value. Architectural decisions should favor clarity and implementation speed over premature optimization or unnecessary technical complexity.
+CommUnity prioritizes simplicity, maintainability, and rapid delivery of business value. Architectural decisions should favor clarity and implementation speed over premature optimization or unnecessary technical complexity. AI capabilities should assist administrative workflows without introducing unnecessary architectural complexity or dependency on external services.

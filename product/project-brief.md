@@ -14,7 +14,7 @@ Platform manajemen kegiatan sosial komunitas berbasis digital.
 
 ## Project Background
 
-Banyak organisasi kampus dan komunitas sosial masih mengelola kegiatan sosial menggunakan berbagai alat yang terpisah seperti formulir online, spreadsheet, dan aplikasi pesan instan. Pendekatan tersebut sering menyebabkan informasi kegiatan sulit ditemukan, proses pendaftaran relawan tidak terpusat, validasi kehadiran kurang efektif, serta pelaporan kegiatan menjadi tidak terdokumentasi dengan baik.
+Banyak organisasi kampus dan komunitas sosial masih mengelola kegiatan sosial menggunakan berbagai alat yang terpisah seperti formulir online, spreadsheet, dan aplikasi pesan instan. Pendekatan tersebut sering menyebabkan informasi kegiatan sulit ditemukan, proses pendaftaran relawan tidak terpusat, validasi kehadiran kurang efektif, serta pelaporan kegiatan menjadi tidak terdokumentasi dengan baik dan membutuhkan waktu yang cukup lama untuk disusun setelah kegiatan selesai.
 
 CommUnity dikembangkan sebagai solusi terintegrasi yang membantu organisasi mengelola kegiatan sosial sekaligus memudahkan relawan menemukan dan mengikuti kegiatan yang sesuai dengan minat mereka.
 
@@ -30,6 +30,7 @@ Organisasi dan komunitas sosial membutuhkan sistem yang dapat:
 * Memvalidasi kehadiran peserta secara digital.
 * Mendokumentasikan hasil kegiatan secara terstruktur.
 * Menghasilkan sertifikat partisipasi secara otomatis.
+* Mempercepat penyusunan laporan kegiatan tanpa mengurangi kualitas dokumentasi.
 
 Saat ini proses tersebut masih banyak dilakukan secara manual sehingga kurang efisien dan sulit dilacak.
 
@@ -71,9 +72,9 @@ Pendaftaran relawan ke kegiatan sosial yang tersedia.
 
 Validasi kehadiran relawan menggunakan QR Code.
 
-### Event Reporting
+### Event Reporting & AI Report Assistant
 
-Pembuatan laporan kegiatan dan dokumentasi pelaksanaan event.
+Pembuatan laporan kegiatan dan dokumentasi pelaksanaan event dengan bantuan AI untuk menghasilkan draft laporan berdasarkan data kegiatan dan kehadiran relawan.
 
 ### Digital Certificate Generation
 
@@ -98,6 +99,7 @@ Dashboard statistik sederhana untuk memantau performa kegiatan dan partisipasi r
 * Registrasi relawan
 * QR attendance validation
 * Event reporting
+* AI-assisted event report generation
 * Digital certificate generation
 * Contribution tracking
 * Dashboard analytics
@@ -108,7 +110,7 @@ Dashboard statistik sederhana untuk memantau performa kegiatan dan partisipasi r
 * Native mobile application
 * Payment gateway
 * Sistem donasi
-* AI recommendation
+* AI-based volunteer recommendation
 * Real-time chat
 * Social networking features
 * Multi-organization collaboration
@@ -126,6 +128,8 @@ Proyek dianggap berhasil apabila:
 * Laporan kegiatan dapat dibuat dan disimpan secara digital.
 * Sertifikat digital dapat dihasilkan secara otomatis.
 * Dashboard analytics dapat menampilkan statistik dasar kegiatan.
+* AI Event Report Assistant dapat menghasilkan draft laporan kegiatan berdasarkan data event dan input pengguna.
+* Workflow pelaporan tetap dapat dilakukan secara manual apabila layanan AI tidak tersedia.
 * Seluruh workflow utama berjalan tanpa critical issue saat demonstrasi expo.
 
 ---
@@ -165,4 +169,4 @@ Database:
 
 ## Non-Goals
 
-CommUnity tidak dirancang sebagai media sosial komunitas, platform crowdfunding, atau marketplace relawan berskala nasional pada versi pertama. Fokus utama proyek adalah menyediakan platform digital yang mendukung pengelolaan dan partisipasi kegiatan sosial secara terintegrasi.
+CommUnity tidak dirancang sebagai media sosial komunitas, platform crowdfunding, atau marketplace relawan berskala nasional pada versi pertama. Fokus utama proyek adalah menyediakan platform digital yang mendukung pengelolaan dan partisipasi kegiatan sosial secara terintegrasi. CommUnity tidak dirancang sebagai platform berbasis AI penuh yang menggantikan proses pengambilan keputusan pengguna. Fitur AI hanya berperan sebagai asisten untuk membantu penyusunan konten administratif.

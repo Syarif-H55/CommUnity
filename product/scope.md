@@ -78,6 +78,8 @@ Fitur yang berada di luar ruang lingkup tidak boleh diimplementasikan tanpa pers
 * Pengisian laporan kegiatan
 * Upload dokumentasi kegiatan
 * Penyimpanan draft laporan
+* AI-assisted report generation
+* Edit dan review hasil draft AI sebelum penyimpanan
 * Pengiriman laporan kegiatan
 * Persetujuan laporan oleh penyelenggara
 * Penyelesaian event
@@ -153,9 +155,9 @@ Fitur berikut secara eksplisit tidak termasuk dalam ruang lingkup versi pertama.
 
 ## Advanced Analytics
 
-* AI-generated insights
+* AI-generated impact insights
 * Predictive analytics
-* Volunteer recommendation engine
+* AI volunteer recommendation engine
 * Impact scoring system
 
 ---
@@ -204,6 +206,7 @@ Fitur berikut dapat dipertimbangkan setelah MVP berhasil diselesaikan dan divali
 * Enhanced analytics dashboard
 * Advanced search experience
 * Multiple documentation galleries
+* AI-assisted event description generation
 
 ---
 
@@ -238,7 +241,8 @@ Versi MVP CommUnity dianggap berhasil apabila pengguna dapat:
 3. Mendaftar sebagai relawan.
 4. Melakukan validasi kehadiran menggunakan QR.
 5. Membuat laporan kegiatan.
-6. Menghasilkan sertifikat digital.
-7. Melihat statistik dasar kegiatan sosial.
+6. Menghasilkan draft laporan kegiatan menggunakan AI dan melakukan revisi sebelum penyimpanan.
+7. Menghasilkan sertifikat digital.
+8. Melihat statistik dasar kegiatan sosial.
 
 Fitur di luar kemampuan tersebut tidak menjadi syarat keberhasilan MVP.

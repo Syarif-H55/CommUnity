@@ -28,7 +28,7 @@ Saat ini banyak organisasi kampus dan komunitas sosial masih mengelola kegiatan 
 * Informasi kegiatan sulit ditemukan oleh calon relawan.
 * Proses pendaftaran relawan tidak terpusat.
 * Kehadiran peserta sulit divalidasi secara akurat.
-* Pelaporan kegiatan dilakukan secara manual dan memakan waktu.
+* Pelaporan kegiatan dilakukan secara manual, memakan waktu, dan sering menghasilkan dokumentasi yang tidak konsisten antar kegiatan.
 * Riwayat kontribusi relawan tidak terdokumentasi dengan baik.
 * Sertifikat kegiatan harus dibuat secara manual.
 
@@ -56,9 +56,10 @@ Masyarakat yang ingin berpartisipasi dalam kegiatan sosial dan membutuhkan saran
 
 * Mengelola kegiatan sosial dalam satu platform terintegrasi.
 * Mempermudah pengelolaan relawan dan kehadiran peserta.
-* Mempercepat proses pelaporan kegiatan.
+* Mempercepat proses pelaporan kegiatan dengan bantuan AI-assisted report generation.
 * Menghasilkan sertifikat digital secara otomatis.
 * Memantau performa kegiatan melalui dashboard analytics.
+* Membantu menghasilkan laporan kegiatan yang lebih konsisten dan profesional.
 
 ### For Volunteers
 
@@ -91,6 +92,10 @@ Platform harus dapat digunakan dengan baik melalui perangkat desktop maupun mobi
 
 Setiap kegiatan harus menghasilkan data yang dapat digunakan untuk mengevaluasi partisipasi dan efektivitas program sosial.
 
+### AI-Assisted Productivity
+
+AI digunakan untuk membantu pengguna menyelesaikan tugas administratif secara lebih cepat tanpa menghilangkan kendali pengguna terhadap hasil akhir. Seluruh hasil yang dihasilkan AI harus dapat ditinjau dan diedit sebelum digunakan.
+
 ---
 
 ## Success Metrics
@@ -103,6 +108,8 @@ Keberhasilan CommUnity diukur melalui:
 * Attendance rate kegiatan sosial.
 * Jumlah kegiatan yang berhasil diselesaikan.
 * Jumlah sertifikat digital yang diterbitkan.
+* Persentase laporan kegiatan yang menggunakan AI-assisted report generation.
+* Rata-rata waktu penyelesaian laporan kegiatan setelah event selesai.
 
 ---
 

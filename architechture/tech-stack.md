@@ -116,6 +116,16 @@ Framework backend utama untuk menangani business logic, API, autentikasi, dan ak
 * Cocok untuk pengembangan REST API.
 * Mendukung pengembangan cepat untuk MVP.
 
+### Laravel HTTP Client
+#### Purpose
+
+Mengirim request ke layanan AI eksternal.
+
+#### Why Chosen
+Sudah tersedia secara native pada Laravel.
+Tidak membutuhkan dependency tambahan.
+Mudah digunakan untuk integrasi REST API.
+
 ---
 
 ## Laravel Sanctum
@@ -195,6 +205,53 @@ Media komunikasi antara frontend dan backend.
 * Proper HTTP status code usage.
 
 ---
+# AI Integration
+
+## AI Service
+
+### Purpose
+
+Membantu penyelenggara dan koordinator event menghasilkan draft konten administratif secara otomatis menggunakan Large Language Model (LLM).
+
+### Planned Features
+
+#### High Priority
+
+AI Event Report Assistant
+
+#### Optional
+
+AI Event Description Assistant
+
+#### Why Chosen
+Mengurangi waktu penyusunan laporan kegiatan.
+Membantu pengguna menghasilkan draft awal yang lebih terstruktur.
+Memberikan nilai inovasi tambahan untuk kebutuhan Expo.
+
+### Usage Principle
+
+AI digunakan sebagai alat bantu penulisan (assistant), bukan pengambil keputusan.
+
+Seluruh hasil yang dihasilkan AI harus dapat ditinjau, diubah, dan disetujui oleh pengguna sebelum disimpan ke sistem.
+
+## AI Provider
+
+### Initial Option
+
+- OpenAI API
+
+### Alternative Option
+
+- Google Gemini API
+
+### Selection Criteria
+
+- Kemudahan integrasi dengan Laravel
+- Kualitas output Bahasa Indonesia
+- Biaya penggunaan
+- Ketersediaan API
+
+---
 
 # Storage
 
@@ -261,6 +318,7 @@ Fokus utama proyek adalah penyelesaian fitur dan demonstrasi Expo, bukan deploym
 * Volunteer Registration
 * Attendance Validation
 * Certificate Generation
+* AI Report Generation
 
 ---
 
@@ -277,6 +335,7 @@ Fokus utama proyek adalah penyelesaian fitur dan demonstrasi Expo, bukan deploym
 * User Workflow
 * Form Validation
 * API Integration
+* AI Draft Generation Workflow
 
 ---
 
@@ -291,6 +350,8 @@ AI Agent dan developer tidak diperbolehkan:
 * Mengganti database tanpa persetujuan tim.
 * Menambahkan service cloud yang tidak direncanakan.
 * Menambahkan dependency besar tanpa alasan yang jelas.
+* Mengintegrasikan lebih dari satu AI provider pada MVP.
+* Menjadikan fitur AI sebagai dependency wajib untuk workflow utama.
 
 ---
 
@@ -312,6 +373,16 @@ Teknologi berikut tidak termasuk dalam scope proyek:
 * Express.js
 * Spring Boot
 * ASP.NET
+
+---
+
+## AI Infrastructure
+
+* Self-hosted LLM
+* Fine-tuned custom model
+* Vector Database
+* RAG Architecture
+* AI Agent Framework
 
 ---
 
@@ -339,4 +410,4 @@ Teknologi berikut tidak termasuk dalam scope proyek:
 
 # Guiding Principle
 
-CommUnity memprioritaskan kesederhanaan implementasi, kemudahan pemeliharaan, dan kecepatan pengembangan dibanding kompleksitas teknis yang tidak memberikan nilai langsung terhadap tujuan MVP dan Expo Release.
+CommUnity memprioritaskan kesederhanaan implementasi, kemudahan pemeliharaan, dan kecepatan pengembangan dibanding kompleksitas teknis yang tidak memberikan nilai langsung terhadap tujuan MVP dan Expo Release. Integrasi AI harus tetap ringan, mudah dipelihara, dan tidak menambah kompleksitas arsitektur yang tidak diperlukan untuk kebutuhan MVP.

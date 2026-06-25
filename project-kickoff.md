@@ -16,12 +16,13 @@ Platform membantu:
 
 Primary Users:
 
-- Komunitas sosial
-- Organisasi sosial
+- Penyelenggara Organisasi
+- Koordinator Event
 
 Secondary Users:
 
 - Relawan
+- Admin Sistem
 
 ---
 
@@ -36,12 +37,13 @@ Secondary Users:
 7. Event Reporting
 8. Digital Certificate Generation
 9. Community Analytics Dashboard
+10. Notification Management
 
 ---
 
 ## MVP Goal
 
-Deliver a complete working platform for Expo demonstration.
+Deliver a complete end-to-end community service management platform for Expo demonstration, covering organization onboarding, event execution, volunteer participation, attendance validation, reporting, certification, and impact tracking.
 
 The MVP must support:
 
@@ -58,6 +60,8 @@ The MVP must support:
 ## Current Development Phase
 
 Refer to active sprint document.
+The active sprint determines which features may be implemented.
+Features outside the active sprint are considered out of scope unless explicitly approved.
 
 Possible phases:
 
@@ -72,11 +76,15 @@ Possible phases:
 
 A complete end-to-end workflow exists:
 
-Organization
+Organization Registration
+↓
+Organization Verification
 ↓
 Create Event
 ↓
-Volunteer Joins Event
+Publish Event
+↓
+Volunteer Registration
 ↓
 Attendance Validation
 ↓
@@ -87,6 +95,32 @@ Report Approval
 Certificate Generation
 ↓
 Impact Analytics Updated
+
+---
+
+## Project Constraints
+
+- Target delivery: Expo Release (July 2026)
+- Platform: Responsive Web Application
+- Architecture: Monolithic REST API
+- Database: MySQL
+- Storage: Laravel Local Storage
+- Focus on MVP scope only
+
+---
+
+## Out of Scope Reminder
+
+The following features are not included in MVP:
+
+- Native Mobile Application
+- Payment Gateway
+- Donation System
+- Real-time Chat
+- Social Networking Features
+- AI Recommendation
+- Gamification
+- Multi-Organization Collaboration
 
 ---
 

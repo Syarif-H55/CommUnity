@@ -48,8 +48,23 @@ Never start implementation immediately after reading a task.
 ---
 
 ## Step 1 - Read Documentation
+PRD-CommUnity.md is the primary business requirements source of truth.
+
+If any conflict exists between documents:
+
+PRD-CommUnity.md
+↓
+scope.md
+↓
+architecture.md
+↓
+other supporting documents
+
+Follow the highest-priority document.
 
 Read and understand the following documents in order:
+
+## project-kickoff.md
 
 ### Product Documents
 
@@ -61,11 +76,11 @@ Read and understand the following documents in order:
 
 ### Architecture Documents
 
-* architechture/tech-stack.md
-* architechture/architecture.md
-* architechture/database-design.md
-* architechture/api-conventions.md
-* architechture/coding-standards.md
+* architecture/tech-stack.md
+* architecture/architecture.md
+* architecture/database-design.md
+* architecture/api-conventions.md
+* architecture/coding-standards.md
 
 ### Planning Documents
 
@@ -98,6 +113,8 @@ Explain:
 * What problems it solves
 * Core workflows
 * MVP boundaries
+* User roles and permissions
+* In-scope vs out-of-scope features
 
 ### Architecture Summary
 
@@ -108,6 +125,9 @@ Explain:
 * Database approach
 * API structure
 * Authentication strategy
+* Authorization strategy
+* Event lifecycle
+* Organization verification workflow
 
 ### Development Constraints
 
@@ -214,9 +234,26 @@ Do NOT:
 * Expand scope
 * Add future sprint features
 * Create undocumented tables
+* Modify documented relationships
+* Change entity ownership rules
+* Introduce new status values
+* Introduce new user roles
 * Ignore acceptance criteria
+* Implement Should Have features during MVP sprint
+* Implement Could Have features
+* Implement Future Scope features
+* Add "nice-to-have" enhancements not documented
 
 Unless explicitly approved.
+
+Before implementing any feature, verify that:
+
+1. The feature exists in backlog.md
+2. The feature belongs to the active sprint
+3. The feature is within scope.md
+4. The feature is included in PRD-CommUnity.md
+
+If any condition fails, stop and request clarification.
 
 ---
 
@@ -237,19 +274,23 @@ A task is complete only if:
 When starting a new session, always respond with:
 
 # Project Understanding
-
 ...
 
 # Architecture Understanding
+...
 
+# Scope Validation
 ...
 
 # Sprint Analysis
-
 ...
 
 # Implementation Plan
-
 ...
+
+# Risks & Assumptions
+...
+
+Wait for approval before writing code.
 
 Wait for approval before writing code.

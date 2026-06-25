@@ -351,7 +351,7 @@ Acceptance Criteria:
 
 ## US-018 Review Event Report
 
-As a system administrator
+As an organizer
 
 I want to review submitted reports
 
@@ -362,16 +362,59 @@ Must Have
 
 Acceptance Criteria:
 
-- Admin can review reports.
-- Admin can approve reports.
-- Admin can reject reports.
+- Organizer can review reports.
+- Organizer can approve reports.
+- Organizer can request revision.
 - Report status is updated.
 
 ---
 
-# Epic 7 - Certificate Management
+# Epic 7 - AI Assistance
 
-## US-019 Generate Digital Certificate
+## US-019 Generate AI Event Report Draft
+
+I want AI to generate an event report draft
+
+So that I can prepare reports faster after an event is completed.
+
+Priority:
+Should Have
+
+Acceptance Criteria:
+* Coordinator can request AI report generation.
+* AI uses event and attendance data as context.
+* AI generates a draft report.
+* Coordinator can edit generated content.
+* Draft is not submitted automatically.
+* AI failure does not block manual report creation.
+
+---
+
+## US-020 Generate AI Event Description
+
+As an organizer
+
+I want AI to generate an event description draft
+
+So that I can create event information more efficiently.
+
+Priority:
+Could Have
+
+Acceptance Criteria:
+
+* Organizer can request AI-generated description.
+* User provides basic event information.
+* AI generates description text.
+* User can edit generated content.
+* Event is not created automatically.
+
+---
+
+
+# Epic 8 - Certificate Management
+
+## US-021 Generate Digital Certificate
 
 As a system
 
@@ -390,7 +433,7 @@ Acceptance Criteria:
 
 ---
 
-## US-020 Download Certificate
+## US-022 Download Certificate
 
 As a volunteer
 
@@ -408,9 +451,9 @@ Acceptance Criteria:
 
 ---
 
-# Epic 8 - Analytics Dashboard
+# Epic 9 - Analytics Dashboard
 
-## US-021 View Community Analytics
+## US-023 View Community Analytics
 
 As an organizer
 
@@ -430,25 +473,47 @@ Acceptance Criteria:
 
 ---
 
-# Deferred Stories (Post-MVP)
+# Epic 10 - Notifications
 
-## US-022 In-App Notifications
+## US-024 View Notifications
+
+As a user
+
+I want to receive system notifications
+
+So that I know important activity updates.
 
 Priority:
-Should Have
+Must Have
 
-Status:
-Deferred to v1.1
+Acceptance Criteria:
+
+User receives event registration notifications.
+User receives report status notifications.
+User receives certificate availability notifications.
+Notifications can be marked as read.
 
 ---
 
-## US-023 Multi-Organization Membership Experience
+# Deferred Stories (Post-MVP)
+
+## US-025 Switch Active Organization
+
+As an organizer
+
+I want to switch between organizations
+
+So that I can manage multiple organizations using one account.
 
 Priority:
-Should Have
+Must Have
 
-Status:
-Deferred to v1.1
+Acceptance Criteria:
+
+User can view organizations they belong to.
+User can switch active organization.
+Permissions update correctly.
+Current organization context is displayed.
 
 ---
 
@@ -456,12 +521,12 @@ Deferred to v1.1
 
 Total MVP User Stories:
 
-21
+25
 
 Deferred User Stories:
 
-2
+0
 
 Total User Stories:
 
-23
+25

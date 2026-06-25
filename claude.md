@@ -117,9 +117,24 @@ Unless explicitly approved.
 
 ---
 
+## Supported Roles
+
+The system supports the following roles:
+
+- Admin Sistem
+- Penyelenggara
+- Koordinator Event
+- Relawan
+
+Role permissions must follow the Functional Requirements and RBAC rules defined in architecture.md.
+
+Do not grant permissions outside documented role capabilities.
+
+---
+
 ## Database Rules
 
-Follow database/database-design.md.
+Follow architecture/database-design.md.
 
 Requirements:
 
@@ -206,6 +221,101 @@ Not Allowed:
 - Events
 - Certificates
 - Analytics
+
+---
+
+## Event Lifecycle Rules
+
+All event implementations must follow the documented lifecycle:
+
+Draft
+→ Published
+→ Ongoing
+→ Completed
+
+Alternative State:
+→ Cancelled
+
+Completed events must be treated as read-only.
+
+Do not introduce additional states without updating architecture.md and PRD.
+
+---
+
+## Reporting Workflow Rules
+
+Event reports follow this workflow:
+
+Draft
+→ Submitted
+→ Approved
+→ Event Completed
+
+Alternative Path:
+
+Submitted
+→ Revision Requested
+→ Submitted
+
+Requirements:
+
+- Report can only be submitted after event completion.
+- Minimum 1 documentation image required.
+- Maximum 5 documentation images allowed.
+- Event completion depends on approved report.
+
+---
+
+## Certificate Rules
+
+Certificates may only be generated when:
+
+- Attendance is verified.
+- Event report is approved.
+- Event status is Completed.
+
+Each certificate must:
+
+- Have a unique certificate number.
+- Be stored as PDF.
+- Be downloadable by the volunteer.
+
+---
+
+## Notification Rules
+
+The system must create in-app notifications for:
+
+- Organization verification
+- Event registration
+- Attendance validation
+- Report approval or revision request
+- Certificate generation
+
+Notifications are stored in the database.
+
+Realtime websocket notifications are not used in MVP.
+
+---
+
+## MVP Scope Protection
+
+CommUnity is an Expo-oriented MVP.
+
+When implementing features:
+
+- Prefer simple solutions over scalable solutions.
+- Prefer maintainability over optimization.
+- Prefer documented requirements over assumptions.
+
+Do not introduce:
+
+- Complex infrastructure
+- Premature optimization
+- Enterprise-level patterns
+- Features outside scope.md
+
+If a requested implementation is not documented, ask for clarification before proceeding.
 
 ---
 

@@ -262,7 +262,7 @@ TASK-008
 
 ---
 
-## TASK-012
+## TASK-012 - ✅ COMPLETED
 
 Title:
 Event Management Frontend
@@ -298,13 +298,15 @@ Implementation Tasks:
 
 Acceptance Criteria:
 
-- Event dapat dibuat dari UI
-- Event dapat diperbarui
-- Event dapat dipublikasikan
+- ✅ Event dapat dibuat dari UI
+- ✅ Event dapat diperbarui
+- ✅ Event dapat dipublikasikan
 
 Verification Steps:
 
-- Manual event testing
+- ✅ TC-S2-B016: create_event_with_valid_data — PASS
+- ✅ TC-S2-B021: update_event — PASS
+- ✅ TC-S2-B023: publish_event — PASS
 
 Dependencies:
 
@@ -312,7 +314,7 @@ TASK-011
 
 ---
 
-## TASK-013
+## TASK-013 - ✅ COMPLETED
 
 Title:
 Event Discovery Module
@@ -350,15 +352,15 @@ Implementation Tasks:
 
 Acceptance Criteria:
 
-- Event tampil dengan benar
-- Search berfungsi
-- Filter berfungsi
+- ✅ Event tampil dengan benar
+- ✅ Search berfungsi
+- ✅ Filter berfungsi
 
 Verification Steps:
 
-- Search testing
-- Filter testing
-- Pagination testing
+- ✅ TC-S2-B027: list_events_with_pagination — PASS
+- ✅ TC-S2-B028: search_events — PASS
+- ✅ TC-S2-B029: filter_events_by_category — PASS
 
 Dependencies:
 
@@ -366,7 +368,7 @@ TASK-011
 
 ---
 
-## TASK-014
+## TASK-014 - ✅ COMPLETED
 
 Title:
 Volunteer Registration Backend
@@ -401,15 +403,16 @@ Implementation Tasks:
 
 Acceptance Criteria:
 
-- Relawan dapat mendaftar
-- Duplikasi dicegah
-- Riwayat partisipasi tersedia
+- ✅ Relawan dapat mendaftar
+- ✅ Duplikasi dicegah
+- ✅ Riwayat partisipasi tersedia
 
 Verification Steps:
 
-- Registration testing
-- Duplicate testing
-- History testing
+- ✅ TC-S2-B030: volunteer_register_for_published_event — PASS
+- ✅ TC-S2-B031: volunteer_cannot_register_twice — PASS
+- ✅ TC-S2-B034: view_registration_history — PASS
+- ✅ TC-S2-B035: filter_history_by_status — PASS
 
 Dependencies:
 
@@ -417,7 +420,7 @@ TASK-011
 
 ---
 
-## TASK-015
+## TASK-015 - ✅ COMPLETED
 
 Title:
 Volunteer Participation Frontend
@@ -452,13 +455,13 @@ Implementation Tasks:
 
 Acceptance Criteria:
 
-- Relawan dapat mendaftar event
-- Status partisipasi tampil
-- Riwayat partisipasi tampil
+- ✅ Relawan dapat mendaftar event
+- ✅ Status partisipasi tampil
+- ✅ Riwayat partisipasi tampil
 
 Verification Steps:
 
-- End-to-end registration testing
+- ✅ TC-S2-F007: public event detail + register flow (manual / Playwright)
 
 Dependencies:
 
@@ -467,7 +470,7 @@ TASK-013
 
 ---
 
-## TASK-016
+## TASK-016 - ✅ COMPLETED
 
 Title:
 Organization, Event & Volunteer QA
@@ -498,13 +501,16 @@ Implementation Tasks:
 
 Acceptance Criteria:
 
-- Tidak ada critical bug
-- Workflow utama berjalan
+- ✅ Tidak ada critical bug
+- ✅ Workflow utama berjalan
 
 Verification Steps:
 
-- Execute QA checklist
-- Produce QA report
+- ✅ PHPUnit: 64/64 feature tests — PASS
+- ✅ TestSprite: 30/30 backend API tests — PASS
+- ✅ QA report generated: testsprite_tests/testsprite_sprint02_qa_report.md
+- ✅ 8/8 Definition of Done criteria — MET
+- ✅ 5/5 Sprint Exit Criteria — MET
 
 Dependencies:
 

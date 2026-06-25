@@ -75,6 +75,8 @@ Contoh:
 * EventService
 * CertificateService
 * AttendanceService
+* EventReportService
+* AiReportService
 
 ---
 
@@ -197,6 +199,56 @@ Setiap feature harus terisolasi dan mudah dipelihara.
 
 ---
 
+# AI Service Standards
+
+## AI Integration Principle
+
+Seluruh integrasi AI harus diisolasi pada Service Layer.
+
+AI tidak boleh dipanggil langsung dari:
+
+* Controller
+* Repository
+* React Component
+
+Flow yang wajib digunakan:
+
+Controller
+↓
+Service
+↓
+AI Provider Service
+↓
+External AI API
+
+---
+
+## AI Output Rules
+
+AI hanya berfungsi sebagai assistant dan tidak boleh mengambil keputusan bisnis secara otomatis.
+
+Examples:
+
+* AI dapat menghasilkan draft laporan kegiatan.
+* AI dapat menghasilkan draft deskripsi event.
+* AI tidak boleh langsung menyimpan laporan final.
+* AI tidak boleh mengubah status event.
+* AI tidak boleh melakukan approval otomatis.
+
+---
+
+## AI Failure Handling
+
+Kegagalan AI tidak boleh menyebabkan workflow utama gagal.
+
+Jika AI gagal:
+
+* tampilkan pesan error yang jelas
+* izinkan pengguna melanjutkan workflow manual
+* catat error ke application log
+
+---
+
 # State Management
 
 ## Zustand
@@ -230,6 +282,13 @@ Benefits:
 * invalidation
 
 Fetch API manual hanya diperbolehkan pada kasus khusus.
+
+AI generation request wajib menggunakan mutation pattern melalui TanStack Query.
+
+Examples:
+
+* generateAiReportMutation
+* generateAiDescriptionMutation
 
 ---
 
@@ -368,7 +427,7 @@ $user = User::find($id);
 
 Gunakan exception handling yang konsisten.
 
-Business exception harus memiliki pesan yang jelas dan dapat ditampilkan ke pengguna jika diperlukan.
+Business exception harus memiliki pesan yang jelas dan dapat ditampilkan ke pengguna jika diperlukan. AI-related exception harus ditangani secara khusus dan tidak boleh menghentikan workflow utama sistem.
 
 ---
 
@@ -379,6 +438,7 @@ Error harus:
 * ditangani dengan graceful
 * menampilkan feedback kepada pengguna
 * tidak menyebabkan aplikasi crash
+* AI generation failure harus menampilkan opsi retry dan tetap mengizinkan input manual.
 
 ---
 
@@ -454,6 +514,10 @@ AI Agent wajib:
 * mengikuti database-design.md
 * mengikuti api-conventions.md
 * mengikuti coding-standards.md
+* memisahkan AI logic ke service khusus
+* memastikan seluruh AI output dapat diedit pengguna
+* memastikan AI tidak mengambil keputusan bisnis otomatis
+* menyediakan fallback workflow manual jika AI gagal
 
 AI Agent tidak boleh:
 
@@ -461,5 +525,9 @@ AI Agent tidak boleh:
 * mengubah arsitektur tanpa persetujuan
 * membuat business logic di controller
 * membuat query database di frontend
+* menyimpan output AI secara otomatis tanpa konfirmasi pengguna
+* mengubah status bisnis berdasarkan hasil AI
+* memanggil AI provider langsung dari controller
+* mencampurkan AI prompt dengan business logic utama
 
 Jika terdapat konflik, architecture.md menjadi sumber kebenaran utama.

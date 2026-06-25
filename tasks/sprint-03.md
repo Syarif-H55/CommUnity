@@ -41,6 +41,7 @@ Event Reporting
 
 - US-017 Submit Event Report
 - US-018 Review Event Report
+- US-022 Generate AI Event Report Draft
 
 Certificate Management
 
@@ -213,6 +214,59 @@ TASK-017
 
 ---
 
+## TASK-019A
+
+Title:
+AI Event Report Assistant Backend
+
+Owner:
+Syarif
+
+Support Owner:
+Irham
+
+Priority:
+Medium
+
+Estimated Effort:
+M
+
+Related User Stories:
+
+- US-023
+
+Objective:
+
+Menyediakan layanan AI untuk menghasilkan draft laporan kegiatan berdasarkan data event, attendance, dan input tambahan dari koordinator.
+
+Implementation Tasks:
+
+- AI Report Service
+- AI Prompt Builder
+- AI Report Generation Endpoint
+- AI Response Validation
+- AI Usage Logging
+- Error Handling & Fallback Response
+
+Acceptance Criteria:
+
+- AI dapat menghasilkan draft laporan
+- Draft berisi ringkasan kegiatan
+- Draft dapat diedit sebelum disimpan
+- Kegagalan AI tidak mengganggu workflow pelaporan
+
+Verification Steps:
+
+- AI report generation testing
+- Prompt validation testing
+- Error handling testing
+
+Dependencies:
+
+TASK-019
+
+---
+
 ## TASK-020
 
 Title:
@@ -260,6 +314,58 @@ Verification Steps:
 Dependencies:
 
 TASK-019
+
+---
+
+## TASK-020A
+
+Title:
+AI Event Report Assistant Frontend
+
+Owner:
+Abdillah
+
+Support Owner:
+Hiraldy
+
+Priority:
+Medium
+
+Estimated Effort:
+M
+
+Related User Stories:
+
+- US-023
+
+Objective:
+
+Menyediakan antarmuka AI Report Assistant pada halaman pelaporan kegiatan.
+
+Implementation Tasks:
+
+- Generate AI Report button
+- AI Report Preview Modal
+- Edit Generated Report
+- Insert Generated Content
+- Loading State
+- Error State Handling
+
+Acceptance Criteria:
+
+- User dapat menghasilkan draft AI
+- Draft dapat direview
+- Draft dapat diedit
+- Draft dapat digunakan sebagai laporan final
+
+Verification Steps:
+
+- Manual AI generation testing
+- UI workflow testing
+
+Dependencies:
+
+TASK-019A
 
 ---
 
@@ -492,12 +598,17 @@ Implementation Tasks:
 - End-to-end testing
 - Regression testing Sprint 01 & Sprint 02
 - Bug documentation
+- AI report generation testing
+- AI response validation
+- AI failure scenario testing
 
 Acceptance Criteria:
 
 - Tidak ada critical bug
 - Workflow berjalan end-to-end
 - Data konsisten
+- AI report draft dapat dihasilkan
+- AI error tidak menyebabkan crash aplikasi
 
 Verification Steps:
 
@@ -528,6 +639,11 @@ TASK-024
 - Report photo upload:
   - Minimum 1 photo
   - Maximum 5 photos
+  - AI-generated report is a draft only.
+  - User must review and edit the generated report before submission.
+  - AI does not automatically submit reports.
+  - AI output must be stored only after user confirmation.
+  - AI service failure must not block manual report creation.
 - Certificates are generated only after:
   - Event completed
   - Report approved
@@ -548,6 +664,9 @@ Sprint dianggap selesai apabila:
 - Certificate download berjalan.
 - Analytics dashboard berjalan.
 - Seluruh workflow terintegrasi.
+- AI Event Report Assistant dapat menghasilkan draft laporan.
+- Draft AI dapat diedit sebelum dikirim.
+- Workflow manual tetap berjalan tanpa AI.
 
 ---
 
@@ -563,3 +682,6 @@ Sebelum masuk fase Testing & Expo Preparation:
 - Analytics dashboard menampilkan data yang valid.
 - Seluruh workflow CommUnity berjalan end-to-end.
 - Tidak ada critical bug yang menghalangi demonstrasi Expo.
+- Koordinator dapat menghasilkan draft laporan menggunakan AI.
+- Draft AI dapat direview dan diedit sebelum submit.
+- Kegagalan AI tidak menghambat pelaporan manual.
