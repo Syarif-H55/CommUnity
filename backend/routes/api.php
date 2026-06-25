@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AttendanceController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationVerificationController;
 use App\Http\Controllers\Api\V1\EventCategoryController;
@@ -56,6 +57,15 @@ Route::prefix('v1')->group(function () {
         // Volunteer registration endpoints
         Route::get('/my-registrations', [VolunteerRegistrationController::class, 'myRegistrations']);
         Route::post('/events/{event}/register', [VolunteerRegistrationController::class, 'register']);
+
+        // Attendance endpoints
+        Route::get('/events/{event}/attendance-qr', [AttendanceController::class, 'generateQr']);
+        Route::post('/events/{event}/attendance/scan', [AttendanceController::class, 'scan']);
+        Route::get('/events/{event}/attendances', [AttendanceController::class, 'eventAttendances']);
+        Route::post('/events/{event}/attendances', [AttendanceController::class, 'manual']);
+        Route::patch('/events/{event}/attendances/{attendance}', [AttendanceController::class, 'updateAttendanceStatus']);
+        Route::get('/events/{event}/attendance-summary', [AttendanceController::class, 'summary']);
+        Route::get('/my-attendances', [AttendanceController::class, 'myAttendances']);
 
         // Admin endpoints
         Route::prefix('admin')->group(function () {

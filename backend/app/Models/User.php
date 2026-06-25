@@ -56,4 +56,14 @@ class User extends Authenticatable
             ->withPivot('registered_at')
             ->withTimestamps();
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'volunteer_id');
+    }
+
+    public function validatedAttendances()
+    {
+        return $this->hasMany(Attendance::class, 'validated_by');
+    }
 }

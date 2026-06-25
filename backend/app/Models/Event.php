@@ -64,4 +64,9 @@ class Event extends Model
             ->withPivot('registered_at')
             ->withTimestamps();
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }
