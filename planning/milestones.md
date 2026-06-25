@@ -359,6 +359,117 @@ Primary Responsibility:
 
 ---
 
+# Post-MVP Milestones
+
+## Milestone 7 — Notification & Multi-Organization (Sprint 04)
+
+### Objective
+
+Menambahkan sistem notifikasi in-app dan dukungan multi-organisasi.
+
+### Target Period
+
+Post-Expo
+
+### Deliverables
+
+* Notification CRUD
+* Organization Switcher
+* AI Event Description Assistant
+* Enhanced Analytics
+* Advanced Search
+
+### Success Criteria
+
+* Notifikasi berfungsi penuh.
+* User dapat switch organisasi.
+* AI dapat generate deskripsi event.
+* Search memiliki filter yang lebih baik.
+
+---
+
+## Milestone 8 — Advanced Features (Sprint 05)
+
+### Objective
+
+Menambahkan fitur pendukung operasional seperti email, export, dan public profile.
+
+### Target Period
+
+Post-Expo
+
+### Deliverables
+
+* Email Notification
+* Export Data (CSV)
+* Public Organization Profile
+* Multiple Documentation Galleries
+
+### Success Criteria
+
+* Email terkirim untuk event penting.
+* Export data berfungsi.
+* Public profile dapat diakses tanpa login.
+* Gallery dokumentasi mendukung grouping.
+
+---
+
+## Milestone 9 — Community Ecosystem (Sprint 06)
+
+### Objective
+
+Mengembangkan CommUnity menjadi platform kolaborasi sosial yang lebih luas.
+
+### Target Period
+
+Post-Expo
+
+### Deliverables
+
+* Volunteer Achievement System
+* Cross-Organization Collaboration
+* Event Review & Feedback
+* Donation Module
+* Public Certificate Verification
+* AI Volunteer Recommendation
+
+### Success Criteria
+
+* Achievement relawan tercatat.
+* Kolaborasi antar organisasi berfungsi.
+* Review dan rating event berfungsi.
+* Donasi dapat diproses.
+* Sertifikat dapat diverifikasi publik.
+* AI rekomendasi volunteer berfungsi.
+
+---
+
+# Milestone Dependencies
+
+```text
+Milestone 1
+      ↓
+Milestone 2
+      ↓
+Milestone 3
+      ↓
+Milestone 4
+      ↓
+Milestone 5
+      ↓
+Milestone 6 ─── Expo Release
+      ↓
+Milestone 7 ─── v1.1 (Post-MVP Enhancement)
+      ↓
+Milestone 8 ─── v1.5 (Advanced Features)
+      ↓
+Milestone 9 ─── v2.0 (Community Ecosystem)
+```
+
+Tim tidak boleh memulai milestone berikutnya sebelum deliverable utama milestone sebelumnya selesai.
+
+---
+
 # Milestone Completion Rule
 
 Sebuah milestone dianggap selesai apabila:

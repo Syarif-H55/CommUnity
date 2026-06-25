@@ -63,6 +63,88 @@
   - Summary statistics
   - Dashboard integration
 
+## Sprint 04
+
+### TASK-S04-004 — Multi-Organization Membership Frontend
+- **Owner:** Abdillah
+- **Support Owner:** Hiraldy
+- **Implementation Tasks:**
+  - Organization switcher dropdown (navbar/sidebar)
+  - Organization list page
+  - Active organization indicator
+  - Dashboard context per organization
+  - Switch organization confirmation
+
+### TASK-S04-006 — AI Event Description Assistant Frontend
+- **Owner:** Abdillah
+- **Support Owner:** Hiraldy
+- **Implementation Tasks:**
+  - Generate AI Description button (on create/edit event)
+  - AI Description Preview Modal
+  - Edit Generated Description
+  - Insert Generated Content
+  - Loading State
+  - Error State Handling
+
+---
+
+## Sprint 05
+
+### TASK-S05-004 — Export Data Frontend
+- **Owner:** Abdillah
+- **Support Owner:** Hiraldy
+- **Implementation Tasks:**
+  - Export button on attendance page
+  - Export button on report page
+  - Export format selector
+  - Download progress indicator
+  - Export history page
+
+### TASK-S05-008 — Multiple Documentation Galleries Frontend
+- **Owner:** Abdillah
+- **Support Owner:** Hiraldy
+- **Implementation Tasks:**
+  - Gallery management UI
+  - Gallery create/edit modal
+  - Gallery reorder (drag and drop)
+  - Gallery cover selector
+  - Gallery view on report detail
+
+---
+
+## Sprint 06
+
+### TASK-S06-004 — Community Collaboration Frontend
+- **Owner:** Abdillah
+- **Support Owner:** Hiraldy
+- **Implementation Tasks:**
+  - Collaboration invitation page
+  - Collaboration management page
+  - Shared event dashboard
+  - Collaboration partner list
+  - Invitation accept/reject UI
+
+### TASK-S06-008 — Donation Module Frontend
+- **Owner:** Abdillah
+- **Support Owner:** Hiraldy
+- **Implementation Tasks:**
+  - Campaign list page
+  - Campaign detail page
+  - Donation form
+  - Donation confirmation
+  - Campaign management dashboard
+  - Donation history page
+
+### TASK-S06-012 — AI Volunteer Recommendation Frontend
+- **Owner:** Abdillah
+- **Support Owner:** Hiraldy
+- **Implementation Tasks:**
+  - Recommended events section on dashboard
+  - Recommendation card component
+  - "Why recommended?" tooltip
+  - Feedback button (relevant/not relevant)
+  - Dismiss recommendation
+
 ---
 
 ## Support Tasks
@@ -72,3 +154,10 @@
 - TASK-012 — Event Management Frontend (Support untuk Hiraldy)
 - TASK-018 — Attendance Management Frontend (Support untuk Hiraldy)
 - TASK-022 — Certificate Management Frontend (Support untuk Hiraldy)
+- TASK-S04-002 — Notification System Frontend (Support untuk Hiraldy)
+- TASK-S04-008 — Dashboard & Search Enhancement Frontend (Support untuk Hiraldy)
+- TASK-S05-002 — Email Notification System Frontend (Support untuk Hiraldy)
+- TASK-S05-006 — Public Organization Profile Frontend (Support untuk Hiraldy)
+- TASK-S06-002 — Volunteer Achievement System Frontend (Support untuk Hiraldy)
+- TASK-S06-006 — Event Review & Feedback Frontend (Support untuk Hiraldy)
+- TASK-S06-010 — Public Certificate Verification Frontend (Support untuk Hiraldy)

@@ -94,8 +94,99 @@
 
 ---
 
+---
+
+## Sprint 04
+
+### TASK-S04-002 — Notification System Frontend
+- **Owner:** Hiraldy
+- **Support Owner:** Abdillah
+- **Implementation Tasks:**
+  - Notification bell icon (navbar)
+  - Notification dropdown
+  - Notification list page
+  - Read/unread indicator
+  - Mark as read interaction
+  - Empty state handling
+
+### TASK-S04-008 — Dashboard & Search Enhancement Frontend
+- **Owner:** Hiraldy
+- **Support Owner:** Abdillah
+- **Implementation Tasks:**
+  - Enhanced metric cards
+  - Data visualization improvements
+  - Advanced filter UI
+  - Export button
+  - Search result improvements
+
+---
+
+## Sprint 05
+
+### TASK-S05-002 — Email Notification System Frontend
+- **Owner:** Hiraldy
+- **Support Owner:** Abdillah
+- **Implementation Tasks:**
+  - Email notification preferences page
+  - Subscribe/unsubscribe email toggle
+  - Email notification history page
+  - Preference save integration
+
+### TASK-S05-006 — Public Organization Profile Frontend
+- **Owner:** Hiraldy
+- **Support Owner:** Abdillah
+- **Implementation Tasks:**
+  - Public organization page
+  - Organization info section
+  - Completed events list (public)
+  - Organization stats display
+  - Share organization profile
+
+---
+
+## Sprint 06
+
+### TASK-S06-002 — Volunteer Achievement System Frontend
+- **Owner:** Hiraldy
+- **Support Owner:** Abdillah
+- **Implementation Tasks:**
+  - Achievement page
+  - Achievement badges display
+  - Achievement progress bar
+  - Unlocked achievement animation
+  - Achievement detail modal
+
+### TASK-S06-006 — Event Review & Feedback Frontend
+- **Owner:** Hiraldy
+- **Support Owner:** Abdillah
+- **Implementation Tasks:**
+  - Review form (star rating + comment)
+  - Review list on event detail
+  - Review moderation page
+  - Satisfaction score display
+  - Review edit/delete
+
+### TASK-S06-010 — Public Certificate Verification Frontend
+- **Owner:** Hiraldy
+- **Support Owner:** Abdillah
+- **Implementation Tasks:**
+  - Certificate verification page (public)
+  - Verification result display
+  - Certificate detail view
+  - QR scanner for verification
+  - Invalid certificate handling
+
+---
+
 ## Support Tasks
 - TASK-001 — Project Repository Setup (Support untuk Syarif)
 - TASK-015 — Volunteer Participation Frontend (Support untuk Abdillah)
 - TASK-020 — Event Reporting Frontend (Support untuk Abdillah)
 - TASK-024 — Analytics Dashboard Frontend (Support untuk Abdillah)
+- TASK-S04-004 — Multi-Organization Membership Frontend (Support untuk Abdillah)
+- TASK-S04-006 — AI Event Description Assistant Frontend (Support untuk Abdillah)
+- TASK-S05-004 — Export Data Frontend (Support untuk Abdillah)
+- TASK-S05-008 — Multiple Documentation Galleries Frontend (Support untuk Abdillah)
+- TASK-S06-004 — Community Collaboration Frontend (Support untuk Abdillah)
+- TASK-S06-008 — Donation Module Frontend (Support untuk Abdillah)
+- TASK-S06-012 — AI Volunteer Recommendation Frontend (Support untuk Abdillah)

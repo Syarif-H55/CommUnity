@@ -401,6 +401,56 @@ Roadmap ini dibuat berdasarkan asumsi:
 
 ---
 
+# Sprint Mapping
+
+## Sprint 01 — Foundation
+- Authentication & Profile Management
+- **Sprint File:** `tasks/sprint-01.md`
+
+---
+
+## Sprint 02 — Core Features
+- Organization, Event & Volunteer Management
+- **Sprint File:** `tasks/sprint-02.md`
+
+---
+
+## Sprint 03 — Workflow Integration
+- Attendance, Reporting, Certificate & Analytics
+- AI Event Report Assistant
+- **Sprint File:** `tasks/sprint-03.md`
+
+---
+
+## Sprint 04 — Post-MVP Enhancement (v1.1)
+- In-App Notification System
+- Multi-Organization Membership (Organization Switcher)
+- AI Event Description Assistant
+- Dashboard & Search Enhancement
+- **Sprint File:** `tasks/sprint-04.md`
+
+---
+
+## Sprint 05 — Advanced Features (v1.5)
+- Email Notification
+- Export Attendance & Event Report
+- Public Organization Profile
+- Multiple Documentation Galleries
+- **Sprint File:** `tasks/sprint-05.md`
+
+---
+
+## Sprint 06 — Long-Term Vision (v2.0)
+- Volunteer Achievement System
+- Community Collaboration (Cross-Organization)
+- Event Review & Feedback
+- Donation Module
+- Public Certificate Verification
+- AI Volunteer Recommendation Engine
+- **Sprint File:** `tasks/sprint-06.md`
+
+---
+
 # Roadmap Summary
 
 Version 1.0 berfokus pada penyelesaian seluruh proses bisnis inti kegiatan sosial.
