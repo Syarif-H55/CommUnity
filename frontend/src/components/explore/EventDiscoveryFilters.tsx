@@ -15,7 +15,9 @@ interface EventDiscoveryFiltersProps {
 
 function EventDiscoveryFilters({ categories, cities, onFilterChange, initialParams, className }: EventDiscoveryFiltersProps) {
     const [search, setSearch] = useState(initialParams?.search || "")
-    const [selectedCategory, setSelectedCategory] = useState<number | undefined>(initialParams?.category_id)
+    const [selectedCategory, setSelectedCategory] = useState<number | undefined>(
+    typeof initialParams?.category_id === 'string' ? parseInt(initialParams.category_id) : initialParams?.category_id
+)
     const [selectedCity, setSelectedCity] = useState(initialParams?.city || "")
     const [dateFrom, setDateFrom] = useState(initialParams?.date_from || "")
     const [dateTo, setDateTo] = useState(initialParams?.date_to || "")

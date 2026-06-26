@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import { Handshake, User, Mail, Shield, LogOut, Settings, Loader2, Building2, CalendarDays, History, ArrowRight } from "lucide-react";
+import { Handshake, User, Mail, Shield, LogOut, Settings, Loader2, Building2, CalendarDays, History, QrCode, ArrowRight } from "lucide-react";
 
 function DashboardContent() {
   const router = useRouter();
@@ -142,6 +142,23 @@ function DashboardContent() {
                 </p>
                 <p className="text-xs text-emerald-600/70 dark:text-emerald-400/70">
                   Lihat kegiatan sosial yang Anda ikuti
+                </p>
+              </div>
+              <ArrowRight className="size-4 text-emerald-500 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+            <Link
+              href="/my-attendances"
+              className="group flex items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-50/50 px-4 py-3 transition-all hover:bg-emerald-100/50 dark:border-emerald-900/20 dark:bg-emerald-950/20 dark:hover:bg-emerald-950/30"
+            >
+              <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+                <QrCode className="size-5" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400">
+                  Riwayat Kehadiran
+                </p>
+                <p className="text-xs text-emerald-600/70 dark:text-emerald-400/70">
+                  Lihat catatan absensi Anda pada event
                 </p>
               </div>
               <ArrowRight className="size-4 text-emerald-500 transition-transform group-hover:translate-x-0.5" />

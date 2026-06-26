@@ -163,10 +163,62 @@ export interface RegistrationFilters {
     page?: number;
 }
 
+export interface EventCategory {
+    id: number;
+    name: string;
+}
+
+export interface EventQueryParams {
+    search?: string;
+    category_id?: string | number;
+    city?: string;
+    date?: string;
+    date_from?: string;
+    date_to?: string;
+    sort?: string;
+    page?: number;
+    per_page?: number;
+}
+
 export interface RegistrationPaginatedResponse {
     data: VolunteerRegistration[];
     current_page: number;
     last_page: number;
     per_page: number;
     total: number;
+}
+
+export type AttendanceStatus = 'present' | 'late' | 'absent';
+
+export interface Attendance {
+    id: string;
+    event_id: string;
+    volunteer_id: string;
+    volunteer: Pick<User, 'id' | 'full_name' | 'username' | 'profile_photo_url'>;
+    attendance_status: AttendanceStatus;
+    attendance_time: string;
+    validated_by: string | null;
+    validator?: Pick<User, 'id' | 'full_name'>;
+    event?: Event;
+    created_at: string;
+}
+
+export interface AttendanceSummary {
+    total_registered: number;
+    present: number;
+    late: number;
+    absent: number;
+    attendance_rate: number;
+}
+
+export interface QRData {
+    event_id: string;
+    event_title: string;
+    qr_content: string;
+}
+
+export interface AttendanceFilters {
+    status?: string;
+    per_page?: number;
+    page?: number;
 }

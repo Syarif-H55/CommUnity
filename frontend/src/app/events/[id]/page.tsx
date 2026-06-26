@@ -17,7 +17,7 @@ import {
     Handshake, ArrowLeft, LogOut, Loader2, Calendar, MapPin, Clock,
     Users, Edit3, Trash2, Send, CheckCircle2, XCircle, Building2,
     ImageOff, Globe, User, Shield, AlertTriangle, FileText, Share2,
-    ChevronRight, ExternalLink, Sparkles, PartyPopper
+    ChevronRight, ExternalLink, Sparkles, PartyPopper, QrCode
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -419,6 +419,17 @@ function EventDetailContent() {
                                         <Edit3 className="size-4" />
                                     </div>
                                     <span className="flex-1">Edit Event</span>
+                                    <ChevronRight className="size-4 text-muted-foreground" />
+                                </Link>
+
+                                <Link
+                                    href={`/events/${event.id}/attendance`}
+                                    className="flex items-center gap-3 rounded-xl border border-border px-4 py-3 text-sm font-medium transition-all hover:border-emerald-200 hover:bg-emerald-50/50 dark:hover:border-emerald-800/30 dark:hover:bg-emerald-950/20"
+                                >
+                                    <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                        <QrCode className="size-4" />
+                                    </div>
+                                    <span className="flex-1">Kelola Absensi</span>
                                     <ChevronRight className="size-4 text-muted-foreground" />
                                 </Link>
 

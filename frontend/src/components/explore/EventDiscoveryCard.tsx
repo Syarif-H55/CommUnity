@@ -14,7 +14,7 @@ interface EventDiscoveryCardProps {
 function EventDiscoveryCard({ event, className }: EventDiscoveryCardProps) {
     const eventDate = new Date(event.event_date)
     const isUpcoming = eventDate > new Date()
-    const isFull = event.participants_count >= event.quota
+    const isFull = event.current_participants >= event.quota
     const location = [event.city, event.province].filter(Boolean).join(", ") || event.location_name || "—"
 
     return (
@@ -49,13 +49,11 @@ function EventDiscoveryCard({ event, className }: EventDiscoveryCardProps) {
                         )}
                     </div>
 
-                    {event.organization_logo_url && (
+                    {event.organization_name && (
                         <div className="absolute top-3 right-3 z-10">
-                            <img
-                                src={event.organization_logo_url}
-                                alt={event.organization_name || ""}
-                                className="size-8 rounded-full border-2 border-white/30 bg-white/20 backdrop-blur-sm object-cover"
-                            />
+                            <div className="size-8 rounded-full border-2 border-white/30 bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                <Building2 className="size-4 text-white" />
+                            </div>
                         </div>
                     )}
                 </div>
@@ -100,7 +98,7 @@ function EventDiscoveryCard({ event, className }: EventDiscoveryCardProps) {
                         <div className="flex items-center gap-1.5">
                             <Users className="size-3.5 shrink-0" />
                             <span>
-                                {event.participants_count}/{event.quota} peserta
+                                {event.current_participants}/{event.quota} peserta
                             </span>
                         </div>
                     </div>
