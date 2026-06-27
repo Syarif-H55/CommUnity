@@ -9,9 +9,10 @@ import { Handshake, Loader2 } from "lucide-react";
 function DashboardRedirect() {
     const router = useRouter();
     const context = useRoleStore((state) => state.context);
+    const isLoading = useRoleStore((state) => state.isLoading);
 
     useEffect(() => {
-        if (!context) return;
+        if (!context || isLoading) return;
 
         if (context.is_admin) {
             router.replace("/admin/dashboard");
@@ -22,7 +23,7 @@ function DashboardRedirect() {
         } else {
             router.replace("/discover");
         }
-    }, [context, router]);
+    }, [context, isLoading, router]);
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">

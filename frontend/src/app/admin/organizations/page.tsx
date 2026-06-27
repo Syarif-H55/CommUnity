@@ -1,7 +1,8 @@
-"use client";
+ "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
 import { useLogout } from "@/hooks/useAuth";
 import { useAdminOrganizations, useVerifyOrganization } from "@/hooks/useAdmin";
@@ -29,7 +30,18 @@ const verificationBadge = (status: string) => {
 function AdminOrganizationsContent() {
     const user = useAuthStore((state) => state.user);
     const logout = useLogout();
-    const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
+    const searchParams = useSearchParams();
+    const [statusFilter, setStatusFilter] = useState<string | undefined>(
+        searchParams.get('status') || undefined
+    );
+
+    useEffect(() => {
+        const statusParam = searchParams.get('status');
+        if (statusParam) {
+            setStatusFilter(statusParam);
+        }
+    }, [searchParams]);
+
     const { data, isLoading } = useAdminOrganizations({ status: statusFilter, per_page: 20 });
     const verifyOrg = useVerifyOrganization();
 

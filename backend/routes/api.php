@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\Admin\OrganizationVerificationController;
 use App\Http\Controllers\Api\V1\EventCategoryController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\EventPermissionController;
+use App\Http\Controllers\Api\V1\AiReportController;
 use App\Http\Controllers\Api\V1\EventReportController;
 use App\Http\Controllers\Api\V1\OrganizationController;
 use App\Http\Controllers\Api\V1\OrganizationMemberController;
@@ -85,6 +86,9 @@ Route::prefix('v1')->group(function () {
         Route::delete('/events/{event}/report/photos/{photo}', [EventReportController::class, 'deletePhoto']);
         Route::post('/events/{event}/report/submit', [EventReportController::class, 'submit']);
         Route::post('/events/{event}/report/review', [EventReportController::class, 'review']);
+
+        // AI Report Assistant
+        Route::post('/events/{event}/report/ai-generate', [AiReportController::class, 'generate']);
 
         // Admin endpoints
         Route::prefix('admin')->group(function () {

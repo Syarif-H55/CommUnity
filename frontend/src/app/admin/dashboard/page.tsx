@@ -124,7 +124,7 @@ function AdminDashboardContent() {
                                         </CardDescription>
                                     </div>
                                     <Link
-                                        href="/admin/organizations"
+                                        href="/admin/organizations?status=pending"
                                         className="text-sm font-medium text-emerald-600 hover:text-emerald-700"
                                     >
                                         Lihat Semua

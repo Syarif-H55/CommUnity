@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { authService, LoginRequest, RegisterRequest } from '@/services/auth.service';
 import { useAuthStore } from '@/stores/auth.store';
+import { useRoleStore } from '@/stores/role.store';
 import { useRouter } from 'next/navigation';
 import type { User } from '@/types';
 
@@ -34,12 +35,17 @@ export function useRegister() {
 
 export function useLogout() {
     const logout = useAuthStore((state) => state.logout);
+    const clearContext = useRoleStore((state) => state.clearContext);
     const router = useRouter();
+    const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: () => authService.logout(),
         onSuccess: () => {
             logout();
+            clearContext();
+            queryClient.removeQueries({ queryKey: ['user-context'] });
+            queryClient.clear();
             router.push('/login');
         },
     });
