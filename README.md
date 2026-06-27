@@ -70,8 +70,11 @@ php artisan key:generate
 # Jalankan migration (gunakan SQLite default)
 php artisan migrate
 
-# (Opsional) Isi data dummy
+# Isi data dummy (wajib: DummyDataSeeder + EventCategorySeeder)
 php artisan db:seed
+
+# Reset database + seed ulang
+php artisan migrate:fresh --seed
 
 # Jalankan server
 php artisan serve --port=8000
@@ -130,13 +133,53 @@ NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
 | POST | `/api/v1/auth/forgot-password` | No | Request token reset password |
 | POST | `/api/v1/auth/reset-password` | No | Reset password dengan token |
 
-## Akun Default (setelah seeder)
+## Akun Demo (setelah seeder)
 
-| Role | Username | Password |
-|------|----------|----------|
-| User | `testuser` | `password` |
+Jalankan `php artisan db:seed` (atau `php artisan migrate:fresh --seed`) untuk membuat seluruh data demo.
 
-> Jalankan `php artisan db:seed` untuk membuat akun default.
+### 7 Akun Demo
+
+| Role | Nama | Username | Email | Password |
+|------|------|----------|-------|----------|
+| 🛡️ **Admin Sistem** | Admin CommUnity | `admin` | `admin@community.com` | `password` |
+| 🏢 **Penyelenggara** | Budi Santoso | `budi_santoso` | `budi@example.com` | `password` |
+| 📋 **Koordinator Event** | Siti Rahayu | `siti_rahayu` | `siti@example.com` | `password` |
+| 🤝 **Relawan** | Ahmad Fauzi | `ahmad_fauzi` | `ahmad@example.com` | `password` |
+| 🤝 **Relawan** | Dewi Lestari | `dewi_lestari` | `dewi@example.com` | `password` |
+| 🤝 **Relawan** | Rudi Hermawan | `rudi_hermawan` | `rudi@example.com` | `password` |
+| 🤝 **Relawan** | Maya Anggraini | `maya_anggraini` | `maya@example.com` | `password` |
+
+### 3 Organisasi
+
+| Nama | Pemilik | Status | Keterangan |
+|------|---------|--------|------------|
+| 🟢 Yayasan Sejahtera | Budi Santoso | **Verified** | Organisasi aktif untuk demo |
+| 🟡 Komunitas Peduli Lingkungan | Budi Santoso | **Pending** | Menunggu verifikasi admin |
+| 🔴 Forum Relawan Jakarta | Budi Santoso | **Rejected** | Ditolak karena dokumen tidak lengkap |
+
+### 5 Event (oleh Yayasan Sejahtera)
+
+| Judul | Tanggal | Lokasi | Kategori | Status | Kuota |
+|-------|---------|--------|----------|--------|-------|
+| 🌿 Bakti Sosial Bersih Lingkungan | 2026-07-15 | Jakarta | Lingkungan | **published** | 50 |
+| 📚 Kelas Belajar Gratis untuk Anak | 2026-07-20 | Bandung | Pendidikan | **published** | 30 |
+| 📖 Donasi Buku untuk Perpustakaan Desa | 2026-08-01 | Bogor | Pendidikan | **draft** | 100 |
+| 🏃 Senam Sehat Bersama | 2026-07-25 | Jakarta | Kesehatan | **published** | 40 |
+| ❤️ Bakti Sosial Panti Asuhan | 2026-08-10 | Depok | Sosial | **draft** | 25 |
+
+### 7 Volunteer Registrations
+
+| Relawan | Event |
+|---------|-------|
+| Ahmad Fauzi | Bakti Sosial Bersih Lingkungan |
+| Ahmad Fauzi | Kelas Belajar Gratis untuk Anak |
+| Dewi Lestari | Bakti Sosial Bersih Lingkungan |
+| Rudi Hermawan | Senam Sehat Bersama |
+| Maya Anggraini | Kelas Belajar Gratis untuk Anak |
+| Maya Anggraini | Bakti Sosial Bersih Lingkungan |
+| Dewi Lestari | Senam Sehat Bersama |
+
+> Semua data dibuat oleh `DummyDataSeeder` di `backend/database/seeders/DummyDataSeeder.php`.
 
 ## Command Penting
 

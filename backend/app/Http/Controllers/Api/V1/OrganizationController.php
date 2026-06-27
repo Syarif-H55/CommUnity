@@ -8,11 +8,14 @@ use App\Http\Requests\Organization\UploadDocumentRequest;
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
 use App\Services\OrganizationService;
+use App\Traits\AuthorizesOrganizationAccess;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class OrganizationController extends BaseController
 {
+    use AuthorizesOrganizationAccess;
+
     public function __construct(
         private readonly OrganizationService $organizationService
     ) {}
@@ -22,8 +25,13 @@ class OrganizationController extends BaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $organizations = Organization::withCount('members')
-            ->paginate($request->input('per_page', 10));
+        $query = Organization::withCount('members');
+
+        if (!$request->user()->is_admin) {
+            $query->where('verification_status', 'approved');
+        }
+
+        $organizations = $query->paginate($request->input('per_page', 10));
 
         return response()->json([
             'success' => true,
@@ -73,6 +81,8 @@ class OrganizationController extends BaseController
      */
     public function update(UpdateOrganizationRequest $request, Organization $organization): JsonResponse
     {
+        $this->authorizeOrganizerOf($organization);
+
         $organization = $this->organizationService->update(
             $organization,
             $request->validated()
@@ -89,6 +99,8 @@ class OrganizationController extends BaseController
      */
     public function destroy(Organization $organization): JsonResponse
     {
+        $this->authorizeOrganizerOf($organization);
+
         $organization->delete();
 
         return $this->success(null, 'Organisasi berhasil dihapus.');
@@ -99,6 +111,8 @@ class OrganizationController extends BaseController
      */
     public function uploadDocument(UploadDocumentRequest $request, Organization $organization): JsonResponse
     {
+        $this->authorizeOrganizerOf($organization);
+
         $organization = $this->organizationService->uploadDocument(
             $organization,
             $request->file('document')

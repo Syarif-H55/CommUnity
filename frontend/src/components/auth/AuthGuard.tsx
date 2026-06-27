@@ -3,11 +3,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
+import { useRoleContext } from "@/hooks/useRoleContext";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const [hydrated, setHydrated] = useState(false);
+
+  useRoleContext();
 
   useEffect(() => {
     setHydrated(true);

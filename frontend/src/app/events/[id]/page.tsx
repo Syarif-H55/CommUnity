@@ -3,7 +3,6 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import AuthGuard from "@/components/auth/AuthGuard"
 import { useAuthStore } from "@/stores/auth.store"
 import { useLogout } from "@/hooks/useAuth"
 import { useEvent, usePublishEvent, useDeleteEvent } from "@/hooks/useEvent"
@@ -504,9 +503,5 @@ function EventDetailContent() {
 }
 
 export default function EventDetailPage() {
-    return (
-        <AuthGuard>
-            <EventDetailContent />
-        </AuthGuard>
-    )
+    return <EventDetailContent />
 }

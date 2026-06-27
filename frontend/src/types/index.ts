@@ -18,9 +18,22 @@ export interface User {
     full_name: string;
     email: string;
     username: string;
-    role: 'admin' | 'organizer' | 'coordinator' | 'volunteer';
+    is_admin: boolean;
     profile_photo_url: string | null;
     created_at: string;
+}
+
+export interface UserRoleContext {
+    is_admin: boolean;
+    organizations: OrganizationMembership[];
+    is_organizer: boolean;
+    is_coordinator: boolean;
+}
+
+export interface OrganizationMembership {
+    id: string;
+    name: string;
+    role: 'Penyelenggara' | 'Koordinator Event';
 }
 
 export type VerificationStatus = 'pending' | 'approved' | 'rejected';
@@ -31,13 +44,16 @@ export interface Organization {
     id: string;
     name: string;
     description: string;
+    organization_email?: string | null;
     logo: string | null;
     logo_url: string | null;
     verification_document: string | null;
     verification_status: VerificationStatus;
+    rejection_reason?: string | null;
     verified_at: string | null;
     created_at: string;
     updated_at: string;
+    members_count?: number;
     member_count?: number;
     event_count?: number;
     role?: OrganizationRole;
@@ -71,8 +87,24 @@ export interface OrganizationDocumentUpload {
 export interface DashboardStats {
     total_organizations: number;
     total_events: number;
-    total_members: number;
+    total_users: number;
     pending_verification: number;
+    recent_events?: {
+        id: string;
+        title: string;
+        status: string;
+        start_time: string;
+        organization_name: string | null;
+        created_at: string;
+    }[];
+    recent_users?: {
+        id: string;
+        full_name: string;
+        username: string;
+        email: string;
+        is_admin: boolean;
+        created_at: string;
+    }[];
 }
 
 export interface EventFilters {

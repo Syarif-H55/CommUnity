@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import AuthGuard from "@/components/auth/AuthGuard"
+import RoleGuard from "@/components/auth/RoleGuard"
 import { useOrganization, useUploadDocument, useOrganizationMembers, useAddMember, useUpdateMemberRole, useRemoveMember } from "@/hooks/useOrganization"
 import { useAuthStore } from "@/stores/auth.store"
 import { useLogout } from "@/hooks/useAuth"
@@ -569,9 +570,14 @@ function OrganizationDetailContent() {
 }
 
 export default function OrganizationDetailPage() {
+    const params = useParams()
+    const id = params.id as string
+
     return (
         <AuthGuard>
-            <OrganizationDetailContent />
+            <RoleGuard allowedRoles={["organizer", "coordinator"]} organizationId={id}>
+                <OrganizationDetailContent />
+            </RoleGuard>
         </AuthGuard>
     )
 }

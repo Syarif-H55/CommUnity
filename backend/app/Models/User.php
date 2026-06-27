@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Attendance::class, 'validated_by');
     }
+
+    public function submittedReports()
+    {
+        return $this->hasMany(EventReport::class, 'submitted_by');
+    }
 }

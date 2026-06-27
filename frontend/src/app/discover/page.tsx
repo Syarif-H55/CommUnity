@@ -9,7 +9,7 @@ import { EventCard } from "@/components/event"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
 import {
-    Handshake, Search, X, Loader2, Sparkles, LogIn, UserPlus,
+    Handshake, Search, X, Loader2, Sparkles,
     CalendarDays, MapPin, ChevronLeft, ChevronRight, SlidersHorizontal
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -116,46 +116,6 @@ export default function DiscoverPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            {/* Header */}
-            <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
-                <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link href="/" className="flex size-9 items-center justify-center rounded-xl bg-emerald-600">
-                            <Handshake className="size-5 text-white" />
-                        </Link>
-                        <span className="text-lg font-semibold tracking-tight">CommUnity</span>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        {isAuthenticated ? (
-                            <Link
-                                href="/dashboard"
-                                className="inline-flex shrink-0 items-center justify-center rounded-lg bg-emerald-600 px-4 h-8 gap-1.5 text-sm font-medium whitespace-nowrap text-white hover:bg-emerald-700 transition-all shadow-sm"
-                            >
-                                Dashboard
-                            </Link>
-                        ) : (
-                            <>
-                                <Link
-                                    href="/login"
-                                    className="inline-flex shrink-0 items-center justify-center rounded-lg border border-border bg-background px-3 h-8 gap-1.5 text-sm font-medium whitespace-nowrap text-foreground hover:bg-muted transition-all"
-                                >
-                                    <LogIn className="size-4" />
-                                    <span className="hidden sm:inline">Masuk</span>
-                                </Link>
-                                <Link
-                                    href="/register"
-                                    className="inline-flex shrink-0 items-center justify-center rounded-lg bg-emerald-600 px-3 h-8 gap-1.5 text-sm font-medium whitespace-nowrap text-white hover:bg-emerald-700 transition-all shadow-sm"
-                                >
-                                    <UserPlus className="size-4" />
-                                    <span className="hidden sm:inline">Daftar</span>
-                                </Link>
-                            </>
-                        )}
-                    </div>
-                </div>
-            </header>
-
             <main className="mx-auto max-w-7xl px-6 py-8 space-y-8">
                 {/* Hero Section */}
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 p-8 md:p-12">

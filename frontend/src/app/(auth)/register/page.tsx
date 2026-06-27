@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRegister } from "@/hooks/useAuth";
 import type { AxiosError } from "axios";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,7 @@ import {
   Check,
   X,
   Search,
+  Building2,
 } from "lucide-react";
 import type { ApiResponse } from "@/types";
 
@@ -40,8 +41,37 @@ interface FormErrors {
   password_confirmation?: string;
 }
 
-export default function RegisterPage() {
+const REGISTER_TYPES = {
+  volunteer: {
+    title: "Daftar sebagai Relawan",
+    description: "Temukan dan ikuti kegiatan sosial yang sesuai dengan minat Anda",
+    icon: UserPlus,
+    redirect: "/discover",
+    badgeLabel: "Relawan",
+    badgeClass: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+    successText: "Langsung jelajahi kegiatan sosial",
+  },
+  organizer: {
+    title: "Daftar sebagai Penyelenggara",
+    description: "Buat dan kelola organisasi serta kegiatan sosial komunitas Anda",
+    icon: Building2,
+    redirect: "/organizations/register",
+    badgeLabel: "Penyelenggara",
+    badgeClass: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
+    successText: "Lanjutkan daftarkan organisasi Anda",
+  },
+} as const;
+
+type RegisterType = keyof typeof REGISTER_TYPES;
+
+function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const rawType = searchParams.get("type");
+  const [registerType, setRegisterType] = useState<RegisterType>(
+    rawType === "organizer" ? "organizer" : "volunteer"
+  );
+
   const register = useRegister();
   const [form, setForm] = useState({
     full_name: "",
@@ -54,6 +84,8 @@ export default function RegisterPage() {
   const [serverError, setServerError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const config = REGISTER_TYPES[registerType];
 
   function validate(): boolean {
     const newErrors: FormErrors = {};
@@ -106,7 +138,7 @@ export default function RegisterPage() {
       },
       {
         onSuccess: () => {
-          router.push("/");
+          router.push(config.redirect);
         },
         onError: (error) => {
           const axiosError = error as AxiosError<ApiResponse>;
@@ -148,13 +180,37 @@ export default function RegisterPage() {
     <Card className="animate-scale-in w-full border-emerald-100/80 bg-white/80 shadow-xl shadow-emerald-900/5 backdrop-blur-xl dark:border-emerald-900/20 dark:bg-card/80">
       <CardHeader className="pb-6 text-center">
         <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-200 shadow-sm ring-1 ring-emerald-200/50 dark:from-emerald-900/40 dark:to-emerald-800/40 dark:ring-emerald-700/30">
-          <UserPlus className="size-7 text-emerald-600 dark:text-emerald-400" />
+          <config.icon className="size-7 text-emerald-600 dark:text-emerald-400" />
         </div>
-        <CardTitle className="text-2xl font-bold tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
-          Buat Akun Baru
+
+        {/* Type badge */}
+        <div className="mb-3 flex items-center justify-center gap-2">
+          <span
+            className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ${config.badgeClass}`}
+          >
+            <config.icon className="size-3.5" />
+            {config.badgeLabel}
+          </span>
+          <Link
+            href={
+              registerType === "volunteer"
+                ? "/register?type=organizer"
+                : "/register?type=volunteer"
+            }
+            className="text-xs font-medium text-emerald-600 transition-colors hover:text-emerald-700 hover:underline dark:text-emerald-400 dark:hover:text-emerald-300"
+          >
+            Ganti
+          </Link>
+        </div>
+
+        <CardTitle
+          className="text-2xl font-bold tracking-tight"
+          style={{ fontFamily: "var(--font-heading)" }}
+        >
+          {config.title}
         </CardTitle>
         <CardDescription className="mt-1.5 text-sm">
-          Daftar untuk bergabung dengan komunitas dan mulai berkontribusi
+          {config.description}
         </CardDescription>
       </CardHeader>
 
@@ -399,11 +455,18 @@ export default function RegisterPage() {
               </span>
             ) : (
               <span className="flex items-center gap-2">
-                <UserPlus className="size-4" />
+                <config.icon className="size-4" />
                 Daftar
               </span>
             )}
           </Button>
+
+          <div className="rounded-xl bg-emerald-50/50 px-4 py-2.5 text-center text-xs text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-400">
+            {registerType === "volunteer"
+              ? "Setelah mendaftar, Anda bisa langsung menjelajahi dan mendaftar kegiatan sosial."
+              : "Setelah mendaftar, Anda akan diarahkan untuk membuat organisasi dan mengelola kegiatan."}
+          </div>
+
           <p className="text-center text-sm text-muted-foreground">
             Sudah punya akun?{" "}
             <Link
@@ -418,7 +481,9 @@ export default function RegisterPage() {
               <span className="w-full border-t border-border/50" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground/60">atau</span>
+              <span className="bg-card px-2 text-muted-foreground/60">
+                atau
+              </span>
             </div>
           </div>
           <Link
@@ -431,5 +496,26 @@ export default function RegisterPage() {
         </CardFooter>
       </form>
     </Card>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense
+      fallback={
+        <Card className="animate-scale-in w-full border-emerald-100/80 bg-white/80 shadow-xl shadow-emerald-900/5 backdrop-blur-xl dark:border-emerald-900/20 dark:bg-card/80">
+          <CardHeader className="pb-6 text-center">
+            <CardTitle
+              className="text-2xl font-bold tracking-tight"
+              style={{ fontFamily: "var(--font-heading)" }}
+            >
+              Memuat...
+            </CardTitle>
+          </CardHeader>
+        </Card>
+      }
+    >
+      <RegisterForm />
+    </Suspense>
   );
 }

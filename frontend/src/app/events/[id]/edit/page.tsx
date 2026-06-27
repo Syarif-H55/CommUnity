@@ -4,7 +4,6 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import AuthGuard from "@/components/auth/AuthGuard"
 import { useAuthStore } from "@/stores/auth.store"
 import { useLogout } from "@/hooks/useAuth"
 import { useEvent, useUpdateEvent } from "@/hooks/useEvent"
@@ -140,9 +139,5 @@ function EditEventContent() {
 }
 
 export default function EditEventPage() {
-    return (
-        <AuthGuard>
-            <EditEventContent />
-        </AuthGuard>
-    )
+    return <EditEventContent />
 }

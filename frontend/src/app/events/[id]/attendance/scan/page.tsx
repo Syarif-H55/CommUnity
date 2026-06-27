@@ -3,7 +3,6 @@
 import { useRef, useEffect, useState, useCallback } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import AuthGuard from "@/components/auth/AuthGuard"
 import { useAuthStore } from "@/stores/auth.store"
 import { useLogout } from "@/hooks/useAuth"
 import { useEvent } from "@/hooks/useEvent"
@@ -438,9 +437,5 @@ function QRScannerContent() {
 }
 
 export default function QRScannerPage() {
-    return (
-        <AuthGuard>
-            <QRScannerContent />
-        </AuthGuard>
-    )
+    return <QRScannerContent />
 }

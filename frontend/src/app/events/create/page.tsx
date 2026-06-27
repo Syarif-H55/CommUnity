@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import AuthGuard from "@/components/auth/AuthGuard"
 import { useAuthStore } from "@/stores/auth.store"
 import { useLogout } from "@/hooks/useAuth"
 import { useCreateEvent } from "@/hooks/useEvent"
@@ -114,9 +113,5 @@ function CreateEventContent() {
 }
 
 export default function CreateEventPage() {
-    return (
-        <AuthGuard>
-            <CreateEventContent />
-        </AuthGuard>
-    )
+    return <CreateEventContent />
 }

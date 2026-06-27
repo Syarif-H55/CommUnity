@@ -14,6 +14,7 @@ class StoreEventRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'organization_id' => ['required', 'exists:organizations,id'],
             'category_id' => ['required', 'exists:event_categories,id'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
@@ -31,6 +32,8 @@ class StoreEventRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'organization_id.required' => 'Organisasi wajib diisi.',
+            'organization_id.exists' => 'Organisasi tidak ditemukan.',
             'category_id.required' => 'Kategori event wajib diisi.',
             'category_id.exists' => 'Kategori event tidak ditemukan.',
             'title.required' => 'Judul event wajib diisi.',

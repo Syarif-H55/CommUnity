@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from "react"
 import Link from "next/link"
-import AuthGuard from "@/components/auth/AuthGuard"
 import { useAuthStore } from "@/stores/auth.store"
 import { useLogout } from "@/hooks/useAuth"
 import { useEvents } from "@/hooks/useEvent"
@@ -425,9 +424,5 @@ function EventListView({ events }: { events: Event[] }) {
 }
 
 export default function EventsPage() {
-    return (
-        <AuthGuard>
-            <EventsContent />
-        </AuthGuard>
-    )
+    return <EventsContent />
 }

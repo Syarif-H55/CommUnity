@@ -69,4 +69,9 @@ class Event extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function report()
+    {
+        return $this->hasOne(EventReport::class);
+    }
 }

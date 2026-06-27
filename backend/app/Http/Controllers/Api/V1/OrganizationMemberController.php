@@ -8,10 +8,13 @@ use App\Http\Resources\MemberResource;
 use App\Models\Organization;
 use App\Models\User;
 use App\Services\MembershipService;
+use App\Traits\AuthorizesOrganizationAccess;
 use Illuminate\Http\JsonResponse;
 
 class OrganizationMemberController extends BaseController
 {
+    use AuthorizesOrganizationAccess;
+
     public function __construct(
         private readonly MembershipService $membershipService
     ) {}
@@ -21,6 +24,8 @@ class OrganizationMemberController extends BaseController
      */
     public function index(Organization $organization): JsonResponse
     {
+        $this->authorizeOrganizerOrCoordinatorOf($organization);
+
         $members = $this->membershipService->listMembers($organization);
 
         return $this->success(
@@ -34,6 +39,8 @@ class OrganizationMemberController extends BaseController
      */
     public function store(StoreMemberRequest $request, Organization $organization): JsonResponse
     {
+        $this->authorizeOrganizerOf($organization);
+
         $user = User::findOrFail($request->user_id);
 
         try {
@@ -54,6 +61,8 @@ class OrganizationMemberController extends BaseController
      */
     public function update(UpdateMemberRoleRequest $request, Organization $organization, User $member): JsonResponse
     {
+        $this->authorizeOrganizerOf($organization);
+
         try {
             $updatedMember = $this->membershipService->assignRole($organization, $member, $request->role);
         } catch (\RuntimeException $e) {
@@ -71,6 +80,8 @@ class OrganizationMemberController extends BaseController
      */
     public function destroy(Organization $organization, User $member): JsonResponse
     {
+        $this->authorizeOrganizerOf($organization);
+
         try {
             $this->membershipService->removeMember($organization, $member);
         } catch (\RuntimeException $e) {

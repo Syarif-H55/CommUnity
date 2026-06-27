@@ -8,11 +8,14 @@ use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\Organization;
 use App\Services\EventService;
+use App\Traits\AuthorizesOrganizationAccess;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class EventController extends BaseController
 {
+    use AuthorizesOrganizationAccess;
+
     public function __construct(
         private readonly EventService $eventService
     ) {}
@@ -37,12 +40,12 @@ class EventController extends BaseController
 
     public function store(StoreEventRequest $request): JsonResponse
     {
-        $organization = $request->user()->organizations()
-            ->wherePivot('role', 'Penyelenggara')
-            ->first();
+        $organization = Organization::findOrFail($request->input('organization_id'));
 
-        if (!$organization) {
-            return $this->error('Anda bukan penyelenggara organisasi mana pun.', 403);
+        $this->authorizeOrganizerOf($organization);
+
+        if ($organization->verification_status !== 'approved') {
+            return $this->error('Organisasi belum terverifikasi.', 403);
         }
 
         try {
@@ -71,6 +74,8 @@ class EventController extends BaseController
 
     public function update(UpdateEventRequest $request, Event $event): JsonResponse
     {
+        $this->authorizeEventAccess($event);
+
         try {
             $event = $this->eventService->update($event, $request->validated());
         } catch (\RuntimeException $e) {
@@ -86,12 +91,16 @@ class EventController extends BaseController
             return $this->error('Event yang sudah selesai tidak dapat dihapus.', 400);
         }
 
+        $this->authorizeOrganizerOf($event->organization);
+
         $event->delete();
         return $this->success(null, 'Event berhasil dihapus.');
     }
 
     public function publish(Request $request, Event $event): JsonResponse
     {
+        $this->authorizeOrganizerOf($event->organization);
+
         try {
             $event = $this->eventService->publish($event);
         } catch (\RuntimeException $e) {
@@ -103,13 +112,13 @@ class EventController extends BaseController
 
     public function myEvents(Request $request): JsonResponse
     {
-        $organization = $request->user()->organizations()->first();
+        $organizationIds = $request->user()->organizations()->pluck('organizations.id');
 
-        if (!$organization) {
+        if ($organizationIds->isEmpty()) {
             return $this->success([], 'Anda belum tergabung dalam organisasi mana pun.');
         }
 
-        $events = $this->eventService->getOrganizationEvents($organization);
+        $events = $this->eventService->getOrganizationEventsByIds($organizationIds);
 
         return $this->success(
             EventResource::collection($events),

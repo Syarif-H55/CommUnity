@@ -9,11 +9,14 @@ use App\Http\Resources\AttendanceResource;
 use App\Models\Attendance;
 use App\Models\Event;
 use App\Services\AttendanceService;
+use App\Traits\AuthorizesOrganizationAccess;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AttendanceController extends BaseController
 {
+    use AuthorizesOrganizationAccess;
+
     public function __construct(
         private readonly AttendanceService $attendanceService
     ) {}
@@ -145,24 +148,5 @@ class AttendanceController extends BaseController
                 'last_page' => $attendances->lastPage(),
             ],
         ]);
-    }
-
-    private function authorizeEventAccess(Event $event): void
-    {
-        $user = request()->user();
-
-        $isOrganizer = $user->organizations()
-            ->wherePivot('role', 'Penyelenggara')
-            ->where('organization_id', $event->organization_id)
-            ->exists();
-
-        $isCoordinator = $user->organizations()
-            ->wherePivot('role', 'Koordinator Event')
-            ->where('organization_id', $event->organization_id)
-            ->exists();
-
-        if (!$isOrganizer && !$isCoordinator && !$user->is_admin) {
-            abort(403, 'Anda tidak memiliki akses ke data attendance event ini.');
-        }
     }
 }

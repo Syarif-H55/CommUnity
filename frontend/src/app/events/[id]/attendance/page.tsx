@@ -3,7 +3,6 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import AuthGuard from "@/components/auth/AuthGuard"
 import { useAuthStore } from "@/stores/auth.store"
 import { useLogout } from "@/hooks/useAuth"
 import { useEvent } from "@/hooks/useEvent"
@@ -381,9 +380,5 @@ function AttendanceDashboardContent() {
 }
 
 export default function AttendancePage() {
-    return (
-        <AuthGuard>
-            <AttendanceDashboardContent />
-        </AuthGuard>
-    )
+    return <AttendanceDashboardContent />
 }

@@ -76,6 +76,14 @@ class EventService
             ->get();
     }
 
+    public function getOrganizationEventsByIds(\Illuminate\Support\Collection $organizationIds): Collection
+    {
+        return Event::with(['organization', 'coordinator', 'category'])
+            ->whereIn('organization_id', $organizationIds)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
     public function create(array $data, Organization $organization, User $coordinator): Event
     {
         if ($organization->verification_status !== 'approved') {

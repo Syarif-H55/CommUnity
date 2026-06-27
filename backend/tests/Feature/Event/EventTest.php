@@ -16,10 +16,12 @@ class EventTest extends TestCase
 
     private User $owner;
     private User $coordinator;
+    private User $volunteer;
     private Organization $organization;
     private EventCategory $category;
     private string $ownerToken;
     private string $coordinatorToken;
+    private string $volunteerToken;
 
     protected function setUp(): void
     {
@@ -37,6 +39,12 @@ class EventTest extends TestCase
             'full_name' => 'Koordinator Event',
             'username' => 'koordinator',
             'email' => 'koordinator@example.com',
+        ]);
+
+        $this->volunteer = User::factory()->create([
+            'full_name' => 'Relawan Biasa',
+            'username' => 'relawan',
+            'email' => 'relawan@example.com',
         ]);
 
         $this->organization = Organization::create([
@@ -59,6 +67,7 @@ class EventTest extends TestCase
 
         $this->ownerToken = $this->owner->createToken('auth-token')->plainTextToken;
         $this->coordinatorToken = $this->coordinator->createToken('auth-token')->plainTextToken;
+        $this->volunteerToken = $this->volunteer->createToken('auth-token')->plainTextToken;
     }
 
     private function authHeaders(string $token): array
@@ -69,6 +78,7 @@ class EventTest extends TestCase
     private function validEventData(): array
     {
         return [
+            'organization_id' => $this->organization->id,
             'category_id' => $this->category->id,
             'title' => 'Bersih Pantai',
             'description' => 'Kegiatan bersih-bersih pantai',
@@ -140,7 +150,7 @@ class EventTest extends TestCase
         $response->assertStatus(403)
             ->assertJson([
                 'success' => false,
-                'message' => 'Anda bukan penyelenggara organisasi mana pun.',
+                'message' => 'Hanya penyelenggara organisasi yang dapat melakukan tindakan ini.',
             ]);
     }
 
@@ -168,7 +178,9 @@ class EventTest extends TestCase
         $token = $unverifiedOwner->createToken('auth-token')->plainTextToken;
 
         $response = $this->withHeaders($this->authHeaders($token))
-            ->postJson('/api/v1/events', $this->validEventData());
+            ->postJson('/api/v1/events', array_merge($this->validEventData(), [
+                'organization_id' => $unverifiedOrg->id,
+            ]));
 
         $response->assertStatus(403)
             ->assertJson([
@@ -574,7 +586,58 @@ class EventTest extends TestCase
         $response->assertStatus(403)
             ->assertJson([
                 'success' => false,
-                'message' => 'Anda bukan penyelenggara organisasi mana pun.',
+                'message' => 'Hanya penyelenggara organisasi yang dapat melakukan tindakan ini.',
             ]);
+    }
+
+    private function createEvent(string $status = 'draft'): Event
+    {
+        return Event::create([
+            'organization_id' => $this->organization->id,
+            'coordinator_id' => $this->owner->id,
+            'category_id' => $this->category->id,
+            'title' => 'Bersih Pantai',
+            'description' => 'Kegiatan bersih-bersih pantai',
+            'quota' => 50,
+            'event_date' => now()->addMonth()->format('Y-m-d'),
+            'start_time' => '08:00',
+            'end_time' => '12:00',
+            'status' => $status,
+        ]);
+    }
+
+    /** @test */
+    public function non_owner_cannot_update_event()
+    {
+        $event = $this->createEvent();
+
+        $response = $this->withHeaders($this->authHeaders($this->volunteerToken))
+            ->patchJson("/api/v1/events/{$event->id}", [
+                'title' => 'Diubah Relawan',
+            ]);
+
+        $response->assertStatus(403);
+    }
+
+    /** @test */
+    public function non_owner_cannot_delete_event()
+    {
+        $event = $this->createEvent();
+
+        $response = $this->withHeaders($this->authHeaders($this->volunteerToken))
+            ->deleteJson("/api/v1/events/{$event->id}");
+
+        $response->assertStatus(403);
+    }
+
+    /** @test */
+    public function non_owner_cannot_publish_event()
+    {
+        $event = $this->createEvent();
+
+        $response = $this->withHeaders($this->authHeaders($this->volunteerToken))
+            ->patchJson("/api/v1/events/{$event->id}/publish");
+
+        $response->assertStatus(403);
     }
 }

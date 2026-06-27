@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import AuthGuard from "@/components/auth/AuthGuard"
+import RoleGuard from "@/components/auth/RoleGuard"
 import { useAuthStore } from "@/stores/auth.store"
 import { useLogout } from "@/hooks/useAuth"
 import { useOrganizations } from "@/hooks/useOrganization"
@@ -133,7 +134,9 @@ function OrganizationsContent() {
 export default function OrganizationsPage() {
     return (
         <AuthGuard>
-            <OrganizationsContent />
+            <RoleGuard allowedRoles={["organizer"]}>
+                <OrganizationsContent />
+            </RoleGuard>
         </AuthGuard>
     )
 }
