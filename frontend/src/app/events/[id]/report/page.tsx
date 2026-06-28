@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
-import { useParams, useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
 import { useAuthStore } from "@/stores/auth.store"
 import { useLogout } from "@/hooks/useAuth"
 import { useEvent } from "@/hooks/useEvent"
@@ -17,14 +17,12 @@ import type { PhotoItem } from "@/components/report"
 import {
     Handshake, ArrowLeft, LogOut, Loader2, FileText, AlertCircle,
     CheckCircle2, XCircle, Send, Sparkles, Calendar, MapPin, Clock,
-    Edit3, Eye, Ban, MessageSquare, Plus, ChevronRight, ExternalLink
+    Edit3, Eye, MessageSquare
 } from "lucide-react"
-import { cn } from "@/lib/utils"
 import type { ReportStatus } from "@/types"
 
 function ReportPageContent() {
     const params = useParams()
-    const router = useRouter()
     const eventId = params.id as string
     const user = useAuthStore((state) => state.user)
     const logout = useLogout()
@@ -47,6 +45,7 @@ function ReportPageContent() {
     const [aiLoading, setAiLoading] = useState(false)
     const [aiError, setAiError] = useState<string | null>(null)
     const [additionalNotes, setAdditionalNotes] = useState("")
+    const [showAiNotes, setShowAiNotes] = useState(false)
 
     useEffect(() => {
         if (report) {
@@ -172,9 +171,10 @@ function ReportPageContent() {
         })
     }
 
-    const handleAiGenerate = async () => {
+    const handleAiGenerate = () => {
         setAiLoading(true)
         setAiError(null)
+        setShowAiModal(false)
         aiGenerate.mutate(additionalNotes || undefined, {
             onSuccess: (response) => {
                 setAiDraft(response.data.data?.summary || "")
@@ -285,20 +285,31 @@ function ReportPageContent() {
                                 </CardDescription>
                             </div>
                             {isEditable && (
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={handleAiGenerate}
-                                    disabled={aiLoading || isMutationLoading}
-                                    className="gap-2 text-emerald-600 border-emerald-200 hover:bg-emerald-50 dark:border-emerald-800/30 dark:hover:bg-emerald-950/20"
-                                >
-                                    {aiLoading ? (
-                                        <Loader2 className="size-4 animate-spin" />
-                                    ) : (
-                                        <Sparkles className="size-4" />
-                                    )}
-                                    Generate AI
-                                </Button>
+                                <div className="flex items-center gap-2">
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => setShowAiNotes(!showAiNotes)}
+                                        className="gap-1.5 text-xs text-muted-foreground"
+                                    >
+                                        <MessageSquare className="size-3.5" />
+                                        Catatan
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={handleAiGenerate}
+                                        disabled={aiLoading || isMutationLoading}
+                                        className="gap-2 text-emerald-600 border-emerald-200 hover:bg-emerald-50 dark:border-emerald-800/30 dark:hover:bg-emerald-950/20"
+                                    >
+                                        {aiLoading ? (
+                                            <Loader2 className="size-4 animate-spin" />
+                                        ) : (
+                                            <Sparkles className="size-4" />
+                                        )}
+                                        Generate AI
+                                    </Button>
+                                </div>
                             )}
                         </div>
                     </CardHeader>
@@ -347,6 +358,33 @@ function ReportPageContent() {
                             maxPhotos={5}
                             disabled={isReadOnly || deletePhoto.isPending}
                         />
+
+                        {showAiNotes && isEditable && (
+                            <div className="space-y-2 pt-2 border-t border-border/50">
+                                <Label htmlFor="ai_notes" className="text-sm font-medium flex items-center gap-1.5">
+                                    <MessageSquare className="size-3.5 text-emerald-600" />
+                                    Catatan untuk AI
+                                </Label>
+                                <Textarea
+                                    id="ai_notes"
+                                    value={additionalNotes}
+                                    onChange={(e) => setAdditionalNotes(e.target.value)}
+                                    placeholder="Tambahkan catatan khusus untuk membantu AI menghasilkan draft yang lebih sesuai..."
+                                    rows={2}
+                                    className="text-sm"
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                    Catatan ini akan dikirim bersama data event ke AI untuk menghasilkan draft yang lebih akurat.
+                                </p>
+                            </div>
+                        )}
+
+                        {aiError && (
+                            <div className="flex items-center gap-2.5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/30 dark:bg-red-950/30 dark:text-red-400">
+                                <AlertCircle className="size-4 shrink-0" />
+                                <span>{aiError}</span>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
 
@@ -379,12 +417,6 @@ function ReportPageContent() {
                                     rows={12}
                                     className="resize-y min-h-[200px] font-mono text-sm"
                                 />
-                                {aiError && (
-                                    <p className="flex items-center gap-1.5 text-xs text-destructive">
-                                        <AlertCircle className="size-3.5" />
-                                        {aiError}
-                                    </p>
-                                )}
                             </CardContent>
                             <div className="flex items-center justify-end gap-2 px-6 pb-6">
                                 <Button
