@@ -254,3 +254,62 @@ export interface AttendanceFilters {
     per_page?: number;
     page?: number;
 }
+
+export type ReportStatus = 'draft' | 'submitted' | 'approved' | 'revision_requested';
+
+export interface ReportPhoto {
+    id: string;
+    report_id: string;
+    image_url: string;
+    created_at: string;
+}
+
+export interface EventReport {
+    id: string;
+    event_id: string;
+    event_title?: string;
+    submitted_by: string;
+    submitter_name?: string;
+    summary: string | null;
+    total_attendees: number | null;
+    report_status: ReportStatus;
+    rejection_reason: string | null;
+    photos: ReportPhoto[];
+    submitted_at: string | null;
+    approved_at: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface CreateReportRequest {
+    summary?: string;
+    total_attendees?: number;
+    photos?: File[];
+}
+
+export interface UpdateReportRequest {
+    summary?: string;
+    total_attendees?: number;
+}
+
+export interface ReviewReportRequest {
+    action: 'approved' | 'revision_requested';
+    rejection_reason?: string;
+}
+
+export interface AiGenerateReportResponse {
+    summary: string;
+    sections: {
+        summary?: string;
+        attendance?: string;
+        impact?: string;
+    };
+    provider: string;
+}
+
+export interface AnalyticsData {
+    total_events: number;
+    total_volunteers: number;
+    completed_events: number;
+    attendance_rate: number;
+}

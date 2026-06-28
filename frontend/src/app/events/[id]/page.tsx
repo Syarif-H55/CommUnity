@@ -432,6 +432,17 @@ function EventDetailContent() {
                                     <ChevronRight className="size-4 text-muted-foreground" />
                                 </Link>
 
+                                <Link
+                                    href={`/events/${event.id}/report`}
+                                    className="flex items-center gap-3 rounded-xl border border-border px-4 py-3 text-sm font-medium transition-all hover:border-emerald-200 hover:bg-emerald-50/50 dark:hover:border-emerald-800/30 dark:hover:bg-emerald-950/20"
+                                >
+                                    <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                        <FileText className="size-4" />
+                                    </div>
+                                    <span className="flex-1">Laporan Kegiatan</span>
+                                    <ChevronRight className="size-4 text-muted-foreground" />
+                                </Link>
+
                                 <button
                                     onClick={() => navigator.clipboard.writeText(window.location.href)}
                                     className="flex w-full items-center gap-3 rounded-xl border border-border px-4 py-3 text-sm font-medium transition-all hover:border-emerald-200 hover:bg-emerald-50/50 dark:hover:border-emerald-800/30 dark:hover:bg-emerald-950/20"
