@@ -13,6 +13,10 @@ use RuntimeException;
 
 class EventReportService
 {
+    public function __construct(
+        private readonly CertificateService $certificateService
+    ) {}
+
     public function createReport(Event $event, User $submitter, array $data): EventReport
     {
         if ($event->report()->exists()) {
@@ -121,6 +125,8 @@ class EventReportService
             ]);
 
             $report->event->update(['status' => 'completed']);
+
+            $this->certificateService->generateCertificates($report->event);
 
             return $report->fresh()->load(['documentations', 'submitter', 'event']);
         }

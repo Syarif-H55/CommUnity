@@ -71,4 +71,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(EventReport::class, 'submitted_by');
     }
+
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class, 'volunteer_id');
+    }
 }

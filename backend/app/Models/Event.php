@@ -74,4 +74,9 @@ class Event extends Model
     {
         return $this->hasOne(EventReport::class);
     }
+
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class);
+    }
 }

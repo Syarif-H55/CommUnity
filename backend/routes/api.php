@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\Admin\AdminOrganizationController;
 use App\Http\Controllers\Api\V1\Admin\AdminStatsController;
 use App\Http\Controllers\Api\V1\Admin\AdminUserController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationVerificationController;
+use App\Http\Controllers\Api\V1\CertificateController;
 use App\Http\Controllers\Api\V1\EventCategoryController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\EventPermissionController;
@@ -89,6 +90,12 @@ Route::prefix('v1')->group(function () {
 
         // AI Report Assistant
         Route::post('/events/{event}/report/ai-generate', [AiReportController::class, 'generate']);
+
+        // Certificate endpoints
+        Route::get('/certificates', [CertificateController::class, 'index']);
+        Route::get('/certificates/{certificate}', [CertificateController::class, 'show']);
+        Route::get('/certificates/{certificate}/download', [CertificateController::class, 'download']);
+        Route::get('/events/{event}/certificates', [CertificateController::class, 'eventCertificates']);
 
         // Admin endpoints
         Route::prefix('admin')->group(function () {
