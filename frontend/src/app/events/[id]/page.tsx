@@ -3,10 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { useAuthStore } from "@/stores/auth.store"
-import { useLogout } from "@/hooks/useAuth"
 import { useEvent, usePublishEvent, useDeleteEvent } from "@/hooks/useEvent"
-import { useOrganization } from "@/hooks/useOrganization"
 import { useEventRegistrations } from "@/hooks/useVolunteer"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -14,7 +11,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Separator } from "@/components/ui/separator"
 import { EventStatusBadge } from "@/components/event"
 import {
-    Handshake, ArrowLeft, LogOut, Loader2, Calendar, MapPin, Clock,
+    ArrowLeft, Loader2, Calendar, MapPin, Clock,
     Users, Edit3, Trash2, Send, CheckCircle2, XCircle, Building2,
     ImageOff, Globe, User, Shield, AlertTriangle, FileText, Share2,
     ChevronRight, ExternalLink, Sparkles, PartyPopper, QrCode, Award,
@@ -26,8 +23,6 @@ function EventDetailContent() {
     const params = useParams()
     const router = useRouter()
     const id = params.id as string
-    const user = useAuthStore((state) => state.user)
-    const logout = useLogout()
     const { data: event, isLoading, error } = useEvent(id)
     const publishEvent = usePublishEvent()
     const deleteEvent = useDeleteEvent()
@@ -102,36 +97,15 @@ function EventDetailContent() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
-                <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href="/events"
-                            className="flex size-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted/50 transition-colors"
-                        >
-                            <ArrowLeft className="size-5" />
-                        </Link>
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-600">
-                            <Handshake className="size-5 text-white" />
-                        </div>
-                        <span className="text-lg font-semibold tracking-tight truncate max-w-[200px]">
-                            {event.title}
-                        </span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <Button
-                            variant="ghost"
-                            onClick={() => logout.mutate(undefined, { onSuccess: () => window.location.href = "/login" })}
-                            disabled={logout.isPending}
-                        >
-                            {logout.isPending ? <Loader2 className="size-4 animate-spin" /> : <LogOut className="size-4" />}
-                        </Button>
-                    </div>
-                </div>
-            </header>
-
             <main className="mx-auto max-w-5xl px-6 py-8 space-y-6">
+                <Link
+                    href="/events"
+                    className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                    <ArrowLeft className="size-4" />
+                    Kembali ke Event
+                </Link>
+
                 {/* Hero Banner */}
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 min-h-[280px]">
                     {event.banner_url ? (

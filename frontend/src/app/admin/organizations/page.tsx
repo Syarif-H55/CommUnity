@@ -3,15 +3,13 @@
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useAuthStore } from "@/stores/auth.store";
-import { useLogout } from "@/hooks/useAuth";
 import { useAdminOrganizations, useVerifyOrganization } from "@/hooks/useAdmin";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Organization } from "@/types";
 import {
-    Handshake, LogOut, Loader2, Shield, Building2, CheckCircle2, XCircle,
+    Loader2, Shield, Building2, CheckCircle2, XCircle,
     FileText, Search, ArrowLeft, AlertTriangle
 } from "lucide-react";
 
@@ -28,8 +26,6 @@ const verificationBadge = (status: string) => {
 };
 
 function AdminOrganizationsContent() {
-    const user = useAuthStore((state) => state.user);
-    const logout = useLogout();
     const searchParams = useSearchParams();
     const [statusFilter, setStatusFilter] = useState<string | undefined>(
         searchParams.get('status') || undefined
@@ -66,37 +62,6 @@ function AdminOrganizationsContent() {
 
     return (
         <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-950/20 dark:via-background dark:to-slate-950/20">
-            <header className="flex items-center justify-between border-b bg-white/80 px-6 py-4 backdrop-blur-sm dark:bg-background/80">
-                <div className="flex items-center gap-3">
-                    <Link
-                        href="/admin/dashboard"
-                        className="flex size-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted/50 transition-colors"
-                    >
-                        <ArrowLeft className="size-5" />
-                    </Link>
-                    <div className="flex size-9 items-center justify-center rounded-xl bg-slate-700">
-                        <Shield className="size-5 text-white" />
-                    </div>
-                    <span className="text-lg font-semibold tracking-tight">Verifikasi Organisasi</span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                    <Button
-                        variant="outline"
-                        onClick={() => logout.mutate()}
-                        disabled={logout.isPending}
-                        className="gap-2"
-                    >
-                        {logout.isPending ? (
-                            <Loader2 className="size-4 animate-spin" />
-                        ) : (
-                            <LogOut className="size-4" />
-                        )}
-                        {logout.isPending ? "Keluar..." : "Keluar"}
-                    </Button>
-                </div>
-            </header>
-
             <main className="flex-1 p-6">
                 <div className="mx-auto max-w-5xl space-y-6">
                     <div className="flex items-center justify-between">

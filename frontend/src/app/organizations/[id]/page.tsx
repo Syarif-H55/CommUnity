@@ -3,11 +3,10 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import AuthGuard from "@/components/auth/AuthGuard"
 import RoleGuard from "@/components/auth/RoleGuard"
 import { useOrganization, useUploadDocument, useOrganizationMembers, useAddMember, useUpdateMemberRole, useRemoveMember } from "@/hooks/useOrganization"
-import { useAuthStore } from "@/stores/auth.store"
-import { useLogout } from "@/hooks/useAuth"
+import { useOrganizationAnalytics } from "@/hooks/useAnalytics"
+import { AnalyticsMetricCard, AttendanceRateIndicator } from "@/components/analytics"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -15,22 +14,22 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { DocumentUpload, VerificationTimeline } from "@/components/organization"
 import {
-    Handshake, ArrowLeft, Building2, LogOut, Loader2, Calendar,
+    ArrowLeft, Building2, Loader2, Calendar,
     Users, Shield, Clock, CheckCircle, XCircle, Mail, MapPin, FileText,
-    UserPlus, UserMinus, ChevronDown
+    UserPlus, UserMinus, ChevronDown, BarChart3, Target, TrendingUp, UserCheck
 } from "lucide-react"
 
 function OrganizationDetailContent() {
     const params = useParams()
     const id = params.id as string
-    const user = useAuthStore((state) => state.user)
-    const logout = useLogout()
     const { data: organization, isLoading, error } = useOrganization(id)
     const uploadDoc = useUploadDocument(id)
     const { data: members, isLoading: membersLoading } = useOrganizationMembers(id)
     const addMember = useAddMember(id)
     const updateRole = useUpdateMemberRole(id)
     const removeMember = useRemoveMember(id)
+
+    const { data: analytics, isLoading: analyticsLoading } = useOrganizationAnalytics(id)
 
     const [showAddMember, setShowAddMember] = useState(false)
     const [newUserId, setNewUserId] = useState("")
@@ -112,37 +111,15 @@ function OrganizationDetailContent() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
-                <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href="/organizations"
-                            className="flex size-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted/50 transition-colors"
-                        >
-                            <ArrowLeft className="size-5" />
-                        </Link>
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-600">
-                            <Handshake className="size-5 text-white" />
-                        </div>
-                        <span className="text-lg font-semibold tracking-tight truncate max-w-[200px]">
-                            {organization.name}
-                        </span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <Button
-                            variant="ghost"
-                            onClick={() => logout.mutate(undefined, { onSuccess: () => window.location.href = "/login" })}
-                            disabled={logout.isPending}
-                            className="gap-2"
-                        >
-                            {logout.isPending ? <Loader2 className="size-4 animate-spin" /> : <LogOut className="size-4" />}
-                        </Button>
-                    </div>
-                </div>
-            </header>
-
             <main className="mx-auto max-w-5xl px-6 py-8 space-y-8">
+                <Link
+                    href="/organizations"
+                    className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                    <ArrowLeft className="size-4" />
+                    Kembali ke Organisasi
+                </Link>
+
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 p-8 text-white">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1)_0%,transparent_60%)]" />
                     <div className="relative flex flex-col sm:flex-row items-start gap-6">
@@ -195,6 +172,7 @@ function OrganizationDetailContent() {
                 <Tabs defaultValue="overview">
                     <TabsList>
                         <TabsTrigger value="overview">Ringkasan</TabsTrigger>
+                        <TabsTrigger value="analytics">Analytics</TabsTrigger>
                         <TabsTrigger value="verification">Verifikasi</TabsTrigger>
                         <TabsTrigger value="documents">Dokumen</TabsTrigger>
                         <TabsTrigger value="members">Anggota</TabsTrigger>
@@ -276,6 +254,126 @@ function OrganizationDetailContent() {
                                 </div>
                             </CardContent>
                         </Card>
+                    </TabsContent>
+
+                    <TabsContent value="analytics">
+                        {analyticsLoading ? (
+                            <div className="flex items-center justify-center py-20">
+                                <Loader2 className="size-6 animate-spin text-emerald-600" />
+                            </div>
+                        ) : analytics ? (
+                            <div className="space-y-6">
+                                <div>
+                                    <h3 className="text-lg font-semibold">Analytics Organisasi</h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Ringkasan statistik dan metrik kegiatan organisasi Anda
+                                    </p>
+                                </div>
+
+                                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                                    <AnalyticsMetricCard
+                                        title="Total Event"
+                                        value={analytics.total_events}
+                                        icon={<Calendar className="size-5" />}
+                                        gradient="blue"
+                                    />
+                                    <AnalyticsMetricCard
+                                        title="Total Relawan"
+                                        value={analytics.total_volunteers}
+                                        icon={<Users className="size-5" />}
+                                        gradient="purple"
+                                    />
+                                    <AnalyticsMetricCard
+                                        title="Event Selesai"
+                                        value={analytics.completed_events}
+                                        icon={<Target className="size-5" />}
+                                        gradient="teal"
+                                    />
+                                    <AnalyticsMetricCard
+                                        title="Tingkat Kehadiran"
+                                        value={`${analytics.attendance_rate}%`}
+                                        icon={<UserCheck className="size-5" />}
+                                        gradient="amber"
+                                    >
+                                        <AttendanceRateIndicator rate={analytics.attendance_rate} className="mt-3" />
+                                    </AnalyticsMetricCard>
+                                </div>
+
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    <Card className="border-emerald-100/50 shadow-sm">
+                                        <CardHeader>
+                                            <CardTitle className="flex items-center gap-2 text-base">
+                                                <BarChart3 className="size-4 text-emerald-600" />
+                                                Ringkasan Kegiatan
+                                            </CardTitle>
+                                            <CardDescription>
+                                                Gambaran umum kegiatan organisasi
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent className="space-y-4">
+                                            <div className="flex items-center justify-between rounded-lg border bg-muted/30 p-3">
+                                                <span className="text-sm">Total Event</span>
+                                                <span className="text-sm font-semibold">{analytics.total_events}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between rounded-lg border bg-muted/30 p-3">
+                                                <span className="text-sm">Event Selesai</span>
+                                                <span className="text-sm font-semibold">{analytics.completed_events}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between rounded-lg border bg-emerald-50 p-3 dark:bg-emerald-950/20">
+                                                <span className="text-sm font-medium text-emerald-700 dark:text-emerald-400">Tingkat Penyelesaian</span>
+                                                <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+                                                    {analytics.total_events > 0
+                                                        ? Math.round((analytics.completed_events / analytics.total_events) * 100)
+                                                        : 0}%
+                                                </span>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+
+                                    <Card className="border-emerald-100/50 shadow-sm">
+                                        <CardHeader>
+                                            <CardTitle className="flex items-center gap-2 text-base">
+                                                <TrendingUp className="size-4 text-emerald-600" />
+                                                Partisipasi Relawan
+                                            </CardTitle>
+                                            <CardDescription>
+                                                Statistik partisipasi dan kehadiran
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent className="space-y-4">
+                                            <div className="flex items-center justify-between rounded-lg border bg-muted/30 p-3">
+                                                <span className="text-sm">Total Relawan</span>
+                                                <span className="text-sm font-semibold">{analytics.total_volunteers}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between rounded-lg border bg-muted/30 p-3">
+                                                <span className="text-sm">Tingkat Kehadiran</span>
+                                                <span className="text-sm font-semibold">{analytics.attendance_rate}%</span>
+                                            </div>
+                                            <div className="flex items-center justify-between rounded-lg border bg-emerald-50 p-3 dark:bg-emerald-950/20">
+                                                <span className="text-sm font-medium text-emerald-700 dark:text-emerald-400">Rata-rata per Event</span>
+                                                <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+                                                    {analytics.total_events > 0
+                                                        ? (analytics.total_volunteers / analytics.total_events).toFixed(1)
+                                                        : 0} relawan
+                                                </span>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center gap-3 py-16 text-center">
+                                <div className="flex size-14 items-center justify-center rounded-full bg-muted">
+                                    <BarChart3 className="size-6 text-muted-foreground" />
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium">Data Analytics Tidak Tersedia</p>
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        Belum ada data yang cukup untuk menampilkan analytics
+                                    </p>
+                                </div>
+                            </div>
+                        )}
                     </TabsContent>
 
                     <TabsContent value="verification">
@@ -574,10 +672,8 @@ export default function OrganizationDetailPage() {
     const id = params.id as string
 
     return (
-        <AuthGuard>
-            <RoleGuard allowedRoles={["organizer", "coordinator"]} organizationId={id}>
-                <OrganizationDetailContent />
-            </RoleGuard>
-        </AuthGuard>
+        <RoleGuard allowedRoles={["organizer", "coordinator"]} organizationId={id}>
+            <OrganizationDetailContent />
+        </RoleGuard>
     )
 }

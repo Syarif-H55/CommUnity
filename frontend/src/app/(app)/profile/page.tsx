@@ -1,16 +1,13 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { useRouter } from "next/navigation";
-import AuthGuard from "@/components/auth/AuthGuard";
 import { useAuthStore } from "@/stores/auth.store";
-import { useLogout, useUpdateProfile, useUploadProfilePhoto } from "@/hooks/useAuth";
+import { useUpdateProfile, useUploadProfilePhoto } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Handshake, User, Mail, LogOut, Loader2, Camera, Save, ArrowLeft, AlertCircle } from "lucide-react";
-import Link from "next/link";
+import { User, Mail, Loader2, Camera, Save, AlertCircle } from "lucide-react";
 import type { AxiosError } from "axios";
 import type { ApiResponse } from "@/types";
 
@@ -21,9 +18,7 @@ interface FormErrors {
 }
 
 function ProfileContent() {
-    const router = useRouter();
     const user = useAuthStore((state) => state.user);
-    const logout = useLogout();
     const updateProfile = useUpdateProfile();
     const uploadPhoto = useUploadProfilePhoto();
 
@@ -122,14 +117,6 @@ function ProfileContent() {
         });
     }
 
-    async function handleLogout() {
-        logout.mutate(undefined, {
-            onSuccess: () => {
-                router.push("/login");
-            },
-        });
-    }
-
     const hasChanges =
         form.full_name !== user?.full_name ||
         form.username !== user?.username ||
@@ -137,35 +124,6 @@ function ProfileContent() {
 
     return (
         <div className="flex min-h-screen flex-col bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            <header className="flex items-center justify-between border-b bg-white/80 px-6 py-4 backdrop-blur-sm dark:bg-background/80">
-                <div className="flex items-center gap-3">
-                    <Link
-                        href="/dashboard"
-                        className="flex size-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors"
-                    >
-                        <ArrowLeft className="size-5" />
-                    </Link>
-                    <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-600">
-                        <Handshake className="size-5 text-white" />
-                    </div>
-                    <span className="text-lg font-semibold tracking-tight">CommUnity</span>
-                </div>
-
-                <Button
-                    variant="outline"
-                    onClick={handleLogout}
-                    disabled={logout.isPending}
-                    className="gap-2"
-                >
-                    {logout.isPending ? (
-                        <Loader2 className="size-4 animate-spin" />
-                    ) : (
-                        <LogOut className="size-4" />
-                    )}
-                    {logout.isPending ? "Keluar..." : "Keluar"}
-                </Button>
-            </header>
-
             <main className="flex flex-1 items-center justify-center p-6">
                 <Card className="w-full max-w-lg border-emerald-100 shadow-lg shadow-emerald-900/5 dark:border-emerald-900/20">
                     <CardHeader className="pb-6 text-center">
@@ -310,9 +268,5 @@ function ProfileContent() {
 }
 
 export default function ProfilePage() {
-    return (
-        <AuthGuard>
-            <ProfileContent />
-        </AuthGuard>
-    );
+    return <ProfileContent />;
 }

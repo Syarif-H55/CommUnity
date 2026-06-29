@@ -2,15 +2,12 @@
 
 import { useState, useMemo } from "react"
 import Link from "next/link"
-import { useAuthStore } from "@/stores/auth.store"
-import { useLogout } from "@/hooks/useAuth"
 import { useEvents } from "@/hooks/useEvent"
-import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { EventSlideshow, EventCard } from "@/components/event"
 import type { EventSlide } from "@/components/event"
 import {
-    Handshake, Plus, LogOut, Loader2, CalendarDays, Search,
+    Plus, Loader2, CalendarDays, Search,
     SlidersHorizontal, Grid3X3, List, X, Sparkles, ArrowRight
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -70,8 +67,6 @@ const FEATURED_EVENT_SLIDES: EventSlide[] = [
 ]
 
 function EventsContent() {
-    const user = useAuthStore((state) => state.user)
-    const logout = useLogout()
     const { data: events, isLoading } = useEvents()
 
     const [searchQuery, setSearchQuery] = useState("")
@@ -129,39 +124,6 @@ function EventsContent() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
-                <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href="/dashboard"
-                            className="flex size-9 items-center justify-center rounded-xl bg-emerald-600"
-                        >
-                            <Handshake className="size-5 text-white" />
-                        </Link>
-                        <span className="text-lg font-semibold tracking-tight">Event Saya</span>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href="/events/create"
-                            className="inline-flex shrink-0 items-center justify-center rounded-lg bg-emerald-600 px-3 h-8 gap-1.5 text-sm font-medium whitespace-nowrap text-white hover:bg-emerald-700 transition-all shadow-sm"
-                        >
-                            <Plus className="size-4" />
-                            <span className="hidden sm:inline">Buat Event</span>
-                        </Link>
-                        <Button
-                            variant="ghost"
-                            onClick={() => logout.mutate(undefined, { onSuccess: () => window.location.href = "/login" })}
-                            disabled={logout.isPending}
-                            className="gap-2"
-                        >
-                            {logout.isPending ? <Loader2 className="size-4 animate-spin" /> : <LogOut className="size-4" />}
-                            <span className="hidden sm:inline">Keluar</span>
-                        </Button>
-                    </div>
-                </div>
-            </header>
-
             <main className="mx-auto max-w-7xl px-6 py-8 space-y-8">
                 <EventSlideshow slides={FEATURED_EVENT_SLIDES} />
 
@@ -179,6 +141,13 @@ function EventsContent() {
                         </div>
 
                         <div className="flex items-center gap-2">
+                            <Link
+                                href="/events/create"
+                                className="inline-flex shrink-0 items-center justify-center rounded-lg bg-emerald-600 px-3 h-8 gap-1.5 text-sm font-medium whitespace-nowrap text-white hover:bg-emerald-700 transition-all shadow-sm"
+                            >
+                                <Plus className="size-4" />
+                                <span className="hidden sm:inline">Buat Event</span>
+                            </Link>
                             <div className="flex items-center rounded-lg border border-border bg-background overflow-hidden">
                                 <button
                                     onClick={() => setViewMode("grid")}

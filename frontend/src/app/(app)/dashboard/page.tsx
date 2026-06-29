@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import AuthGuard from "@/components/auth/AuthGuard";
 import { useRoleStore } from "@/stores/role.store";
 import { Handshake, Loader2 } from "lucide-react";
 
@@ -37,9 +36,5 @@ function DashboardRedirect() {
 }
 
 export default function DashboardPage() {
-    return (
-        <AuthGuard>
-            <DashboardRedirect />
-        </AuthGuard>
-    );
+    return <DashboardRedirect />;
 }

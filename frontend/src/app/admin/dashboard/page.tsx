@@ -1,20 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useAuthStore } from "@/stores/auth.store";
-import { useLogout } from "@/hooks/useAuth";
 import { useAdminStats } from "@/hooks/useAdmin";
-import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-    Handshake, LogOut, Loader2, Shield, Users, Building2, CalendarDays,
+    Loader2, Shield, Users, Building2, CalendarDays,
     Clock, CheckCircle2, XCircle, AlertTriangle
 } from "lucide-react";
 
 function AdminDashboardContent() {
-    const user = useAuthStore((state) => state.user);
-    const logout = useLogout();
     const { data: stats, isLoading } = useAdminStats();
 
     const statusColor = (status: string) => {
@@ -30,43 +25,12 @@ function AdminDashboardContent() {
 
     return (
         <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-950/20 dark:via-background dark:to-slate-950/20">
-            <header className="flex items-center justify-between border-b bg-white/80 px-6 py-4 backdrop-blur-sm dark:bg-background/80">
-                <div className="flex items-center gap-3">
-                    <div className="flex size-9 items-center justify-center rounded-xl bg-slate-700">
-                        <Shield className="size-5 text-white" />
-                    </div>
-                    <span className="text-lg font-semibold tracking-tight">Admin CommUnity</span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                    <Link
-                        href="/dashboard"
-                        className="inline-flex shrink-0 items-center justify-center rounded-lg border border-border bg-background px-2.5 h-8 gap-1.5 text-sm font-medium whitespace-nowrap text-foreground hover:bg-muted transition-all"
-                    >
-                        Dashboard
-                    </Link>
-                    <Button
-                        variant="outline"
-                        onClick={() => logout.mutate()}
-                        disabled={logout.isPending}
-                        className="gap-2"
-                    >
-                        {logout.isPending ? (
-                            <Loader2 className="size-4 animate-spin" />
-                        ) : (
-                            <LogOut className="size-4" />
-                        )}
-                        {logout.isPending ? "Keluar..." : "Keluar"}
-                    </Button>
-                </div>
-            </header>
-
             <main className="flex-1 p-6">
                 <div className="mx-auto max-w-6xl space-y-6">
                     <div>
                         <h1 className="text-2xl font-bold tracking-tight">Dashboard Admin</h1>
                         <p className="text-muted-foreground">
-                            Selamat datang, {user?.full_name}
+                                        Selamat datang, Admin
                         </p>
                     </div>
 

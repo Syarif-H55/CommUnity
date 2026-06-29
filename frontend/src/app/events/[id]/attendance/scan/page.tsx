@@ -3,15 +3,13 @@
 import { useRef, useEffect, useState, useCallback } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { useAuthStore } from "@/stores/auth.store"
-import { useLogout } from "@/hooks/useAuth"
 import { useEvent } from "@/hooks/useEvent"
 import { useScanAttendance } from "@/hooks/useAttendance"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { AttendanceStatusBadge } from "@/components/attendance"
 import {
-    Handshake, ArrowLeft, LogOut, Loader2, ScanLine, Camera, CameraOff,
+    ArrowLeft, ScanLine, Camera, CameraOff,
     CheckCircle2, XCircle, AlertTriangle, Smartphone, RefreshCw
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -20,8 +18,7 @@ import jsQR from "jsqr"
 function QRScannerContent() {
     const params = useParams()
     const eventId = params.id as string
-    const user = useAuthStore((state) => state.user)
-    const logout = useLogout()
+
 
     const { data: event } = useEvent(eventId)
     const scanAttendance = useScanAttendance(eventId)
@@ -189,38 +186,9 @@ function QRScannerContent() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            {/* Header */}
-            <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
-                <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href={`/events/${eventId}/attendance`}
-                            className="flex size-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted/50 transition-colors"
-                        >
-                            <ArrowLeft className="size-5" />
-                        </Link>
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-600">
-                            <Handshake className="size-5 text-white" />
-                        </div>
-                        <div>
-                            <span className="text-lg font-semibold tracking-tight block leading-tight">Scan QR</span>
-                            <span className="text-xs text-muted-foreground truncate max-w-[180px] block">
-                                {event?.title || "Memuat..."}
-                            </span>
-                        </div>
-                    </div>
-
-                    <Button
-                        variant="ghost"
-                        onClick={() => logout.mutate(undefined, { onSuccess: () => window.location.href = "/login" })}
-                        disabled={logout.isPending}
-                    >
-                        {logout.isPending ? <Loader2 className="size-4 animate-spin" /> : <LogOut className="size-4" />}
-                    </Button>
-                </div>
-            </header>
-
             <main className="mx-auto max-w-3xl px-6 py-8">
+                <Link href={`/events/${eventId}/attendance`} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"><ArrowLeft className="size-4" />Kembali ke Absensi</Link>
+
                 <div className="space-y-6">
                     {/* Title */}
                     <div className="text-center">

@@ -3,18 +3,14 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { useAuthStore } from "@/stores/auth.store"
-import { useLogout } from "@/hooks/useAuth"
 import { useCreateEvent } from "@/hooks/useEvent"
 import { EventForm } from "@/components/event"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft, Handshake, LogOut, Loader2, Sparkles } from "lucide-react"
+import { ArrowLeft, Sparkles } from "lucide-react"
 import type { CreateEventRequest, UpdateEventRequest } from "@/types"
 
 function CreateEventContent() {
     const router = useRouter()
-    const user = useAuthStore((state) => state.user)
-    const logout = useLogout()
+
     const createEvent = useCreateEvent()
     const [serverError, setServerError] = useState<string | null>(null)
 
@@ -38,34 +34,9 @@ function CreateEventContent() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
-                <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href="/events"
-                            className="flex size-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted/50 transition-colors"
-                        >
-                            <ArrowLeft className="size-5" />
-                        </Link>
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-600">
-                            <Handshake className="size-5 text-white" />
-                        </div>
-                        <span className="text-lg font-semibold tracking-tight">Buat Event Baru</span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <Button
-                            variant="ghost"
-                            onClick={() => logout.mutate(undefined, { onSuccess: () => window.location.href = "/login" })}
-                            disabled={logout.isPending}
-                        >
-                            {logout.isPending ? <Loader2 className="size-4 animate-spin" /> : <LogOut className="size-4" />}
-                        </Button>
-                    </div>
-                </div>
-            </header>
-
             <main className="mx-auto max-w-4xl px-6 py-8 space-y-8">
+                <Link href="/events" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"><ArrowLeft className="size-4" />Kembali ke Event</Link>
+
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 p-8 text-white">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1)_0%,transparent_60%)]" />
                     <div className="relative">

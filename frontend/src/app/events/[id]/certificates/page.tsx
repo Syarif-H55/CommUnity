@@ -4,16 +4,13 @@ import { useState } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import AuthGuard from "@/components/auth/AuthGuard"
-import { useAuthStore } from "@/stores/auth.store"
-import { useLogout } from "@/hooks/useAuth"
 import { useEvent } from "@/hooks/useEvent"
 import { useEventCertificates, useDownloadCertificate } from "@/hooks/useCertificate"
 import { CertificateCard } from "@/components/certificate"
 import { CertificateDetailModal } from "@/components/certificate"
-import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import {
-    Handshake, ArrowLeft, LogOut, Loader2, Award, FileText,
+    ArrowLeft, Loader2, Award, FileText,
     Users, ScrollText, ChevronRight, ExternalLink, XCircle
 } from "lucide-react"
 import type { Certificate } from "@/types"
@@ -21,8 +18,7 @@ import type { Certificate } from "@/types"
 function EventCertificatesContent() {
     const params = useParams()
     const id = params.id as string
-    const user = useAuthStore((state) => state.user)
-    const logout = useLogout()
+
     const { data: event, isLoading: eventLoading, error: eventError } = useEvent(id)
     const { data: certPage, isLoading: certsLoading } = useEventCertificates(id)
     const downloadCert = useDownloadCertificate()
@@ -71,35 +67,9 @@ function EventCertificatesContent() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            {/* Header */}
-            <header className="border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
-                <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href={`/events/${event.id}`}
-                            className="flex size-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted/50 transition-colors"
-                        >
-                            <ArrowLeft className="size-5" />
-                        </Link>
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-600">
-                            <Handshake className="size-5 text-white" />
-                        </div>
-                        <span className="text-lg font-semibold tracking-tight truncate max-w-[200px]">
-                            {event.title}
-                        </span>
-                    </div>
-
-                    <Button
-                        variant="ghost"
-                        onClick={() => logout.mutate(undefined, { onSuccess: () => window.location.href = "/login" })}
-                        disabled={logout.isPending}
-                    >
-                        {logout.isPending ? <Loader2 className="size-4 animate-spin" /> : <LogOut className="size-4" />}
-                    </Button>
-                </div>
-            </header>
-
             <main className="mx-auto max-w-5xl px-6 py-8 space-y-6">
+                <Link href={`/events/${event.id}`} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"><ArrowLeft className="size-4" />Kembali ke Event</Link>
+
                 {/* Hero Banner */}
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 p-8">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08)_0%,transparent_60%)]" />

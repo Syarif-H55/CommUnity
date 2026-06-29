@@ -568,6 +568,106 @@ TASK-023
 
 ---
 
+## TASK-024A
+
+Title:
+Analytics Dashboard — Per-Event Data API (Backend Enhancement)
+
+Owner:
+Syarif
+
+Support Owner:
+Irham
+
+Priority:
+Medium
+
+Estimated Effort:
+S
+
+Related User Stories:
+
+- US-021
+
+Objective:
+
+Menyediakan endpoint API untuk data per-event yang sudah selesai beserta attendance breakdown, sehingga frontend dapat menampilkan visualisasi detail untuk setiap event.
+
+Implementation Tasks:
+
+- Completed events list API — endpoint GET /api/v1/organizations/{organization}/analytics/events
+- Response mencakup per-event: nama event, event_date, total_registrations, total_present, total_late, total_absent, attendance_rate, report_status
+- Aggregate metrics refresh — menambah average_volunteers_per_event ke response analytics endpoint eksisting
+
+Acceptance Criteria:
+
+- Endpoint mengembalikan daftar event selesai milik organisasi dengan attendance breakdown
+- Attendance breakdown akurat per status (present, late, absent)
+- Response cepat — query realtime tanpa agregasi terpisah
+
+Verification Steps:
+
+- Per-event data accuracy testing
+- Response format validation
+
+Dependencies:
+
+TASK-023
+
+---
+
+## TASK-024B
+
+Title:
+Analytics Dashboard — Per-Event Data Visualization (Frontend Enhancement)
+
+Owner:
+Abdillah
+
+Support Owner:
+Hiraldy
+
+Priority:
+Medium
+
+Estimated Effort:
+M
+
+Related User Stories:
+
+- US-021
+
+Objective:
+
+Memperkaya dashboard analytics organisasi dengan data visual per-event yang sudah selesai, sehingga penyelenggara dapat mengevaluasi dampak setiap kegiatan secara detail.
+
+Implementation Tasks:
+
+- Completed events list section — tabel/daftar event selesai dengan kolom: nama event, tanggal, jumlah relawan terdaftar, jumlah hadir (present+late), attendance rate per event, status laporan
+- Per-event attendance bar comparison — horizontal bar visual tanpa library chart tambahan (menggunakan div + Tailwind) untuk membandingkan attendance rate antar event
+- Event completion timeline — mini timeline event selesai berdasarkan event_date
+- Top/bottom 3 events by participation — highlight 3 event dengan partisipasi tertinggi dan terendah
+
+Acceptance Criteria:
+
+- Daftar event selesai tampil dengan data per-event yang akurat
+- Attendance rate per-event divisualisasikan dengan bar chart berbasis Tailwind
+- Timeline menampilkan urutan event berdasarkan tanggal pelaksanaan
+- Top/bottom 3 events memberikan insight event dengan partisipasi terbaik/terendah
+- Tidak ada dependency chart library tambahan
+
+Verification Steps:
+
+- Per-event data accuracy testing
+- Bar comparison visual testing
+- Timeline display testing
+
+Dependencies:
+
+TASK-024A
+
+---
+
 ## TASK-025
 
 Title:
@@ -648,6 +748,8 @@ TASK-024
   - Event completed
   - Report approved
 - Analytics must be calculated from realtime database queries.
+- Per-event analytics data harus menyertakan attendance breakdown per status (present, late, absent) untuk transparansi.
+- Bar comparison visual menggunakan div + Tailwind width styling, bukan library chart eksternal.
 - Implement only Sprint 03 scope.
 
 ---

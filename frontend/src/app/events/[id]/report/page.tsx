@@ -3,8 +3,6 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { useAuthStore } from "@/stores/auth.store"
-import { useLogout } from "@/hooks/useAuth"
 import { useEvent } from "@/hooks/useEvent"
 import { useEventReport, useCreateReport, useUpdateReport, useUploadPhotos, useDeletePhoto, useSubmitReport, useAiGenerateReport } from "@/hooks/useReport"
 import { Button } from "@/components/ui/button"
@@ -15,7 +13,7 @@ import { Input } from "@/components/ui/input"
 import { ReportStatusBadge, PhotoUpload } from "@/components/report"
 import type { PhotoItem } from "@/components/report"
 import {
-    Handshake, ArrowLeft, LogOut, Loader2, FileText, AlertCircle,
+    ArrowLeft, Loader2, FileText, AlertCircle,
     CheckCircle2, XCircle, Send, Sparkles, Calendar, MapPin, Clock,
     Edit3, Eye, MessageSquare
 } from "lucide-react"
@@ -24,8 +22,7 @@ import type { ReportStatus } from "@/types"
 function ReportPageContent() {
     const params = useParams()
     const eventId = params.id as string
-    const user = useAuthStore((state) => state.user)
-    const logout = useLogout()
+
 
     const { data: event, isLoading: eventLoading } = useEvent(eventId)
     const { data: report, isLoading: reportLoading } = useEventReport(eventId)
@@ -201,39 +198,9 @@ function ReportPageContent() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
-                <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href={`/events/${eventId}`}
-                            className="flex size-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted/50 transition-colors"
-                        >
-                            <ArrowLeft className="size-5" />
-                        </Link>
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-600">
-                            <Handshake className="size-5 text-white" />
-                        </div>
-                        <div className="hidden sm:block">
-                            <span className="text-lg font-semibold tracking-tight block leading-tight">Laporan Kegiatan</span>
-                            <span className="text-xs text-muted-foreground truncate max-w-[200px] block">{event.title}</span>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        {report && (
-                            <ReportStatusBadge status={report.report_status as ReportStatus} />
-                        )}
-                        <Button
-                            variant="ghost"
-                            onClick={() => logout.mutate(undefined, { onSuccess: () => window.location.href = "/login" })}
-                            disabled={logout.isPending}
-                        >
-                            {logout.isPending ? <Loader2 className="size-4 animate-spin" /> : <LogOut className="size-4" />}
-                        </Button>
-                    </div>
-                </div>
-            </header>
-
             <main className="mx-auto max-w-4xl px-6 py-8 space-y-6">
+                <Link href={`/events/${eventId}`} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"><ArrowLeft className="size-4" />Kembali ke Event</Link>
+
                 {serverError && (
                     <div className="flex items-center gap-2.5 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700 dark:border-red-900/30 dark:bg-red-950/30 dark:text-red-400">
                         <AlertCircle className="size-5 shrink-0" />

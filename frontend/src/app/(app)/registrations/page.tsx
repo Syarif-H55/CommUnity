@@ -2,17 +2,14 @@
 
 import { useState, useMemo } from "react"
 import Link from "next/link"
-import AuthGuard from "@/components/auth/AuthGuard"
-import { useAuthStore } from "@/stores/auth.store"
-import { useLogout } from "@/hooks/useAuth"
 import { useMyRegistrations } from "@/hooks/useVolunteer"
 import { EventStatusBadge } from "@/components/event"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import {
-    Handshake, ArrowLeft, Loader2, Calendar, MapPin, Clock,
-    Users, LogOut, Search, X, CheckCircle2, History, Sparkles,
+    Loader2, Calendar, MapPin, Clock,
+    Users, Search, X, CheckCircle2, History, Sparkles,
     ChevronLeft, ChevronRight, Building2
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -27,8 +24,6 @@ const STATUS_OPTIONS = [
 ]
 
 function RegistrationsContent() {
-    const user = useAuthStore((state) => state.user)
-    const logout = useLogout()
     const [searchQuery, setSearchQuery] = useState("")
     const [statusFilter, setStatusFilter] = useState("")
     const [page, setPage] = useState(1)
@@ -79,33 +74,6 @@ function RegistrationsContent() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
-                <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href="/dashboard"
-                            className="flex size-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted/50 transition-colors"
-                        >
-                            <ArrowLeft className="size-5" />
-                        </Link>
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-600">
-                            <Handshake className="size-5 text-white" />
-                        </div>
-                        <span className="text-lg font-semibold tracking-tight">Riwayat Partisipasi</span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <Button
-                            variant="ghost"
-                            onClick={() => logout.mutate(undefined, { onSuccess: () => window.location.href = "/login" })}
-                            disabled={logout.isPending}
-                        >
-                            {logout.isPending ? <Loader2 className="size-4 animate-spin" /> : <LogOut className="size-4" />}
-                        </Button>
-                    </div>
-                </div>
-            </header>
-
             <main className="mx-auto max-w-5xl px-6 py-8 space-y-6">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -345,9 +313,5 @@ function RegistrationCard({ registration }: { registration: VolunteerRegistratio
 }
 
 export default function RegistrationsPage() {
-    return (
-        <AuthGuard>
-            <RegistrationsContent />
-        </AuthGuard>
-    )
+    return <RegistrationsContent />
 }

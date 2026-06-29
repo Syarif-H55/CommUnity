@@ -3,16 +3,13 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { useAuthStore } from "@/stores/auth.store"
-import { useLogout } from "@/hooks/useAuth"
 import { useEvent } from "@/hooks/useEvent"
 import { useQRData, useRefreshQRData, useAttendanceSummary, useEventAttendances, useManualAttendance, useUpdateAttendance } from "@/hooks/useAttendance"
-import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { AttendanceSummaryCards, AttendanceQRCode, AttendanceTable, AttendanceManualForm } from "@/components/attendance"
 import {
-    Handshake, ArrowLeft, LogOut, Loader2, QrCode, ScanLine, Users,
+    ArrowLeft, QrCode, ScanLine, Users, Loader2,
     ClipboardList, Calendar, MapPin, Clock, Sparkles, ExternalLink, ChevronRight
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -20,8 +17,7 @@ import { cn } from "@/lib/utils"
 function AttendanceDashboardContent() {
     const params = useParams()
     const eventId = params.id as string
-    const user = useAuthStore((state) => state.user)
-    const logout = useLogout()
+
 
     const { data: event, isLoading: eventLoading } = useEvent(eventId)
     const { data: qrData, isLoading: qrLoading } = useQRData(eventId)
@@ -60,43 +56,7 @@ function AttendanceDashboardContent() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            {/* Header */}
-            <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
-                <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href={`/events/${eventId}`}
-                            className="flex size-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted/50 transition-colors"
-                        >
-                            <ArrowLeft className="size-5" />
-                        </Link>
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-600">
-                            <Handshake className="size-5 text-white" />
-                        </div>
-                        <div className="hidden sm:block">
-                            <span className="text-lg font-semibold tracking-tight block leading-tight">Absensi Event</span>
-                            <span className="text-xs text-muted-foreground truncate max-w-[200px] block">{event.title}</span>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <Link
-                            href={`/events/${eventId}/attendance/scan`}
-                            className="inline-flex shrink-0 items-center justify-center rounded-lg bg-emerald-600 px-3 h-8 gap-1.5 text-sm font-medium whitespace-nowrap text-white hover:bg-emerald-700 transition-all shadow-sm"
-                        >
-                            <ScanLine className="size-4" />
-                            <span className="hidden sm:inline">Scan QR</span>
-                        </Link>
-                        <Button
-                            variant="ghost"
-                            onClick={() => logout.mutate(undefined, { onSuccess: () => window.location.href = "/login" })}
-                            disabled={logout.isPending}
-                        >
-                            {logout.isPending ? <Loader2 className="size-4 animate-spin" /> : <LogOut className="size-4" />}
-                        </Button>
-                    </div>
-                </div>
-            </header>
+            <Link href={`/events/${eventId}`} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"><ArrowLeft className="size-4" />Kembali ke Event</Link>
 
             {/* Hero Banner */}
             <div className="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900">

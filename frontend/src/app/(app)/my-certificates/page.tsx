@@ -2,24 +2,17 @@
 
 import { useState, useMemo } from "react"
 import Link from "next/link"
-import AuthGuard from "@/components/auth/AuthGuard"
-import { useAuthStore } from "@/stores/auth.store"
-import { useLogout } from "@/hooks/useAuth"
 import { useMyCertificates, useDownloadCertificate } from "@/hooks/useCertificate"
 import { CertificateCard } from "@/components/certificate"
 import { CertificateDetailModal } from "@/components/certificate"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import {
-    Handshake, ArrowLeft, LogOut, Loader2, Award, Search, Filter,
-    ScrollText, ChevronRight, ExternalLink, Download, CheckCircle2
+    Loader2, Award, Search, ExternalLink
 } from "lucide-react"
-import { cn } from "@/lib/utils"
 import type { Certificate } from "@/types"
 
 function MyCertificatesContent() {
-    const user = useAuthStore((state) => state.user)
-    const logout = useLogout()
     const { data: certPage, isLoading } = useMyCertificates()
     const downloadCert = useDownloadCertificate()
 
@@ -48,31 +41,6 @@ function MyCertificatesContent() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            {/* Header */}
-            <header className="border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
-                <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href="/dashboard"
-                            className="flex size-9 items-center justify-center rounded-xl bg-emerald-600"
-                        >
-                            <Handshake className="size-5 text-white" />
-                        </Link>
-                        <span className="text-lg font-semibold tracking-tight">Sertifikat Saya</span>
-                    </div>
-
-                    <Button
-                        variant="ghost"
-                        onClick={() => logout.mutate(undefined, { onSuccess: () => window.location.href = "/login" })}
-                        disabled={logout.isPending}
-                        className="gap-2"
-                    >
-                        {logout.isPending ? <Loader2 className="size-4 animate-spin" /> : <LogOut className="size-4" />}
-                        <span className="hidden sm:inline">Keluar</span>
-                    </Button>
-                </div>
-            </header>
-
             <main className="mx-auto max-w-5xl px-6 py-8 space-y-6">
                 {/* Hero Banner */}
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 p-8">
@@ -212,9 +180,5 @@ function MyCertificatesContent() {
 }
 
 export default function MyCertificatesPage() {
-    return (
-        <AuthGuard>
-            <MyCertificatesContent />
-        </AuthGuard>
-    )
+    return <MyCertificatesContent />
 }

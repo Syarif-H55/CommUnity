@@ -4,7 +4,6 @@ import { useState, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
-import AuthGuard from "@/components/auth/AuthGuard"
 import { useRegisterOrganization } from "@/hooks/useOrganization"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,7 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import {
-    Handshake, ArrowLeft, Building2, FileText, CheckCircle,
+    ArrowLeft, Building2, FileText, CheckCircle,
     AlertCircle, Loader2, Upload, ChevronRight, ChevronLeft, Send
 } from "lucide-react"
 import type { AxiosError } from "axios"
@@ -121,24 +120,14 @@ function RegisterOrganizationContent() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
-            <header className="border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
-                <div className="mx-auto flex max-w-2xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href="/organizations"
-                            className="flex size-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted/50 transition-colors"
-                        >
-                            <ArrowLeft className="size-5" />
-                        </Link>
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-600">
-                            <Handshake className="size-5 text-white" />
-                        </div>
-                        <span className="text-lg font-semibold tracking-tight">Daftar Organisasi</span>
-                    </div>
-                </div>
-            </header>
-
             <main className="mx-auto max-w-2xl px-6 py-8">
+                <Link
+                    href="/organizations"
+                    className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+                >
+                    <ArrowLeft className="size-4" />
+                    Kembali ke Organisasi
+                </Link>
                 <div className="mb-8 space-y-4">
                     <div className="flex items-center justify-between">
                         <h1 className="text-2xl font-bold">
@@ -407,9 +396,5 @@ function RegisterOrganizationContent() {
 }
 
 export default function RegisterOrganizationPage() {
-    return (
-        <AuthGuard>
-            <RegisterOrganizationContent />
-        </AuthGuard>
-    )
+    return <RegisterOrganizationContent />
 }
