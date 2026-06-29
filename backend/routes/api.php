@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\EventPermissionController;
 use App\Http\Controllers\Api\V1\AiReportController;
 use App\Http\Controllers\Api\V1\EventReportController;
+use App\Http\Controllers\Api\V1\OrganizationAnalyticsController;
 use App\Http\Controllers\Api\V1\OrganizationController;
 use App\Http\Controllers\Api\V1\OrganizationMemberController;
 use App\Http\Controllers\Api\V1\ProfileController;
@@ -50,6 +51,9 @@ Route::prefix('v1')->group(function () {
         // Organization endpoints
         Route::apiResource('organizations', OrganizationController::class);
         Route::post('/organizations/{organization}/upload-document', [OrganizationController::class, 'uploadDocument']);
+
+        // Organization analytics
+        Route::get('/organizations/{organization}/analytics', OrganizationAnalyticsController::class);
 
         // Organization member endpoints
         Route::get('/organizations/{organization}/members', [OrganizationMemberController::class, 'index']);

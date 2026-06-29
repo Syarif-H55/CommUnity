@@ -1,5 +1,5 @@
 import api from './api';
-import { ApiResponse, Organization, OrganizationMember, OrganizationRegistrationRequest, OrganizationRole, DashboardStats } from '@/types';
+import { ApiResponse, AnalyticsData, Organization, OrganizationMember, OrganizationRegistrationRequest, OrganizationRole, DashboardStats } from '@/types';
 
 export const organizationService = {
     list: () =>
@@ -53,4 +53,7 @@ export const organizationService = {
 
     getDashboardStats: () =>
         api.get<ApiResponse<DashboardStats>>('/organizations/stats'),
+
+    getAnalytics: (organizationId: string) =>
+        api.get<ApiResponse<AnalyticsData>>(`/organizations/${organizationId}/analytics`),
 };
