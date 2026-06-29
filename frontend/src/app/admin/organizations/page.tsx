@@ -1,6 +1,6 @@
  "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
@@ -42,7 +42,13 @@ function AdminOrganizationsContent() {
         }
     }, [searchParams]);
 
-    const { data, isLoading } = useAdminOrganizations({ status: statusFilter, per_page: 20 });
+    const queryParams = useMemo(() => {
+        const p: Record<string, string | number> = { per_page: 20 };
+        if (statusFilter) p.status = statusFilter;
+        return p;
+    }, [statusFilter]);
+
+    const { data, isLoading, isError, error } = useAdminOrganizations(queryParams);
     const verifyOrg = useVerifyOrganization();
 
     const handleVerify = (id: string, status: 'approved' | 'rejected') => {
@@ -118,6 +124,16 @@ function AdminOrganizationsContent() {
                         <div className="flex items-center justify-center py-20">
                             <Loader2 className="size-6 animate-spin text-muted-foreground" />
                         </div>
+                    ) : isError ? (
+                        <Card>
+                            <CardContent className="flex flex-col items-center justify-center py-12">
+                                <XCircle className="size-12 text-destructive/40 mb-4" />
+                                <p className="text-destructive font-medium">Gagal memuat data organisasi</p>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                    {(error as any)?.response?.data?.message || (error as any)?.message || "Terjadi kesalahan koneksi."}
+                                </p>
+                            </CardContent>
+                        </Card>
                     ) : organizations.length === 0 ? (
                         <Card>
                             <CardContent className="flex flex-col items-center justify-center py-12">

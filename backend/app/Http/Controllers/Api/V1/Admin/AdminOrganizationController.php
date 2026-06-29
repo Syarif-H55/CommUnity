@@ -20,9 +20,11 @@ class AdminOrganizationController extends BaseController
 
         $organizations = $query->latest()->paginate($request->per_page ?? 10);
 
-        return $this->success(
-            OrganizationResource::collection($organizations),
-            'Daftar organisasi berhasil diambil.'
-        );
+        return OrganizationResource::collection($organizations)
+            ->additional([
+                'success' => true,
+                'message' => 'Daftar organisasi berhasil diambil.',
+            ])
+            ->response();
     }
 }

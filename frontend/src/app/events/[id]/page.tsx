@@ -7,6 +7,7 @@ import { useAuthStore } from "@/stores/auth.store"
 import { useLogout } from "@/hooks/useAuth"
 import { useEvent, usePublishEvent, useDeleteEvent } from "@/hooks/useEvent"
 import { useOrganization } from "@/hooks/useOrganization"
+import { useEventRegistrations } from "@/hooks/useVolunteer"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
@@ -16,7 +17,8 @@ import {
     Handshake, ArrowLeft, LogOut, Loader2, Calendar, MapPin, Clock,
     Users, Edit3, Trash2, Send, CheckCircle2, XCircle, Building2,
     ImageOff, Globe, User, Shield, AlertTriangle, FileText, Share2,
-    ChevronRight, ExternalLink, Sparkles, PartyPopper, QrCode
+    ChevronRight, ExternalLink, Sparkles, PartyPopper, QrCode, Award,
+    UserCheck
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -30,6 +32,9 @@ function EventDetailContent() {
     const publishEvent = usePublishEvent()
     const deleteEvent = useDeleteEvent()
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+    const { data: registrationsData } = useEventRegistrations(id)
+
+    const registrations = registrationsData || []
 
     const isLoadingMutation = publishEvent.isPending || deleteEvent.isPending
 
@@ -443,6 +448,17 @@ function EventDetailContent() {
                                     <ChevronRight className="size-4 text-muted-foreground" />
                                 </Link>
 
+                                <Link
+                                    href={`/events/${event.id}/certificates`}
+                                    className="flex items-center gap-3 rounded-xl border border-border px-4 py-3 text-sm font-medium transition-all hover:border-emerald-200 hover:bg-emerald-50/50 dark:hover:border-emerald-800/30 dark:hover:bg-emerald-950/20"
+                                >
+                                    <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                        <Award className="size-4" />
+                                    </div>
+                                    <span className="flex-1">Sertifikat</span>
+                                    <ChevronRight className="size-4 text-muted-foreground" />
+                                </Link>
+
                                 <button
                                     onClick={() => navigator.clipboard.writeText(window.location.href)}
                                     className="flex w-full items-center gap-3 rounded-xl border border-border px-4 py-3 text-sm font-medium transition-all hover:border-emerald-200 hover:bg-emerald-50/50 dark:hover:border-emerald-800/30 dark:hover:bg-emerald-950/20"
@@ -506,6 +522,56 @@ function EventDetailContent() {
                                 </div>
                             </CardContent>
                         </Card>
+
+                        {/* Registered Volunteers */}
+                        {(event.status === "published" || event.status === "completed") && (
+                            <Card className="border-emerald-100/50 shadow-sm">
+                                <CardHeader>
+                                    <CardTitle className="text-base flex items-center gap-2">
+                                        <UserCheck className="size-4 text-emerald-600" />
+                                        Relawan Terdaftar
+                                        <span className="ml-auto text-xs font-normal text-muted-foreground">
+                                            {event.current_participants}/{event.quota}
+                                        </span>
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    {registrations.length > 0 ? (
+                                        <div className="space-y-2">
+                                            {registrations.slice(0, 10).map((reg) => (
+                                                <div key={reg.id} className="flex items-center gap-3 rounded-xl border border-border/50 px-3 py-2.5">
+                                                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                                        {reg.volunteer?.profile_photo_url ? (
+                                                            <img src={reg.volunteer.profile_photo_url} alt="" className="size-full rounded-full object-cover" />
+                                                        ) : (
+                                                            reg.volunteer?.full_name?.charAt(0) || "?"
+                                                        )}
+                                                    </div>
+                                                    <div className="min-w-0 flex-1">
+                                                        <p className="text-sm font-medium truncate">{reg.volunteer?.full_name || "Relawan"}</p>
+                                                        <p className="text-[10px] text-muted-foreground">
+                                                            {new Date(reg.registered_at).toLocaleDateString("id-ID", {
+                                                                day: "numeric", month: "short", year: "numeric"
+                                                            })}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {registrations.length > 10 && (
+                                                <p className="text-xs text-center text-muted-foreground pt-1">
+                                                    +{registrations.length - 10} relawan lainnya
+                                                </p>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div className="flex flex-col items-center gap-2 py-6 text-center">
+                                            <Users className="size-8 text-muted-foreground/40" />
+                                            <p className="text-sm text-muted-foreground">Belum ada pendaftar</p>
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        )}
                     </div>
                 </div>
             </main>

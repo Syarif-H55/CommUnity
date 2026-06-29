@@ -167,7 +167,7 @@ function MyAttendancesContent() {
                             return (
                                 <Link
                                     key={attendance.id}
-                                    href={attendance.event ? `/events/${attendance.event_id}` : "#"}
+                                    href={attendance.event ? `/discover/${attendance.event_id}` : "#"}
                                     className="group block"
                                 >
                                     <div className="flex items-center gap-4 rounded-xl border bg-card p-4 transition-all hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800/30">

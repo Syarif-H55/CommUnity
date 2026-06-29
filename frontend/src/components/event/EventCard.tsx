@@ -10,6 +10,7 @@ import type { Event } from "@/types"
 interface EventCardProps {
     event: Event
     className?: string
+    href?: string
 }
 
 const statusStyles: Record<string, "default" | "secondary" | "success" | "warning" | "destructive" | "outline"> = {
@@ -34,14 +35,14 @@ const categoryIcons: Record<string, string> = {
     kemanusiaan: "🆘",
 }
 
-function EventCard({ event, className }: EventCardProps) {
+function EventCard({ event, className, href }: EventCardProps) {
     const eventDate = new Date(event.event_date)
     const isUpcoming = eventDate > new Date()
     const isFull = event.current_participants >= event.quota
 
     return (
         <TiltCard className={cn("group", className)} tiltDegree={6}>
-            <Link href={`/events/${event.id}`}>
+            <Link href={href || `/events/${event.id}`}>
                 <div className="relative overflow-hidden rounded-xl border bg-card shadow-sm transition-all hover:shadow-lg hover:shadow-emerald-900/10">
                     {/* Banner */}
                     <div className="relative aspect-[16/9] overflow-hidden bg-muted">

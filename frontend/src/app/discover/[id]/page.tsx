@@ -97,7 +97,7 @@ export default function DiscoverEventDetailPage() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-950/20 dark:via-background dark:to-emerald-950/20">
             {/* Header */}
-            <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur-sm dark:bg-background/80">
+            <header className="border-b bg-white/80 dark:bg-background/80">
                 <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
                     <div className="flex items-center gap-3">
                         <Link

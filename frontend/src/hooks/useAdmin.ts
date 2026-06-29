@@ -19,15 +19,16 @@ export function useAdminOrganizations(params?: { status?: string; per_page?: num
         queryKey: ['admin', 'organizations', params],
         queryFn: async () => {
             const response = await adminService.getOrganizations(params);
-            const payload = response.data.data as any;
+            const body = response.data as any;
             return {
-                data: payload.data,
-                total: payload.meta?.total ?? 0,
-                per_page: payload.meta?.per_page ?? 10,
-                current_page: payload.meta?.current_page ?? 1,
-                last_page: payload.meta?.last_page ?? 1,
+                data: body.data ?? [],
+                total: body.meta?.total ?? 0,
+                per_page: body.meta?.per_page ?? 10,
+                current_page: body.meta?.current_page ?? 1,
+                last_page: body.meta?.last_page ?? 1,
             };
         },
+        retry: 1,
     });
 }
 

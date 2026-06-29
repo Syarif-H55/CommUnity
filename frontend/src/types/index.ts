@@ -313,3 +313,17 @@ export interface AnalyticsData {
     completed_events: number;
     attendance_rate: number;
 }
+
+export interface Certificate {
+    id: string;
+    volunteer_id: string;
+    volunteer_name?: string;
+    event_id: string;
+    event_title?: string;
+    event_date?: string;
+    organization_name?: string;
+    certificate_number: string;
+    pdf_url: string | null;
+    issued_at: string | null;
+    created_at: string;
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
@@ -9,7 +9,7 @@ import { useLogout } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import {
     Handshake, User, LogOut, Loader2, Settings, Menu, X,
-    Building2, CalendarDays, History, QrCode, Shield, LayoutDashboard, FileText
+    Building2, CalendarDays, History, QrCode, Shield, LayoutDashboard, FileText, Award
 } from "lucide-react";
 interface NavLink {
     label: string;
@@ -19,11 +19,14 @@ interface NavLink {
 
 export default function Navbar() {
     const router = useRouter();
+    const [hydrated, setHydrated] = useState(false);
     const user = useAuthStore((state) => state.user);
     const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
     const context = useRoleStore((state) => state.context);
     const logout = useLogout();
     const [menuOpen, setMenuOpen] = useState(false);
+
+    useEffect(() => { setHydrated(true); }, []);
 
     const isAdmin = context?.is_admin ?? false;
     const isOrganizer = context?.is_organizer ?? false;
@@ -58,6 +61,7 @@ export default function Navbar() {
         navLinks.push(
             { label: "Partisipasi", href: "/registrations", icon: <History className="size-4" /> },
             { label: "Kehadiran", href: "/my-attendances", icon: <QrCode className="size-4" /> },
+            { label: "Sertifikat", href: "/my-certificates", icon: <Award className="size-4" /> },
         );
     }
 
@@ -79,21 +83,29 @@ export default function Navbar() {
                     <span className="text-lg font-semibold tracking-tight hidden sm:inline">CommUnity</span>
                 </div>
 
-                <nav className="hidden md:flex items-center gap-1">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-                        >
-                            {link.icon}
-                            {link.label}
-                        </Link>
-                    ))}
-                </nav>
+                {hydrated && (
+                    <nav className="hidden md:flex items-center gap-1">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                            >
+                                {link.icon}
+                                {link.label}
+                            </Link>
+                        ))}
+                    </nav>
+                )}
 
                 <div className="flex items-center gap-2">
-                    {isAuthenticated ? (
+                    {!hydrated ? (
+                        <>
+                            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-muted-foreground">
+                                <Loader2 className="size-3.5 animate-spin" />
+                            </span>
+                        </>
+                    ) : isAuthenticated ? (
                         <>
                             <Link
                                 href="/profile"
@@ -143,7 +155,7 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {menuOpen && (
+            {hydrated && menuOpen && (
                 <div className="border-t md:hidden">
                     <div className="space-y-1 px-4 py-3">
                         {navLinks.map((link) => (

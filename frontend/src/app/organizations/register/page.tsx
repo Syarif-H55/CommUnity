@@ -3,6 +3,7 @@
 import { useState, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useQueryClient } from "@tanstack/react-query"
 import AuthGuard from "@/components/auth/AuthGuard"
 import { useRegisterOrganization } from "@/hooks/useOrganization"
 import { Button } from "@/components/ui/button"
@@ -38,6 +39,7 @@ const STEPS = [
 
 function RegisterOrganizationContent() {
     const router = useRouter()
+    const queryClient = useQueryClient()
     const register = useRegisterOrganization()
     const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -93,7 +95,8 @@ function RegisterOrganizationContent() {
         register.mutate(
             { name: form.name, description: form.description, logo: form.logo || undefined },
             {
-                onSuccess: () => {
+                onSuccess: async () => {
+                    await queryClient.invalidateQueries({ queryKey: ["user-context"] })
                     router.push("/organizations")
                 },
                 onError: (error) => {

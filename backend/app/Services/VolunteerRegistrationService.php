@@ -40,6 +40,14 @@ class VolunteerRegistrationService
         return $registration->load(['event.organization', 'event.category']);
     }
 
+    public function getEventRegistrations(Event $event, array $filters = []): LengthAwarePaginator
+    {
+        return VolunteerRegistration::with(['volunteer'])
+            ->where('event_id', $event->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate($filters['per_page'] ?? 50);
+    }
+
     public function getUserRegistrations(User $user, array $filters = []): LengthAwarePaginator
     {
         $query = VolunteerRegistration::with(['event.organization', 'event.category'])

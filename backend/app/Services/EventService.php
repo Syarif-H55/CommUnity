@@ -15,7 +15,7 @@ class EventService
 {
     public function list(array $filters = []): LengthAwarePaginator
     {
-        $query = Event::with(['organization', 'coordinator', 'category']);
+        $query = Event::with(['organization', 'coordinator', 'category'])->withCount('registrations');
 
         if (!empty($filters['search'])) {
             $query->where(function ($q) use ($filters) {
@@ -70,7 +70,7 @@ class EventService
 
     public function getOrganizationEvents(Organization $organization, array $filters = []): Collection
     {
-        return Event::with(['coordinator', 'category'])
+        return Event::with(['coordinator', 'category'])->withCount('registrations')
             ->where('organization_id', $organization->id)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -78,7 +78,7 @@ class EventService
 
     public function getOrganizationEventsByIds(\Illuminate\Support\Collection $organizationIds): Collection
     {
-        return Event::with(['organization', 'coordinator', 'category'])
+        return Event::with(['organization', 'coordinator', 'category'])->withCount('registrations')
             ->whereIn('organization_id', $organizationIds)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -112,7 +112,7 @@ class EventService
             'status' => 'draft',
         ]);
 
-        return $event->load(['organization', 'coordinator', 'category']);
+        return $event->load(['organization', 'coordinator', 'category'])->loadCount('registrations');
     }
 
     public function update(Event $event, array $data): Event
@@ -130,7 +130,7 @@ class EventService
 
         $event->update($data);
 
-        return $event->fresh()->load(['organization', 'coordinator', 'category']);
+        return $event->fresh()->load(['organization', 'coordinator', 'category'])->loadCount('registrations');
     }
 
     public function publish(Event $event): Event
@@ -147,11 +147,11 @@ class EventService
             'status' => 'published',
         ]);
 
-        return $event->fresh()->load(['organization', 'coordinator', 'category']);
+        return $event->fresh()->load(['organization', 'coordinator', 'category'])->loadCount('registrations');
     }
 
     public function find(string $id): ?Event
     {
-        return Event::with(['organization', 'coordinator', 'category'])->find($id);
+        return Event::with(['organization', 'coordinator', 'category'])->withCount('registrations')->find($id);
     }
 }

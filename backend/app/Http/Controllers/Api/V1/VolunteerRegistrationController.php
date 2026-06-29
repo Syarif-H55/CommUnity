@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Resources\VolunteerRegistrationResource;
 use App\Models\Event;
 use App\Services\VolunteerRegistrationService;
+use App\Traits\AuthorizesOrganizationAccess;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class VolunteerRegistrationController extends BaseController
 {
+    use AuthorizesOrganizationAccess;
+
     public function __construct(
         private readonly VolunteerRegistrationService $registrationService
     ) {}
@@ -27,6 +30,26 @@ class VolunteerRegistrationController extends BaseController
             'Pendaftaran event berhasil.',
             201
         );
+    }
+
+    public function eventRegistrations(Request $request, Event $event): JsonResponse
+    {
+        $this->authorizeEventAccess($event);
+
+        $filters = $request->only(['per_page']);
+        $registrations = $this->registrationService->getEventRegistrations($event, $filters);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Daftar pendaftar event berhasil diambil.',
+            'data' => VolunteerRegistrationResource::collection($registrations),
+            'pagination' => [
+                'current_page' => $registrations->currentPage(),
+                'per_page' => $registrations->perPage(),
+                'total' => $registrations->total(),
+                'last_page' => $registrations->lastPage(),
+            ],
+        ]);
     }
 
     public function myRegistrations(Request $request): JsonResponse

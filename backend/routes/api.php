@@ -69,6 +69,7 @@ Route::prefix('v1')->group(function () {
         // Volunteer registration endpoints
         Route::get('/my-registrations', [VolunteerRegistrationController::class, 'myRegistrations']);
         Route::post('/events/{event}/register', [VolunteerRegistrationController::class, 'register']);
+        Route::get('/events/{event}/registrations', [VolunteerRegistrationController::class, 'eventRegistrations']);
 
         // Attendance endpoints
         Route::get('/events/{event}/attendance-qr', [AttendanceController::class, 'generateQr']);
