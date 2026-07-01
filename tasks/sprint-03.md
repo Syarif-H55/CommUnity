@@ -568,7 +568,7 @@ TASK-023
 
 ---
 
-## TASK-024A
+## TASK-024A ✅
 
 Title:
 Analytics Dashboard — Per-Event Data API (Backend Enhancement)
@@ -595,24 +595,27 @@ Menyediakan endpoint API untuk data per-event yang sudah selesai beserta attenda
 
 Implementation Tasks:
 
-- Completed events list API — endpoint GET /api/v1/organizations/{organization}/analytics/events
-- Response mencakup per-event: nama event, event_date, total_registrations, total_present, total_late, total_absent, attendance_rate, report_status
-- Aggregate metrics refresh — menambah average_volunteers_per_event ke response analytics endpoint eksisting
+- ✅ Completed events list API — endpoint GET /api/v1/organizations/{organization}/analytics/events
+- ✅ Response mencakup per-event: nama event, event_date, total_registrations, total_present, total_late, total_absent, attendance_rate, report_status
+- ✅ Aggregate metrics refresh — menambah average_volunteers_per_event ke response analytics endpoint eksisting
 
 Acceptance Criteria:
 
-- Endpoint mengembalikan daftar event selesai milik organisasi dengan attendance breakdown
-- Attendance breakdown akurat per status (present, late, absent)
-- Response cepat — query realtime tanpa agregasi terpisah
+- ✅ Endpoint mengembalikan daftar event selesai milik organisasi dengan attendance breakdown
+- ✅ Attendance breakdown akurat per status (present, late, absent)
+- ✅ Response cepat — query realtime tanpa agregasi terpisah
 
 Verification Steps:
 
-- Per-event data accuracy testing
-- Response format validation
+- ✅ Per-event data accuracy testing (7 tests, 52 assertions)
+- ✅ Response format validation
 
 Dependencies:
 
-TASK-023
+- TASK-023
+
+Implementation History:
+`product/implementation-history/sprint-03/per-event-analytics-api.md`
 
 ---
 
