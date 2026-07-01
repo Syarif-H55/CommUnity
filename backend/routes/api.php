@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V1\EventPermissionController;
 use App\Http\Controllers\Api\V1\AiReportController;
 use App\Http\Controllers\Api\V1\EventReportController;
 use App\Http\Controllers\Api\V1\OrganizationAnalyticsController;
+use App\Http\Controllers\Api\V1\OrganizationPerEventAnalyticsController;
 use App\Http\Controllers\Api\V1\OrganizationController;
 use App\Http\Controllers\Api\V1\OrganizationMemberController;
 use App\Http\Controllers\Api\V1\ProfileController;
@@ -54,6 +55,7 @@ Route::prefix('v1')->group(function () {
 
         // Organization analytics
         Route::get('/organizations/{organization}/analytics', OrganizationAnalyticsController::class);
+        Route::get('/organizations/{organization}/analytics/events', OrganizationPerEventAnalyticsController::class);
 
         // Organization member endpoints
         Route::get('/organizations/{organization}/members', [OrganizationMemberController::class, 'index']);
